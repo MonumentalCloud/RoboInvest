@@ -11,6 +11,13 @@ pandas>=2.0.0
 numpy<2.0
 alpaca-trade-api>=3.0.0
 
+# Technical Analysis
+ta-lib>=0.4.25
+TA-Lib>=0.4.25
+talib-binary>=0.4.19
+mplfinance>=0.12.0
+pandas-ta>=0.3.14b
+
 # Vector Database for RAG
 chromadb>=0.4.0
 sentence-transformers>=2.2.0
@@ -43,4 +50,9 @@ finnhub-python>=2.4.17
 
 # Web API
 fastapi>=0.110.0
-uvicorn[standard]>=0.29.0 
+uvicorn[standard]>=0.29.0
+
+# Additional Libraries for Advanced Trading
+scikit-learn>=1.3.0
+scipy>=1.11.0
+statsmodels>=0.14.0 
