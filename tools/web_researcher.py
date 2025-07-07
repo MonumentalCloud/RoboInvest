@@ -312,31 +312,22 @@ class WebResearcher:
     
     def _web_search(self, query: str, search_type: str = "general") -> List[Dict[str, Any]]:
         """
-        Perform web search - placeholder for actual web search implementation.
-        In a real implementation, this would use a web search API.
+        Perform web search using the web search wrapper.
         """
-        # Check cache first
-        cache_key = f"{query}_{search_type}"
-        if cache_key in self.search_cache:
-            cache_time, results = self.search_cache[cache_key]
-            if time.time() - cache_time < self.cache_duration:
-                return results
-        
-        # Simulated search results - replace with actual web search API
-        mock_results = [
-            {
-                "title": f"Search result for {query}",
-                "snippet": f"Relevant information about {query} found in web search",
-                "url": f"https://example.com/search/{query.replace(' ', '-')}",
-                "source": "Web Search",
-                "relevance": 0.7
-            }
-        ]
-        
-        # Cache results
-        self.search_cache[cache_key] = (time.time(), mock_results)
-        
-        return mock_results
+        try:
+            from tools.web_search_wrapper import web_search_wrapper
+            
+            # Use the web search wrapper for actual search
+            results = web_search_wrapper.search(query, max_results=5)
+            
+            return results
+            
+        except ImportError:
+            logger.warning("Web search wrapper not available, using fallback")
+            return []
+        except Exception as e:
+            logger.error(f"Web search error: {e}")
+            return []
     
     def _generate_research_report(self, research_results: Dict[str, Any]) -> Dict[str, Any]:
         """

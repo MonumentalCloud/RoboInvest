@@ -1,0 +1,379 @@
+"""
+Autonomous Trading System
+A true alpha-hunting system that discovers opportunities, researches them, and creates dynamic strategies.
+"""
+
+import json
+import time
+from typing import Dict, List, Any, Optional
+from datetime import datetime
+
+from agents.autonomous_alpha_hunter import autonomous_alpha_hunter
+from tools.web_researcher import web_researcher
+from tools.calculator import calculator
+from tools.data_fetcher import data_fetcher
+from core.config import config
+from core.openai_manager import openai_manager
+from core.pnl_tracker import pnl_tracker
+from utils.logger import logger  # type: ignore
+
+
+class AutonomousTradingSystem:
+    """
+    Complete autonomous trading system that:
+    1. Hunts for alpha opportunities globally
+    2. Researches opportunities using web tools
+    3. Creates dynamic short-term strategies
+    4. Tracks performance and learns from outcomes
+    """
+    
+    def __init__(self):
+        self.system_memory = []
+        self.active_strategies = []
+        self.performance_history = []
+        self.is_running = False
+        
+    def start_autonomous_trading(self, max_iterations: int = 5) -> Dict[str, Any]:
+        """
+        Start the autonomous trading system.
+        """
+        try:
+            logger.info("AutonomousTrader | Starting autonomous trading system")
+            self.is_running = True
+            
+            results = {
+                "session_start": datetime.now().isoformat(),
+                "iterations": [],
+                "final_strategy": None,
+                "performance_summary": {},
+                "key_insights": []
+            }
+            
+            for iteration in range(max_iterations):
+                logger.info(f"AutonomousTrader | Iteration {iteration + 1}/{max_iterations}")
+                
+                # Single iteration of the autonomous trading cycle
+                iteration_result = self._autonomous_cycle()
+                
+                results["iterations"].append({
+                    "iteration": iteration + 1,
+                    "timestamp": datetime.now().isoformat(),
+                    "result": iteration_result
+                })
+                
+                # Check if we found a high-confidence strategy
+                if iteration_result.get("confidence", 0) > 0.7:
+                    results["final_strategy"] = iteration_result
+                    logger.info(f"AutonomousTrader | High confidence strategy found: {iteration_result.get('alpha_thesis', 'Unknown')}")
+                    break
+                
+                # Brief pause between iterations
+                time.sleep(2)
+            
+            # Generate final performance summary
+            results["performance_summary"] = self._generate_performance_summary()
+            results["key_insights"] = self._extract_key_insights(results["iterations"])
+            
+            logger.info("AutonomousTrader | Autonomous trading session complete")
+            return results
+            
+        except Exception as e:
+            logger.error(f"AutonomousTrader error: {e}")
+            self.is_running = False
+            return {"error": str(e), "timestamp": datetime.now().isoformat()}
+    
+    def _autonomous_cycle(self) -> Dict[str, Any]:
+        """
+        Single cycle of autonomous trading:
+        1. Hunt for alpha opportunities
+        2. Research the best opportunity
+        3. Create investment strategy
+        4. Validate strategy
+        """
+        try:
+            cycle_start = time.time()
+            
+            # Step 1: Hunt for alpha opportunities
+            logger.info("AutonomousTrader | Hunting for alpha opportunities")
+            alpha_strategy = autonomous_alpha_hunter.hunt_for_alpha()
+            
+            if not alpha_strategy or alpha_strategy.get("confidence", 0) < 0.3:
+                logger.warning("AutonomousTrader | No viable alpha opportunities found")
+                return self._create_fallback_strategy()
+            
+            # Step 2: Deep research on the opportunity
+            logger.info(f"AutonomousTrader | Researching opportunity: {alpha_strategy.get('opportunity_theme', 'Unknown')}")
+            
+            opportunity_data = {
+                "theme": alpha_strategy.get("opportunity_theme", "Unknown"),
+                "thesis": alpha_strategy.get("alpha_thesis", ""),
+                "catalysts": alpha_strategy.get("catalysts", []),
+                "risk_factors": [alpha_strategy.get("risk_level", "MEDIUM")]
+            }
+            
+            tickers = [alpha_strategy.get("primary_ticker", "SPY")]
+            
+            # Comprehensive web research
+            research_report = web_researcher.research_opportunity(opportunity_data, tickers)
+            
+            # Step 3: Enhance strategy with research insights
+            enhanced_strategy = self._enhance_strategy_with_research(alpha_strategy, research_report)
+            
+            # Step 4: Final validation and risk assessment
+            final_strategy = self._validate_final_strategy(enhanced_strategy)
+            
+            cycle_time = time.time() - cycle_start
+            final_strategy["cycle_time_seconds"] = cycle_time
+            
+            logger.info(f"AutonomousTrader | Cycle complete in {cycle_time:.2f}s - Strategy: {final_strategy.get('action', 'HOLD')}")
+            
+            return final_strategy
+            
+        except Exception as e:
+            logger.error(f"Autonomous cycle error: {e}")
+            return self._create_fallback_strategy()
+    
+    def _enhance_strategy_with_research(self, base_strategy: Dict[str, Any], research: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Enhance the base strategy with research insights.
+        """
+        try:
+            if not config.openai_api_key:
+                return base_strategy
+            
+            # Extract key research insights
+            sentiment = research.get("sentiment_analysis", {})
+            fundamentals = research.get("fundamental_analysis", {})
+            news = research.get("news_analysis", {})
+            report = research.get("report", {})
+            
+            # LLM integrates research with strategy
+            enhancement_prompt = f"""You are enhancing a trading strategy with comprehensive research insights.
+            
+            Base Strategy:
+            {json.dumps(base_strategy, indent=2)}
+            
+            Research Insights:
+            - Sentiment: {sentiment.get('sentiment', 'neutral')} (strength: {sentiment.get('strength', 0.5)})
+            - Fundamentals: {fundamentals.get('financial_health', 'unknown')} health, {fundamentals.get('valuation', 'unknown')} valuation
+            - News Impact: {news.get('impact', 'neutral')} with {news.get('time_sensitivity', 'unknown')} timing
+            - Research Recommendation: {report.get('recommendation', 'HOLD')} (confidence: {report.get('confidence', 0.5)})
+            
+            Detailed Research:
+            {json.dumps(research, indent=2)}
+            
+            Enhance the strategy by:
+            1. Adjusting position size based on research confidence
+            2. Refining entry/exit criteria with research insights
+            3. Updating risk assessment with research findings
+            4. Modifying time horizon based on catalysts
+            5. Integrating sentiment and fundamental factors
+            
+            Respond with enhanced strategy in JSON:
+            {{
+                "primary_ticker": "TICKER",
+                "action": "BUY/SELL/HOLD",
+                "position_size": 0.0-0.2,
+                "entry_criteria": "enhanced entry conditions",
+                "exit_criteria": "enhanced exit conditions",
+                "stop_loss": percentage,
+                "take_profit": percentage,
+                "time_horizon": "enhanced timeline",
+                "confidence": 0.0-1.0,
+                "risk_level": "LOW/MEDIUM/HIGH",
+                "alpha_thesis": "research-enhanced thesis",
+                "research_factors": ["key research insight 1", "key research insight 2"],
+                "catalyst_timeline": "when catalysts expected",
+                "sentiment_factor": 0.0-1.0,
+                "fundamental_factor": 0.0-1.0
+            }}"""
+            
+            response = openai_manager.chat_completion([
+                {"role": "user", "content": enhancement_prompt}
+            ], temperature=0.2)
+            
+            enhanced_strategy = json.loads(response.get("content", "{}"))
+            
+            # Add research metadata
+            enhanced_strategy["research_summary"] = {
+                "sentiment": sentiment.get("sentiment", "neutral"),
+                "fundamental_score": fundamentals.get("overall_score", 0.5),
+                "news_impact": news.get("impact", "neutral"),
+                "research_confidence": report.get("confidence", 0.5)
+            }
+            
+            return enhanced_strategy
+            
+        except Exception as e:
+            logger.error(f"Strategy enhancement error: {e}")
+            return base_strategy
+    
+    def _validate_final_strategy(self, strategy: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Final validation of the strategy before potential execution.
+        """
+        try:
+            # Basic validation checks
+            ticker = strategy.get("primary_ticker", "SPY")
+            action = strategy.get("action", "HOLD")
+            confidence = strategy.get("confidence", 0.5)
+            position_size = strategy.get("position_size", 0.05)
+            
+            # Get current market data for validation
+            market_data = data_fetcher.get_historical_data(ticker, period="1d")
+            
+            # Risk-adjusted validation
+            if confidence < 0.4:
+                strategy["action"] = "HOLD"
+                strategy["position_size"] = 0.0
+                strategy["validation_note"] = "Low confidence - holding position"
+            
+            elif position_size > 0.15:  # Cap position size at 15%
+                strategy["position_size"] = 0.15
+                strategy["validation_note"] = "Position size capped at 15%"
+            
+            # Add validation metadata
+            strategy["validation_timestamp"] = datetime.now().isoformat()
+            strategy["market_data_available"] = bool(market_data.get("data"))
+            strategy["validated"] = True
+            
+            logger.info(f"AutonomousTrader | Strategy validated: {action} {ticker} (confidence: {confidence:.2f})")
+            
+            return strategy
+            
+        except Exception as e:
+            logger.error(f"Strategy validation error: {e}")
+            strategy["validated"] = False
+            strategy["validation_error"] = str(e)
+            return strategy
+    
+    def _create_fallback_strategy(self) -> Dict[str, Any]:
+        """
+        Create a conservative fallback strategy when autonomous hunting fails.
+        """
+        return {
+            "primary_ticker": "SPY",
+            "action": "HOLD",
+            "position_size": 0.0,
+            "confidence": 0.3,
+            "alpha_thesis": "Conservative fallback - market neutral position",
+            "time_horizon": "1 day",
+            "risk_level": "LOW",
+            "fallback": True,
+            "timestamp": datetime.now().isoformat()
+        }
+    
+    def _generate_performance_summary(self) -> Dict[str, Any]:
+        """
+        Generate performance summary of the autonomous trading session.
+        """
+        try:
+            # Get current PnL data
+            pnl_data = pnl_tracker.get_performance_summary()
+            
+            return {
+                "total_pnl": pnl_data.get("total_pnl", 0.0),
+                "win_rate": pnl_data.get("win_rate", 0.0),
+                "total_trades": pnl_data.get("total_trades", 0),
+                "active_strategies": len(self.active_strategies),
+                "system_uptime": "Session complete",
+                "timestamp": datetime.now().isoformat()
+            }
+            
+        except Exception as e:
+            logger.error(f"Performance summary error: {e}")
+            return {"error": str(e)}
+    
+    def _extract_key_insights(self, iterations: List[Dict[str, Any]]) -> List[str]:
+        """
+        Extract key insights from the trading session.
+        """
+        insights = []
+        
+        try:
+            # Analyze iteration results
+            high_confidence_strategies = [
+                iteration for iteration in iterations
+                if iteration.get("result", {}).get("confidence", 0) > 0.6
+            ]
+            
+            if high_confidence_strategies:
+                insights.append(f"Found {len(high_confidence_strategies)} high-confidence opportunities")
+            
+            # Extract common themes
+            themes = [
+                iteration.get("result", {}).get("opportunity_theme", "Unknown")
+                for iteration in iterations
+                if iteration.get("result", {}).get("opportunity_theme")
+            ]
+            
+            if themes:
+                insights.append(f"Explored opportunities: {', '.join(set(themes))}")
+            
+            # Performance insights
+            final_strategies = [
+                iteration.get("result", {}) for iteration in iterations
+                if iteration.get("result", {}).get("action") != "HOLD"
+            ]
+            
+            if final_strategies:
+                insights.append(f"Generated {len(final_strategies)} actionable strategies")
+            else:
+                insights.append("Market conditions favored conservative approach")
+            
+            return insights
+            
+        except Exception as e:
+            logger.error(f"Insight extraction error: {e}")
+            return ["Session completed with mixed results"]
+
+
+# Global instance
+autonomous_trading_system = AutonomousTradingSystem()
+
+
+def demo_autonomous_trading():
+    """
+    Demonstrate the autonomous trading system.
+    """
+    print("🚀 Starting Autonomous Alpha-Hunting Trading System")
+    print("=" * 60)
+    
+    # Run the autonomous system
+    results = autonomous_trading_system.start_autonomous_trading(max_iterations=3)
+    
+    # Display results
+    print("\n📊 AUTONOMOUS TRADING RESULTS")
+    print("=" * 60)
+    
+    print(f"Session Duration: {len(results.get('iterations', []))} iterations")
+    
+    if results.get('final_strategy'):
+        strategy = results['final_strategy']
+        print(f"\n🎯 FINAL STRATEGY:")
+        print(f"   Ticker: {strategy.get('primary_ticker', 'N/A')}")
+        print(f"   Action: {strategy.get('action', 'N/A')}")
+        print(f"   Position Size: {strategy.get('position_size', 0):.1%}")
+        print(f"   Confidence: {strategy.get('confidence', 0):.2f}")
+        print(f"   Alpha Thesis: {strategy.get('alpha_thesis', 'N/A')}")
+        print(f"   Time Horizon: {strategy.get('time_horizon', 'N/A')}")
+    
+    if results.get('key_insights'):
+        print(f"\n🔍 KEY INSIGHTS:")
+        for insight in results['key_insights']:
+            print(f"   • {insight}")
+    
+    print(f"\n💡 PERFORMANCE SUMMARY:")
+    perf = results.get('performance_summary', {})
+    print(f"   Total PnL: ${perf.get('total_pnl', 0.0):.2f}")
+    print(f"   Win Rate: {perf.get('win_rate', 0.0):.1%}")
+    print(f"   Total Trades: {perf.get('total_trades', 0)}")
+    
+    print("\n✅ Autonomous trading session complete!")
+    print("=" * 60)
+    
+    return results
+
+
+if __name__ == "__main__":
+    demo_autonomous_trading()
