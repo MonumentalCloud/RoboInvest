@@ -1,6 +1,6 @@
 """
-Web Interface for LLM-Based AI Risk Assessment System
-Hosts the risk system as a web service accessible via browser.
+Web Interface for Intelligent Trading Agent with Built-in LLM Risk Screening
+Hosts the integrated trading agent as a web service accessible via browser.
 """
 
 import json
@@ -9,11 +9,15 @@ from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 import socket
-from llm_risk_assessment_system import llm_risk_assessor
+from intelligent_trading_agent import IntelligentTradingAgent
 
 
-class RiskAssessmentHandler(BaseHTTPRequestHandler):
-    """HTTP handler for the risk assessment web interface."""
+# Global trading agent instance
+trading_agent = IntelligentTradingAgent()
+
+
+class TradingAgentHandler(BaseHTTPRequestHandler):
+    """HTTP handler for the trading agent web interface."""
     
     def do_GET(self):
         """Handle GET requests for the web interface."""
@@ -27,20 +31,35 @@ class RiskAssessmentHandler(BaseHTTPRequestHandler):
             self.serve_memory_page()
         elif parsed_path.path == '/api/memory':
             self.handle_memory_query(parsed_path.query)
+        elif parsed_path.path == '/api/insights':
+            self.handle_insights_query()
         elif parsed_path.path == '/live-demo':
             self.serve_live_demo()
+        elif parsed_path.path == '/api/status':
+            self.handle_status_query()
         else:
             self.send_error(404, "Page not found")
     
     def do_POST(self):
-        """Handle POST requests for risk assessment."""
+        """Handle POST requests for trading assessment."""
         if self.path == '/api/assess':
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length)
             
             try:
-                context = json.loads(post_data.decode('utf-8'))
-                result = llm_risk_assessor.assess_trading_decision(context)
+                # Parse request data
+                request_data = json.loads(post_data.decode('utf-8'))
+                
+                # Extract ticker and run full trading analysis
+                ticker = request_data.get('primary_ticker', '').upper()
+                if not ticker:
+                    raise ValueError("Ticker is required")
+                
+                # Run complete trading analysis with integrated risk screening
+                trade_record = trading_agent.analyze_and_trade(ticker)
+                
+                # Convert to web-friendly format
+                result = self._convert_trade_record_to_api_response(trade_record, request_data)
                 
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
@@ -52,9 +71,59 @@ class RiskAssessmentHandler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps(serializable_result, indent=2).encode())
                 
             except Exception as e:
-                self.send_error(500, f"Error processing request: {str(e)}")
+                self.send_error(500, f"Error processing trading request: {str(e)}")
+        
+        elif self.path == '/api/analyze':
+            # Direct ticker analysis endpoint
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
+            
+            try:
+                request_data = json.loads(post_data.decode('utf-8'))
+                ticker = request_data.get('ticker', '').upper()
+                
+                if not ticker:
+                    raise ValueError("Ticker is required")
+                
+                trade_record = trading_agent.analyze_and_trade(ticker)
+                
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                
+                serializable_result = self._make_serializable(trade_record)
+                self.wfile.write(json.dumps(serializable_result, indent=2).encode())
+                
+            except Exception as e:
+                self.send_error(500, f"Error analyzing ticker: {str(e)}")
+        
         else:
             self.send_error(404, "Endpoint not found")
+    
+    def _convert_trade_record_to_api_response(self, trade_record, original_request):
+        """Convert trading agent result to web API format."""
+        risk_assessment = trade_record['risk_assessment']
+        execution_result = trade_record['execution_result']
+        research = trade_record['research']
+        
+        return {
+            'ticker': trade_record['ticker'],
+            'risk_level': risk_assessment.risk_level.value,
+            'risk_score': risk_assessment.risk_score,
+            'should_proceed': risk_assessment.should_proceed,
+            'reasoning': risk_assessment.reasoning,
+            'recommendations': risk_assessment.recommendations,
+            'original_action': research.recommended_action.value,
+            'final_action': risk_assessment.modified_action.value,
+            'original_position_size': research.target_position_size,
+            'final_position_size': risk_assessment.modified_position_size,
+            'execution_status': execution_result['status'],
+            'research_confidence': research.confidence,
+            'risk_factors': risk_assessment.risk_factors,
+            'sector': research.sector,
+            'timestamp': trade_record['timestamp'].isoformat() if 'timestamp' in trade_record else datetime.now().isoformat()
+        }
     
     def _make_serializable(self, obj):
         """Convert objects to JSON serializable format."""
@@ -64,18 +133,68 @@ class RiskAssessmentHandler(BaseHTTPRequestHandler):
             return [self._make_serializable(item) for item in obj]
         elif isinstance(obj, datetime):
             return obj.isoformat()
+        elif hasattr(obj, '__dict__'):
+            return self._make_serializable(obj.__dict__)
         else:
             return obj
     
+    def handle_status_query(self):
+        """Handle system status requests."""
+        try:
+            # Get current system status
+            total_trades = len(trading_agent.trade_history)
+            total_assessments = len(trading_agent.risk_screener.memory)
+            
+            recent_trades = trading_agent.trade_history[-5:] if trading_agent.trade_history else []
+            
+            status_data = {
+                'status': 'active',
+                'total_trades_analyzed': total_trades,
+                'total_risk_assessments': total_assessments,
+                'system_uptime': datetime.now().isoformat(),
+                'recent_activity': [
+                    {
+                        'ticker': trade['ticker'],
+                        'risk_level': trade['risk_assessment'].risk_level.value,
+                        'execution_status': trade['execution_result']['status'],
+                        'timestamp': trade['timestamp'].isoformat() if 'timestamp' in trade else 'unknown'
+                    }
+                    for trade in recent_trades
+                ]
+            }
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(json.dumps(status_data, indent=2).encode())
+            
+        except Exception as e:
+            self.send_error(500, f"Error getting system status: {str(e)}")
+    
+    def handle_insights_query(self):
+        """Handle risk insights requests."""
+        try:
+            insights = trading_agent.get_risk_insights()
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(json.dumps(insights, indent=2).encode())
+            
+        except Exception as e:
+            self.send_error(500, f"Error getting insights: {str(e)}")
+    
     def serve_main_page(self):
-        """Serve the main risk assessment interface."""
+        """Serve the main trading agent interface."""
         html = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧠 LLM AI Risk Assessment System</title>
+    <title>🤖 Intelligent Trading Agent with LLM Risk Screening</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -163,6 +282,13 @@ class RiskAssessmentHandler(BaseHTTPRequestHandler):
             cursor: not-allowed;
             transform: none;
         }
+        .btn-secondary {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            width: auto;
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -229,80 +355,63 @@ class RiskAssessmentHandler(BaseHTTPRequestHandler):
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        .quick-test {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .execution-details {
+            background: #e8f5e8;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🧠 LLM AI Risk Assessment System</h1>
-            <p>Real-time AI-powered trading risk analysis with memory and learning</p>
+            <h1>🤖 Intelligent Trading Agent</h1>
+            <p>Research → LLM Risk Screening → Filtered Execution</p>
         </div>
         
         <div class="nav-links">
-            <a href="/">🏠 Risk Assessment</a>
-            <a href="/memory">🧠 Memory System</a>
+            <a href="/">🏠 Trading Analysis</a>
+            <a href="/memory">🧠 Risk Memory</a>
             <a href="/live-demo">🎬 Live Demo</a>
         </div>
 
         <div class="card">
             <div class="card-header">
-                📊 Trading Decision Risk Assessment
+                🚀 Complete Trading Analysis
             </div>
             <div class="card-body">
-                <form id="riskForm">
-                    <div class="grid">
-                        <div>
-                            <div class="form-group">
-                                <label for="ticker">Stock Ticker</label>
-                                <input type="text" id="ticker" class="form-control" placeholder="e.g., TSLA, AAPL, NVDA" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="action">Action</label>
-                                <select id="action" class="form-control" required>
-                                    <option value="">Select Action</option>
-                                    <option value="BUY">BUY</option>
-                                    <option value="SELL">SELL</option>
-                                    <option value="HOLD">HOLD</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="confidence">Confidence Level (0.0 - 1.0)</label>
-                                <input type="number" id="confidence" class="form-control" step="0.01" min="0" max="1" placeholder="e.g., 0.75" required>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="form-group">
-                                <label for="position_size">Position Size (0.0 - 1.0)</label>
-                                <input type="number" id="position_size" class="form-control" step="0.01" min="0" max="1" placeholder="e.g., 0.15 (15%)" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="sector">Sector</label>
-                                <input type="text" id="sector" class="form-control" placeholder="e.g., technology, automotive">
-                            </div>
-                            <div class="form-group">
-                                <label for="market_volatility">Market Volatility</label>
-                                <select id="market_volatility" class="form-control">
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high" selected>High</option>
-                                    <option value="extreme">Extreme</option>
-                                </select>
-                            </div>
-                        </div>
+                <div class="quick-test">
+                    <p><strong>Quick Test:</strong></p>
+                    <button class="btn-secondary" onclick="quickAnalyze('TSLA')">🚨 Tesla (Critical Risk)</button>
+                    <button class="btn-secondary" onclick="quickAnalyze('NVDA')">🔴 NVIDIA (High Risk)</button>
+                    <button class="btn-secondary" onclick="quickAnalyze('SPY')">🟢 SPY (Safe)</button>
+                    <button class="btn-secondary" onclick="quickAnalyze('AAPL')">🟡 Apple (Medium)</button>
+                </div>
+
+                <form id="tradingForm">
+                    <div class="form-group">
+                        <label for="ticker">Stock Ticker for Complete Analysis</label>
+                        <input type="text" id="ticker" class="form-control" placeholder="Enter any ticker (e.g., MSFT, GOOGL, AMZN)" required>
                     </div>
-                    <button type="submit" class="btn" id="assessBtn">
-                        🔍 Assess Trading Risk
+                    <button type="submit" class="btn" id="analyzeBtn">
+                        🔍 Run Complete Trading Analysis
                     </button>
                 </form>
                 
                 <div class="loading" id="loading">
                     <div class="spinner"></div>
-                    <p>🧠 AI is analyzing your trading decision...</p>
+                    <p>🧠 Running Research → Risk Screening → Execution Analysis...</p>
                 </div>
                 
                 <div class="result-container" id="results">
                     <div id="riskLevel" class="risk-level"></div>
                     <div id="decision"></div>
+                    <div id="executionDetails" class="execution-details"></div>
                     <div id="reasoning" class="reasoning"></div>
                     <div id="recommendations"></div>
                 </div>
@@ -311,74 +420,100 @@ class RiskAssessmentHandler(BaseHTTPRequestHandler):
     </div>
 
     <script>
-        document.getElementById('riskForm').addEventListener('submit', async function(e) {
+        document.getElementById('tradingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const assessBtn = document.getElementById('assessBtn');
+            const ticker = document.getElementById('ticker').value.toUpperCase().trim();
+            if (!ticker) {
+                alert('Please enter a ticker symbol');
+                return;
+            }
+            
+            await runCompleteAnalysis(ticker);
+        });
+        
+        async function quickAnalyze(ticker) {
+            await runCompleteAnalysis(ticker);
+        }
+        
+        async function runCompleteAnalysis(ticker) {
+            const analyzeBtn = document.getElementById('analyzeBtn');
             const loading = document.getElementById('loading');
             const results = document.getElementById('results');
             
             // Show loading state
-            assessBtn.disabled = true;
+            analyzeBtn.disabled = true;
             loading.style.display = 'block';
             results.style.display = 'none';
             
-            // Collect form data
-            const context = {
-                primary_ticker: document.getElementById('ticker').value.toUpperCase(),
-                action: document.getElementById('action').value,
-                confidence: parseFloat(document.getElementById('confidence').value),
-                position_size: parseFloat(document.getElementById('position_size').value),
-                sector: document.getElementById('sector').value,
-                market_volatility: document.getElementById('market_volatility').value
-            };
-            
             try {
-                const response = await fetch('/api/assess', {
+                const response = await fetch('/api/analyze', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(context)
+                    body: JSON.stringify({ticker: ticker})
                 });
                 
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const result = await response.json();
-                displayResults(result);
+                displayTradingResults(result);
                 
             } catch (error) {
                 console.error('Error:', error);
-                alert('Error assessing risk: ' + error.message);
+                alert('Error analyzing ticker: ' + error.message);
             } finally {
-                assessBtn.disabled = false;
+                analyzeBtn.disabled = false;
                 loading.style.display = 'none';
             }
-        });
+        }
         
-        function displayResults(result) {
+        function displayTradingResults(result) {
             const results = document.getElementById('results');
             const riskLevel = document.getElementById('riskLevel');
             const decision = document.getElementById('decision');
+            const executionDetails = document.getElementById('executionDetails');
             const reasoning = document.getElementById('reasoning');
             const recommendations = document.getElementById('recommendations');
             
+            // Extract data from nested structure
+            const research = result.research;
+            const riskAssessment = result.risk_assessment;
+            const executionResult = result.execution_result;
+            
             // Risk level display
-            const level = result.risk_level.toLowerCase();
+            const level = riskAssessment.risk_level.toLowerCase();
             riskLevel.className = `risk-level risk-${level}`;
-            riskLevel.innerHTML = `${getRiskEmoji(level)} ${result.risk_level} RISK<br>Score: ${result.risk_score.toFixed(3)}`;
+            riskLevel.innerHTML = `${getRiskEmoji(level)} ${riskAssessment.risk_level} RISK<br>Score: ${riskAssessment.risk_score.toFixed(3)}`;
             
-            // Decision
-            const proceed = result.should_proceed ? '✅ PROCEED' : '❌ BLOCKED';
-            decision.innerHTML = `<h3>Decision: ${proceed}</h3>`;
+            // Trading decision
+            const status = executionResult.status === 'EXECUTED' ? '✅ EXECUTED' : '❌ BLOCKED';
+            decision.innerHTML = `<h3>Final Decision: ${status}</h3>`;
             
-            // Reasoning
-            reasoning.textContent = result.reasoning.join('\\n');
+            // Execution details
+            executionDetails.innerHTML = `
+                <h4>📊 Trading Analysis Summary:</h4>
+                <p><strong>Research Recommendation:</strong> ${research.recommended_action} ${(research.target_position_size * 100).toFixed(0)}% (Confidence: ${(research.confidence * 100).toFixed(0)}%)</p>
+                <p><strong>Risk-Filtered Decision:</strong> ${riskAssessment.modified_action} ${(riskAssessment.modified_position_size * 100).toFixed(0)}%</p>
+                <p><strong>Sector:</strong> ${research.sector}</p>
+                ${executionResult.status === 'EXECUTED' ? 
+                    `<p><strong>Execution Value:</strong> $${executionResult.dollar_amount.toLocaleString()}</p>` : 
+                    `<p><strong>Block Reason:</strong> ${executionResult.reason || 'Risk threshold exceeded'}</p>`
+                }
+            `;
+            
+            // Reasoning display
+            reasoning.textContent = riskAssessment.reasoning.join('\n');
             
             // Recommendations
-            if (result.recommendations && result.recommendations.length > 0) {
+            if (riskAssessment.recommendations && riskAssessment.recommendations.length > 0) {
                 recommendations.innerHTML = `
-                    <h3>🎯 Recommendations:</h3>
+                    <h3>🎯 Risk Management Recommendations:</h3>
                     <ul>
-                        ${result.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                        ${riskAssessment.recommendations.map(rec => `<li>${rec}</li>`).join('')}
                     </ul>
                 `;
             }
@@ -538,8 +673,10 @@ class RiskAssessmentHandler(BaseHTTPRequestHandler):
     def handle_memory_query(self, query_string):
         """Handle memory API requests."""
         try:
-            insights = llm_risk_assessor.get_memory_insights()
-            recent_memories = llm_risk_assessor.query_memory("recent", days=7)
+            insights = trading_agent.get_risk_insights()
+            
+            # Get recent memories from the risk screener
+            recent_memories = trading_agent.risk_screener.memory[-10:] if trading_agent.risk_screener.memory else []
             
             # Convert memories to serializable format
             serializable_memories = []
@@ -821,7 +958,7 @@ def start_web_server():
     
     # Create and start server
     server_address = ('', port)
-    httpd = HTTPServer(server_address, RiskAssessmentHandler)
+    httpd = HTTPServer(server_address, TradingAgentHandler)
     
     try:
         httpd.serve_forever()
