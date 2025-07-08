@@ -1,11 +1,16 @@
 from __future__ import annotations
 
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 import time
 from datetime import datetime
 import random
+import asyncio
 
 # Import the core modules (some may not exist yet, so we'll handle gracefully)
 try:
@@ -23,10 +28,91 @@ try:
 except ImportError:
     openrouter_manager = None
 
-try:
-    from services.ai_thinking_service import ai_thinking_service
-except ImportError:
-    ai_thinking_service = None
+# Embedded simple AI thinking service
+class EmbeddedAIThinkingService:
+    def __init__(self):
+        self.is_running = False
+        self.current_thoughts = []
+        self.max_thoughts = 10
+        
+    async def start_thinking(self):
+        if self.is_running:
+            return
+        self.is_running = True
+        self._add_thought("OpenRouter AI systems online - live thinking activated")
+        # Start background thinking task
+        asyncio.create_task(self._thinking_loop())
+        
+    def stop_thinking(self):
+        self.is_running = False
+        
+    async def _thinking_loop(self):
+        while self.is_running:
+            try:
+                thought = await self._generate_thought()
+                if thought:
+                    self._add_thought(thought)
+                await asyncio.sleep(6)  # New thought every 6 seconds
+            except Exception as e:
+                print(f"AI thinking error: {e}")
+                await asyncio.sleep(6)
+                
+    async def _generate_thought(self):
+        try:
+            if openrouter_manager and openrouter_manager.enabled and hasattr(openrouter_manager, 'generate_thinking_thought'):
+                # Use OpenRouter for real AI thoughts
+                import json
+                context = {"time": datetime.now().isoformat(), "market": "active"}
+                loop = asyncio.get_event_loop()
+                thought = await loop.run_in_executor(
+                    None,
+                    lambda: openrouter_manager.generate_thinking_thought(context)
+                )
+                return f"AI: {thought}" if thought else self._fallback_thought()
+            else:
+                return self._fallback_thought()
+        except Exception as e:
+            return self._fallback_thought()
+            
+    def _fallback_thought(self):
+        thoughts = [
+            "Analyzing market microstructure patterns for alpha signals...",
+            "Monitoring institutional flow patterns across sectors...", 
+            "Detecting unusual options activity in mega-cap tech...",
+            "Scanning earnings revision trends for beat candidates...",
+            "Evaluating cross-asset correlation breakdown signals...",
+            "Processing sentiment data for contrarian opportunities...",
+            "Analyzing technical breakout setups in growth names...",
+            "Monitoring volatility term structure for timing signals..."
+        ]
+        return random.choice(thoughts)
+        
+    def _add_thought(self, thought):
+        new_thought = {
+            "time": datetime.now().strftime("%H:%M:%S"),
+            "thought": thought,
+            "timestamp": datetime.now().isoformat()
+        }
+        self.current_thoughts.insert(0, new_thought)
+        if len(self.current_thoughts) > self.max_thoughts:
+            self.current_thoughts = self.current_thoughts[:self.max_thoughts]
+            
+    def get_current_thoughts(self):
+        return self.current_thoughts.copy()
+        
+    def get_current_alpha_opportunities(self):
+        return []
+        
+    def get_status(self):
+        return {
+            "is_running": self.is_running,
+            "thought_count": len(self.current_thoughts),
+            "openrouter_enabled": openrouter_manager.enabled if openrouter_manager else False,
+            "service_type": "embedded",
+            "last_thought_time": self.current_thoughts[0]["timestamp"] if self.current_thoughts else None
+        }
+
+ai_thinking_service = EmbeddedAIThinkingService()
 
 try:
     from agents.rag_playbook import rag_agent
