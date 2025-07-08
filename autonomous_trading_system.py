@@ -15,6 +15,7 @@ from tools.data_fetcher import data_fetcher
 from core.config import config
 from core.openai_manager import openai_manager
 from core.pnl_tracker import pnl_tracker
+from core.ai_risk_monitor import ai_risk_monitor
 from utils.logger import logger  # type: ignore
 
 
@@ -210,7 +211,7 @@ class AutonomousTradingSystem:
     
     def _validate_final_strategy(self, strategy: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Final validation of the strategy before potential execution.
+        Final validation of the strategy before potential execution with comprehensive risk assessment.
         """
         try:
             # Basic validation checks
@@ -222,13 +223,51 @@ class AutonomousTradingSystem:
             # Get current market data for validation
             market_data = data_fetcher.get_historical_data(ticker, period="1d")
             
-            # Risk-adjusted validation
+            # Prepare context for risk assessment
+            risk_context = {
+                "primary_ticker": ticker,
+                "action": action,
+                "confidence": confidence,
+                "position_size": position_size,
+                "market_data_available": bool(market_data.get("data")),
+                "research_summary": strategy.get("research_summary", {}),
+                "alpha_thesis": strategy.get("alpha_thesis", ""),
+                "audit_trail_enabled": True,
+                "timestamp": datetime.now().isoformat()
+            }
+            
+            # Perform comprehensive risk assessment
+            risk_check = ai_risk_monitor.check_trading_decision(risk_context)
+            risk_assessment = risk_check["assessment"]
+            should_proceed = risk_check["should_proceed"]
+            mitigated_context = risk_check["mitigated_context"]
+            
+            # Apply risk mitigations to strategy
+            if not should_proceed:
+                logger.warning(f"AutonomousTrader | Strategy blocked by risk assessment: {risk_assessment['risk_level']}")
+                strategy["action"] = "HOLD"
+                strategy["position_size"] = 0.0
+                strategy["risk_mitigation"] = "Trading blocked due to high risk"
+                strategy["risk_assessment"] = risk_assessment
+            else:
+                # Apply any risk-based adjustments
+                if mitigated_context.get("position_size") != position_size:
+                    strategy["position_size"] = mitigated_context["position_size"]
+                    strategy["risk_mitigation"] = "Position size reduced by risk management"
+                
+                if mitigated_context.get("action") != action:
+                    strategy["action"] = mitigated_context["action"]
+                    strategy["risk_mitigation"] = "Action modified by risk management"
+                
+                strategy["risk_assessment"] = risk_assessment
+            
+            # Legacy risk-adjusted validation (additional safeguards)
             if confidence < 0.4:
                 strategy["action"] = "HOLD"
                 strategy["position_size"] = 0.0
                 strategy["validation_note"] = "Low confidence - holding position"
             
-            elif position_size > 0.15:  # Cap position size at 15%
+            elif strategy["position_size"] > 0.15:  # Cap position size at 15%
                 strategy["position_size"] = 0.15
                 strategy["validation_note"] = "Position size capped at 15%"
             
@@ -236,8 +275,10 @@ class AutonomousTradingSystem:
             strategy["validation_timestamp"] = datetime.now().isoformat()
             strategy["market_data_available"] = bool(market_data.get("data"))
             strategy["validated"] = True
+            strategy["risk_managed"] = True
             
-            logger.info(f"AutonomousTrader | Strategy validated: {action} {ticker} (confidence: {confidence:.2f})")
+            logger.info(f"AutonomousTrader | Strategy validated with risk assessment: {action} {ticker} "
+                       f"(confidence: {confidence:.2f}, risk: {risk_assessment['risk_level']})")
             
             return strategy
             
@@ -245,6 +286,7 @@ class AutonomousTradingSystem:
             logger.error(f"Strategy validation error: {e}")
             strategy["validated"] = False
             strategy["validation_error"] = str(e)
+            strategy["risk_managed"] = False
             return strategy
     
     def _create_fallback_strategy(self) -> Dict[str, Any]:
