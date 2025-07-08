@@ -72,7 +72,15 @@ class Config:
         try:
             if os.path.exists("config.json"):
                 with open("config.json", "r") as f:
-                    return json.load(f)
+                    content = f.read()
+                    # Substitute environment variables in the format ${VAR_NAME}
+                    import re
+                    def replace_env_var(match):
+                        var_name = match.group(1)
+                        return os.getenv(var_name, match.group(0))  # Return original if env var not found
+                    
+                    content = re.sub(r'\$\{([^}]+)\}', replace_env_var, content)
+                    return json.loads(content)
         except Exception as e:
             print(f"Warning: Could not load config.json: {e}")
         return {}
