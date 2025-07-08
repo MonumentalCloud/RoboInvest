@@ -4,10 +4,8 @@ import { Outlet, Link as RouterLink, useLocation } from 'react-router-dom';
 export default function Layout() {
   const location = useLocation();
   const navItems = [
-    { label: 'Dashboard', path: '/' },
-    { label: 'Trades', path: '/trades' },
-    { label: 'Positions', path: '/positions' },
-    { label: 'Insights', path: '/insights' },
+    { label: '🚀 Alpha Stream', path: '/' },
+    { label: '📊 Profit Analysis', path: '/insights' },
   ];
 
   return (
@@ -15,7 +13,7 @@ export default function Layout() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            RoboInvest
+            🧠 RoboInvest | Autonomous Alpha Hunter
           </Typography>
           {navItems.map(item => (
             <Button

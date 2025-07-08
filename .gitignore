@@ -83,9 +83,53 @@ chroma.db/
 # Mac
 .DS_Store
 
-# Logs
+# Logs and log directories
 *.log
+*.log.*
+logs/
+log/
+*.out
+*.err
+debug.log
+error.log
+access.log
+app.log
+trading.log
+bot.log
+*.jsonl
+nohup.out
 
 # SQLite
 *.sqlite3
-*.db 
+*.db
+
+# Trading system specific files
+positions.json
+trades.json
+closed_trades.jsonl
+*.trades
+*.positions
+*.pnl
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+# Local configuration
+local_config.json
+.env.local
+.env.development
+.env.production
+
+# Cache directories
+.cache/
+cache/
+__pycache__/
+
+# Runtime files
+*.pid
+*.lock 

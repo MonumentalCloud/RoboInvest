@@ -1,0 +1,50 @@
+# Core LangGraph and AI
+langgraph>=0.2.0
+openai>=1.0.0
+langchain>=0.2.0
+langchain-openai>=0.1.0
+
+# Trading and Market Data
+alpaca-py>=0.20.0
+yfinance==0.2.37
+pandas>=2.0.0
+numpy<2.0
+alpaca-trade-api>=3.0.0
+
+# Vector Database for RAG
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
+
+# Web Scraping and Data
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+feedparser>=6.0.0
+
+# Environment and Config
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+
+# Logging and Monitoring
+loguru>=0.7.0
+
+# Async Support
+aiohttp>=3.8.0
+
+# Date/Time
+python-dateutil>=2.8.0
+pytz>=2023.3
+
+# Websockets
+websockets==10.4
+
+# Finnhub
+finnhub-python>=2.4.17
+
+# Web API
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+
+# Additional Libraries for Advanced Trading
+scikit-learn>=1.3.0
+scipy>=1.11.0
+statsmodels>=0.14.0 
