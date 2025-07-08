@@ -9,7 +9,7 @@ import feedparser  # type: ignore
 
 from core.config import config
 from utils.logger import logger  # type: ignore
-from core.finnhub_client import finnhub_client
+from core.polygon_client import polygon_client
 
 
 class WorldMonitorAgent:
@@ -43,14 +43,14 @@ class WorldMonitorAgent:
     async def _get_market_data(self) -> Dict[str, Any]:
         data: Dict[str, Any] = {}
         for sym in self.symbols:
-            quote = finnhub_client.quote(sym)
+            quote = polygon_client.quote(sym)
             if not quote:
                 continue
             price = quote.get("c")  # current price
             prev_close = quote.get("pc", price)
             change_pct = ((price - prev_close) / prev_close) * 100 if prev_close else 0
 
-            fundamentals = finnhub_client.fundamentals(sym)
+            fundamentals = polygon_client.fundamentals(sym)
             pe = fundamentals.get("peBasicExclExtraTTM") or fundamentals.get("peInclExtraTTM")
             pb = fundamentals.get("pbAnnual")
             undervalued = None

@@ -1,0 +1,50 @@
+{
+  "trading": {
+    "alpaca_api_key": "${ALPACA_API_KEY}",
+    "alpaca_secret_key": "${ALPACA_SECRET_KEY}",
+    "alpaca_base_url": "https://paper-api.alpaca.markets",
+    "paper_trading": true,
+    "max_position_size": 0.05,
+    "max_daily_loss": 0.02
+  },
+  "openai": {
+    "api_key": "${OPENAI_API_KEY}",
+    "model": "gpt-4o-mini",
+    "cheaper_model": "gpt-4o-mini",
+    "daily_budget_usd": 0.10,
+    "budget_ceiling": 1.00,
+    "gain_factor": 0.3,
+    "budget_step_max": 0.20,
+    "drawdown_cutoff": 0.1
+  },
+  "openrouter": {
+    "api_key": "${OPENROUTER_API_KEY}",
+    "model": "meta-llama/llama-3.3-70b-instruct:free",
+    "base_url": "https://openrouter.ai/api/v1",
+    "daily_budget_usd": 0.05,
+    "use_for_thinking": true
+  },
+  "market_data": {
+    "polygon_api_key": "${POLYGON_API_KEY}",
+    "symbols_to_watch": ["SPY", "QQQ", "IWM", "GLD", "TLT"],
+    "market_hours_start": "09:30",
+    "market_hours_end": "16:00"
+  },
+  "database": {
+    "chroma_db_path": "./chroma"
+  },
+  "news": {
+    "sources": [
+      "https://feeds.finance.yahoo.com/rss/2.0/headline",
+      "https://www.marketwatch.com/rss/topstories"
+    ]
+  },
+  "rag": {
+    "max_similar_trades": 5,
+    "similarity_threshold": 0.7
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "organic_bot.log"
+  }
+} 

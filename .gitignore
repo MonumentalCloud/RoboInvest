@@ -88,4 +88,4 @@ chroma.db/
 
 # SQLite
 *.sqlite3
-*.db 
+*.db .env

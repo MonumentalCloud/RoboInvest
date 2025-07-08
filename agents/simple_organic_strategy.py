@@ -6,7 +6,7 @@ import random
 # direct openai removed; use manager
 
 from core.config import config
-from core.openai_manager import openai_manager
+from core.unified_ai_manager import unified_ai_manager
 from utils.logger import logger  # type: ignore
 
 
@@ -14,7 +14,7 @@ class SimpleOrganicStrategyAgent:
     """Very naive agent that decides to BUY/SELL/HOLD based on sentiment or delegates to OpenAI."""
 
     def __init__(self) -> None:
-        self.use_llm = bool(config.openai_api_key)
+        self.use_llm = unified_ai_manager.is_available()
         self.temperature = 0.3
 
     def __call__(self, observation: Dict[str, Any]) -> Dict[str, Any]:  # LangGraph node function
@@ -51,15 +51,19 @@ class SimpleOrganicStrategyAgent:
             "Respond in JSON with keys action, confidence, reasoning."
         )
         try:
-            result = openai_manager.chat_completion([
-                {"role": "user", "content": prompt}
-            ], temperature=self.temperature)
-            import json
-            try:
-                data = json.loads(result["content"] or "{}")
-            except Exception as parse_exc:
-                logger.warning(f"Strategy | JSON parse error: {parse_exc} content: {result['content']}")
-                raise
+            messages = [{"role": "user", "content": prompt}]
+            data = unified_ai_manager.generate_json_response(messages, temperature=self.temperature)
+            
+            if not data:  # If JSON parsing failed
+                # Try to get a simple response and parse manually
+                result = unified_ai_manager.chat_completion(messages, temperature=self.temperature)
+                import json
+                try:
+                    data = json.loads(result.get("content", "{}"))
+                except Exception as parse_exc:
+                    logger.warning(f"Strategy | JSON parse error: {parse_exc}")
+                    raise
+            
             data.setdefault("symbol", symbol or "SPY")
             return data
         except Exception as exc:

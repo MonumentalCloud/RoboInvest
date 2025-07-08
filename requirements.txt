@@ -45,8 +45,8 @@ pytz>=2023.3
 # Websockets
 websockets==10.4
 
-# Finnhub
-finnhub-python>=2.4.17
+# Polygon.io
+polygon>=1.2.6
 
 # Web API
 fastapi>=0.110.0

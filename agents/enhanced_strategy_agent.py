@@ -8,7 +8,7 @@ import json
 from datetime import datetime, timedelta
 
 from core.config import config
-from core.openai_manager import openai_manager
+from core.unified_ai_manager import unified_ai_manager
 from tools.calculator import calculator
 from tools.data_fetcher import data_fetcher
 from utils.logger import logger  # type: ignore
@@ -172,16 +172,19 @@ class EnhancedStrategyAgent:
             Focus on interpreting the data rather than recalculating anything.
             """
             
-            response = openai_manager.chat_completion([
+            messages = [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_message}
-            ], temperature=self.temperature)
+            ]
             
-            # Parse the response
-            if isinstance(response, dict) and "content" in response:
-                decision = json.loads(response["content"])
-            else:
-                decision = response
+            decision = unified_ai_manager.generate_json_response(messages, temperature=self.temperature)
+            
+            if not decision:  # If JSON parsing failed, try manual parsing
+                response = unified_ai_manager.chat_completion(messages, temperature=self.temperature)
+                if isinstance(response, dict) and "content" in response:
+                    decision = json.loads(response["content"])
+                else:
+                    decision = response
             
             # Validate decision structure
             required_fields = ["action", "symbol", "confidence", "reasoning"]

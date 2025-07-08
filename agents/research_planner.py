@@ -16,7 +16,7 @@ simple heuristic if the manager is unavailable.
 
 from typing import Any, Dict, List
 
-from core.openai_manager import openai_manager
+from core.unified_ai_manager import unified_ai_manager
 from agents.rag_playbook import rag_agent
 from utils.logger import logger  # type: ignore
 
@@ -38,14 +38,20 @@ class ResearchPlannerAgent:
         user_msg = f"Event: {event}\nPast insights: {memories}"
 
         try:
-            resp = openai_manager.chat_completion([
+            messages = [
                 {"role": "system", "content": prompt},
                 {"role": "user", "content": user_msg},
-            ])
-            # Expecting e.g. {"type":"trade_signal","payload":{"symbol":"MSFT","action":"BUY","confidence":0.82}}
-            task = resp  # already parsed by OpenAIManager
-            if not isinstance(task, dict) or "type" not in task:
-                raise ValueError("invalid planner output")
+            ]
+            task = unified_ai_manager.generate_json_response(messages, temperature=0.3)
+            
+            if not task or not isinstance(task, dict) or "type" not in task:
+                # Try manual parsing if JSON response failed
+                resp = unified_ai_manager.chat_completion(messages, temperature=0.3)
+                import json
+                task = json.loads(resp.get("content", "{}"))
+                
+                if not isinstance(task, dict) or "type" not in task:
+                    raise ValueError("invalid planner output")
         except Exception as exc:  # fallback heuristic
             logger.warning(f"Planner fallback, error: {exc}")
             task: Dict[str, Any] = {

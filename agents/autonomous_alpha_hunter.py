@@ -8,7 +8,7 @@ from typing import Dict, List, Any, Optional
 from datetime import datetime, timedelta
 
 from core.config import config
-from core.openai_manager import openai_manager
+from core.unified_ai_manager import unified_ai_manager
 from tools.calculator import calculator
 from tools.data_fetcher import data_fetcher
 from utils.logger import logger  # type: ignore
@@ -24,7 +24,7 @@ class AutonomousAlphaHunter:
     """
     
     def __init__(self):
-        self.use_llm = bool(config.openai_api_key)
+        self.use_llm = unified_ai_manager.is_available()
         self.temperature = 0.4
         self.research_memory = []
         self.opportunity_pipeline = []
@@ -107,11 +107,18 @@ class AutonomousAlphaHunter:
                 }
             ]"""
             
-            response = openai_manager.chat_completion([
-                {"role": "user", "content": scan_prompt}
-            ], temperature=self.temperature)
+            messages = [{"role": "user", "content": scan_prompt}]
+            result = unified_ai_manager.generate_json_response(messages, temperature=self.temperature)
             
-            opportunities = json.loads(response.get("content", "[]"))
+            # Ensure we get a list
+            if isinstance(result, list):
+                opportunities = result
+            elif isinstance(result, dict) and result:
+                opportunities = [result]  # Single opportunity as dict
+            else:
+                # Fallback to manual parsing
+                response = unified_ai_manager.chat_completion(messages, temperature=self.temperature)
+                opportunities = json.loads(response.get("content", "[]"))
             
             logger.info(f"AlphaHunter | Identified {len(opportunities)} potential opportunities")
             return opportunities
@@ -183,11 +190,12 @@ class AutonomousAlphaHunter:
                 "risk_assessment": "key risks"
             }}"""
             
-            response = openai_manager.chat_completion([
-                {"role": "user", "content": validation_prompt}
-            ], temperature=0.3)  # Lower temperature for more focused analysis
+            messages = [{"role": "user", "content": validation_prompt}]
+            validation = unified_ai_manager.generate_json_response(messages, temperature=0.3)
             
-            validation = json.loads(response.get("content", "{}"))
+            if not validation:  # If JSON parsing failed, try manual parsing
+                response = unified_ai_manager.chat_completion(messages, temperature=0.3)
+                validation = json.loads(response.get("content", "{}"))
             
             return validation
             
@@ -265,11 +273,12 @@ class AutonomousAlphaHunter:
                 "risk_level": "LOW/MEDIUM/HIGH"
             }}"""
             
-            response = openai_manager.chat_completion([
-                {"role": "user", "content": strategy_prompt}
-            ], temperature=0.2)
+            messages = [{"role": "user", "content": strategy_prompt}]
+            strategy = unified_ai_manager.generate_json_response(messages, temperature=0.2)
             
-            strategy = json.loads(response.get("content", "{}"))
+            if not strategy:  # If JSON parsing failed, try manual parsing
+                response = unified_ai_manager.chat_completion(messages, temperature=0.2)
+                strategy = json.loads(response.get("content", "{}"))
             
             # Add opportunity context
             strategy["opportunity_theme"] = opportunity.get("theme", "Unknown")
