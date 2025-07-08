@@ -19,6 +19,16 @@ except ImportError:
     openai_manager = None
 
 try:
+    from core.openrouter_manager import openrouter_manager
+except ImportError:
+    openrouter_manager = None
+
+try:
+    from services.ai_thinking_service import ai_thinking_service
+except ImportError:
+    ai_thinking_service = None
+
+try:
     from agents.rag_playbook import rag_agent
 except ImportError:
     rag_agent = None
@@ -37,11 +47,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Store for AI thinking process
-ai_thoughts = [
-    {"time": datetime.now().strftime("%H:%M:%S"), "thought": "AI systems initialized successfully!"}
-]
-ai_status = {"is_running": True}
+# AI thinking service will be started on demand via /api/ai-thoughts/start endpoint
 
 @app.get("/api/budget")
 def get_budget():
@@ -166,47 +172,68 @@ def get_research():
 
 
 @app.post("/api/ai-thoughts/start")
-def start_ai_thoughts():
+async def start_ai_thoughts():
     """Start the AI thinking service."""
-    global ai_status, ai_thoughts
-    ai_status["is_running"] = True
-    ai_thoughts.append({
-        "time": datetime.now().strftime("%H:%M:%S"),
-        "thought": "AI research engine activated - scanning market data..."
-    })
-    return {"status": "started", "message": "AI thinking service is now running"}
+    if ai_thinking_service:
+        await ai_thinking_service.start_thinking()
+        return {"status": "started", "message": "AI thinking service is now running"}
+    else:
+        return {"status": "error", "message": "AI thinking service not available"}
+
+
+@app.post("/api/ai-thoughts/stop")
+def stop_ai_thoughts():
+    """Stop the AI thinking service."""
+    if ai_thinking_service:
+        ai_thinking_service.stop_thinking()
+        return {"status": "stopped", "message": "AI thinking service stopped"}
+    else:
+        return {"status": "error", "message": "AI thinking service not available"}
+
+
+@app.get("/api/ai-thoughts/status")
+def get_ai_thoughts_status():
+    """Get AI thinking service status."""
+    if ai_thinking_service:
+        return ai_thinking_service.get_status()
+    else:
+        return {"is_running": False, "error": "AI thinking service not available"}
 
 
 @app.get("/api/ai-thoughts")
 def get_ai_thoughts():
     """Get current AI thinking process and status."""
-    global ai_thoughts, ai_status
-    
-    # Add a new thought periodically
-    current_time = datetime.now().strftime("%H:%M:%S")
-    thoughts = [
-        "Analyzing market microstructure patterns...",
-        "Scanning social sentiment for alpha signals...",
-        "Processing earnings revision trends...",
-        "Evaluating momentum factor strength...",
-        "Monitoring unusual options activity...",
-        "Checking for insider trading patterns...",
-        "Analyzing sector rotation dynamics...",
-        "Processing economic indicator releases..."
-    ]
-    
-    new_thought = {
-        "time": current_time,
-        "thought": random.choice(thoughts)
-    }
-    
-    # Keep only last 10 thoughts
-    ai_thoughts = [new_thought] + ai_thoughts[:9]
-    
-    return {
-        "thoughts": ai_thoughts,
-        "status": ai_status
-    }
+    if ai_thinking_service:
+        thoughts = ai_thinking_service.get_current_thoughts()
+        status = ai_thinking_service.get_status()
+        return {
+            "thoughts": thoughts,
+            "status": status
+        }
+    else:
+        # Fallback for when service is not available
+        return {
+            "thoughts": [{"time": datetime.now().strftime("%H:%M:%S"), "thought": "AI service offline - using fallback analysis..."}],
+            "status": {"is_running": False, "error": "AI thinking service not available"}
+        }
+
+
+@app.get("/api/ai-alpha-opportunities")
+def get_ai_alpha_opportunities():
+    """Get current alpha opportunities discovered by AI."""
+    if ai_thinking_service:
+        return ai_thinking_service.get_current_alpha_opportunities()
+    else:
+        return []
+
+
+@app.get("/api/openrouter/usage")
+def get_openrouter_usage():
+    """Get OpenRouter usage statistics."""
+    if openrouter_manager and openrouter_manager.enabled:
+        return openrouter_manager.usage()
+    else:
+        return {"error": "OpenRouter not available", "enabled": False}
 
 
 @app.get("/")
