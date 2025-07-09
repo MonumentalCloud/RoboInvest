@@ -1,0 +1,656 @@
+{
+  "session_id": "34905f3d-185e-488e-9515-07b833a46954",
+  "agent_id": "sentiment_tracking_agent",
+  "objective": "Monitor social sentiment and retail trader behavior, focusing on after-hours developments and next-day preparation",
+  "hypotheses_explored": 1,
+  "research_plans_executed": 5,
+  "patterns_identified": 3,
+  "insights_generated": 0,
+  "decision_tree": {
+    "id": "8f6311e6-d1db-4d94-b554-ddec07eb6878",
+    "agent_name": "enhanced_sentiment_tracking_agent",
+    "root_id": "ce8714cc-aff5-4a85-89f6-fce810d58ce7",
+    "nodes": {
+      "ce8714cc-aff5-4a85-89f6-fce810d58ce7": {
+        "id": "ce8714cc-aff5-4a85-89f6-fce810d58ce7",
+        "type": "root",
+        "content": "Research Objective: Monitor social sentiment and retail trader behavior, focusing on after-hours developments and next-day preparation",
+        "data": {
+          "objective": "Monitor social sentiment and retail trader behavior, focusing on after-hours developments and next-day preparation",
+          "context": {
+            "market_data": {
+              "indices": {
+                "SPY": {
+                  "current_price": 620.34,
+                  "daily_change_pct": -0.0547786298897851,
+                  "week_change_pct": -0.0547786298897851,
+                  "data_source": "polygon_free_free_tier",
+                  "data_date": "2025-07-08"
+                }
+              },
+              "market_sentiment": "neutral",
+              "spy_daily_change": -0.0547786298897851,
+              "timestamp": "2025-07-09T22:05:10.789212",
+              "data_source": "polygon_free_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": false
+            },
+            "timestamp": "2025-07-09T22:05:10.789241",
+            "market_session": "overnight",
+            "symbols": [
+              "SPY",
+              "QQQ",
+              "IWM",
+              "TLT",
+              "GLD",
+              "VIX"
+            ],
+            "focus_timeframe": "short_to_medium_term"
+          }
+        },
+        "parent_id": null,
+        "children": [
+          "c5dd6c62-d67b-4686-b471-0b1fd0785aca"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T22:05:10.789815",
+        "updated_at": "2025-07-09T22:05:15.466971",
+        "result": {}
+      },
+      "c5dd6c62-d67b-4686-b471-0b1fd0785aca": {
+        "id": "c5dd6c62-d67b-4686-b471-0b1fd0785aca",
+        "type": "hypothesis",
+        "content": "Investigate Monitor social sentiment and retail trader behavior, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+        "data": {
+          "exploration_priority": 1
+        },
+        "parent_id": "ce8714cc-aff5-4a85-89f6-fce810d58ce7",
+        "children": [
+          "e550a57b-e408-479c-9b25-46fce8572da5",
+          "b3506ed9-e4bf-4c8a-8f48-dcfac1774b96",
+          "596cf687-2454-4f9f-b4a5-0382a0b237bc",
+          "c53f2f25-9cdf-4782-add5-6ecf5f82590e",
+          "feea6b45-33df-45c8-bd51-ef53b95ffeb3"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T22:05:15.466965",
+        "updated_at": "2025-07-09T22:05:15.467625",
+        "result": {}
+      },
+      "e550a57b-e408-479c-9b25-46fce8572da5": {
+        "id": "e550a57b-e408-479c-9b25-46fce8572da5",
+        "type": "research",
+        "content": "calculator: Statistical analysis of hypothesis variables",
+        "data": {
+          "description": "Statistical analysis of hypothesis variables",
+          "type": "statistical_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12fbec3d0>>",
+          "parameters": {
+            "analysis_type": "statistical",
+            "hypothesis": "Investigate Monitor social sentiment and retail trader behavior, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 620.34,
+                    "daily_change_pct": -0.0547786298897851,
+                    "week_change_pct": -0.0547786298897851,
+                    "data_source": "polygon_free_free_tier",
+                    "data_date": "2025-07-08"
+                  }
+                },
+                "market_sentiment": "neutral",
+                "spy_daily_change": -0.0547786298897851,
+                "timestamp": "2025-07-09T22:05:10.789212",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T22:05:10.789241",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "e550a57b-e408-479c-9b25-46fce8572da5",
+          "tool_name": "calculator"
+        },
+        "parent_id": "c5dd6c62-d67b-4686-b471-0b1fd0785aca",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.7,
+        "created_at": "2025-07-09T22:05:15.467172",
+        "updated_at": "2025-07-09T22:05:15.473277",
+        "result": {
+          "tool": "calculator",
+          "analysis_type": "statistical",
+          "results": {
+            "volatility": {
+              "result": {
+                "realized_volatility": 0.25606961370163317,
+                "current_rolling_vol": 0.1115473839967927,
+                "ewm_volatility": 0.13729096998252577,
+                "vol_of_vol": 0.13422006833822173
+              }
+            },
+            "correlation": {
+              "error": "Empty series provided",
+              "result": null
+            },
+            "distribution": {
+              "error": "Unknown operation: distribution analysis",
+              "result": null
+            }
+          },
+          "confidence": 0.7,
+          "insights": [
+            "Calculator analysis for  on SPY"
+          ]
+        }
+      },
+      "b3506ed9-e4bf-4c8a-8f48-dcfac1774b96": {
+        "id": "b3506ed9-e4bf-4c8a-8f48-dcfac1774b96",
+        "type": "research",
+        "content": "calculator: Technical indicator calculations",
+        "data": {
+          "description": "Technical indicator calculations",
+          "type": "technical_indicators",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12fbec3d0>>",
+          "parameters": {
+            "analysis_type": "technical",
+            "hypothesis": "Investigate Monitor social sentiment and retail trader behavior, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 620.34,
+                    "daily_change_pct": -0.0547786298897851,
+                    "week_change_pct": -0.0547786298897851,
+                    "data_source": "polygon_free_free_tier",
+                    "data_date": "2025-07-08"
+                  }
+                },
+                "market_sentiment": "neutral",
+                "spy_daily_change": -0.0547786298897851,
+                "timestamp": "2025-07-09T22:05:10.789212",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T22:05:10.789241",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "b3506ed9-e4bf-4c8a-8f48-dcfac1774b96",
+          "tool_name": "calculator"
+        },
+        "parent_id": "c5dd6c62-d67b-4686-b471-0b1fd0785aca",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.7,
+        "created_at": "2025-07-09T22:05:15.467287",
+        "updated_at": "2025-07-09T22:05:15.474932",
+        "result": {
+          "tool": "calculator",
+          "analysis_type": "statistical",
+          "results": {
+            "volatility": {
+              "result": {
+                "realized_volatility": 0.25606961370163317,
+                "current_rolling_vol": 0.1115473839967927,
+                "ewm_volatility": 0.13729096998252577,
+                "vol_of_vol": 0.13422006833822173
+              }
+            },
+            "correlation": {
+              "error": "Empty series provided",
+              "result": null
+            },
+            "distribution": {
+              "error": "Unknown operation: distribution analysis",
+              "result": null
+            }
+          },
+          "confidence": 0.7,
+          "insights": [
+            "Calculator analysis for  on SPY"
+          ]
+        }
+      },
+      "596cf687-2454-4f9f-b4a5-0382a0b237bc": {
+        "id": "596cf687-2454-4f9f-b4a5-0382a0b237bc",
+        "type": "research",
+        "content": "web_researcher: Comprehensive web research on hypothesis",
+        "data": {
+          "description": "Comprehensive web research on hypothesis",
+          "type": "comprehensive_research",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_web_research of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12fbec3d0>>",
+          "parameters": {
+            "research_type": "comprehensive",
+            "hypothesis": "Investigate Monitor social sentiment and retail trader behavior, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 620.34,
+                    "daily_change_pct": -0.0547786298897851,
+                    "week_change_pct": -0.0547786298897851,
+                    "data_source": "polygon_free_free_tier",
+                    "data_date": "2025-07-08"
+                  }
+                },
+                "market_sentiment": "neutral",
+                "spy_daily_change": -0.0547786298897851,
+                "timestamp": "2025-07-09T22:05:10.789212",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T22:05:10.789241",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "596cf687-2454-4f9f-b4a5-0382a0b237bc",
+          "tool_name": "web_researcher"
+        },
+        "parent_id": "c5dd6c62-d67b-4686-b471-0b1fd0785aca",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.7,
+        "created_at": "2025-07-09T22:05:15.467402",
+        "updated_at": "2025-07-09T22:05:28.509541",
+        "result": {
+          "tool": "web_researcher",
+          "research_type": "comprehensive",
+          "results": {
+            "opportunity": {
+              "theme": ""
+            },
+            "tickers": [
+              "SPY"
+            ],
+            "sentiment_analysis": {
+              "sentiment": "neutral",
+              "strength": 0.5,
+              "drivers": [
+                "Mixed performance indicators",
+                "Potential for short-term volatility"
+              ],
+              "divergence": "Sentiment is consistent across sources, highlighting mixed signals and potential volatility, but lacks a clear bullish or bearish stance.",
+              "time_factors": [
+                "Current market conditions",
+                "Economic indicators"
+              ],
+              "confidence": 0.7
+            },
+            "fundamental_analysis": {
+              "financial_health": "moderate",
+              "business_model": "The business model shows potential for competitive advantage, but recent developments indicate mixed signals regarding its sustainability and effectiveness in current market conditions.",
+              "competitive_position": "SPY holds a significant market position, but analysts suggest that there are both opportunities and risks that could affect its competitive standing in the near future.",
+              "growth_prospects": "The growth outlook is uncertain, with recent performance indicators showing mixed signals and potential for short-term volatility, which may hinder long-term growth.",
+              "valuation": "fair",
+              "key_catalysts": [
+                "Improvement in market conditions",
+                "Positive economic indicators"
+              ],
+              "key_risks": [
+                "Short-term volatility in the market",
+                "Uncertain sector performance"
+              ],
+              "overall_score": 0.65,
+              "confidence": 0.75
+            },
+            "news_analysis": {
+              "relevance": "high",
+              "impact": "neutral",
+              "time_sensitivity": "short-term",
+              "key_developments": [
+                "Recent news indicates increased trading volumes and potential price movements in SPY.",
+                "Market participants are adjusting their positions based on mixed signals from market analysis."
+              ],
+              "market_reaction": "Traders may exhibit cautious optimism, leading to increased volatility in the short term as they react to the news.",
+              "confidence": 0.75
+            },
+            "market_context": {
+              "sector_context": "market context analysis",
+              "peer_comparison": "peer analysis",
+              "market_conditions": "current market environment",
+              "data_sources": 6,
+              "confidence": 0.6
+            },
+            "risk_assessment": {
+              "identified_risks": [],
+              "market_risks": [
+                "market volatility",
+                "sector rotation"
+              ],
+              "specific_risks": [
+                "company-specific risks"
+              ],
+              "risk_level": "moderate",
+              "mitigation_strategies": [
+                "diversification",
+                "position sizing"
+              ],
+              "confidence": 0.5
+            },
+            "timestamp": "2025-07-09T22:05:24.272457",
+            "report": {
+              "executive_summary": "The analysis of SPY indicates a neutral sentiment with mixed performance indicators and potential for short-term volatility. The financial health is moderate, with a fair valuation and uncertain growth prospects. Key catalysts include improvements in market conditions and positive economic indicators, while risks involve market volatility and uncertain sector performance.",
+              "thesis_validation": "The opportunity theme is currently undefined, but the analysis suggests that SPY holds a significant market position with potential competitive advantages. However, recent developments indicate mixed signals regarding its sustainability and effectiveness in the current market conditions.",
+              "risk_reward": "The risk/reward assessment reveals a moderate risk level, primarily due to market volatility and sector rotation. The potential rewards are linked to improvements in market conditions and positive economic indicators, but short-term volatility may hinder immediate gains.",
+              "recommendation": "HOLD",
+              "confidence": 0.7,
+              "key_insights": [
+                "Market participants are adjusting positions based on mixed signals, leading to increased volatility.",
+                "Recent news indicates increased trading volumes, which may impact SPY's price movements."
+              ],
+              "action_items": [
+                "Monitor economic indicators closely for signs of improvement.",
+                "Consider diversification strategies to mitigate risks associated with market volatility."
+              ]
+            }
+          },
+          "confidence": 0.7,
+          "insights": [
+            "The analysis of SPY indicates a neutral sentiment with mixed performance indicators and potential for short-term volatility. The financial health is moderate, with a fair valuation and uncertain growth prospects. Key catalysts include improvements in market conditions and positive economic indicators, while risks involve market volatility and uncertain sector performance."
+          ]
+        }
+      },
+      "c53f2f25-9cdf-4782-add5-6ecf5f82590e": {
+        "id": "c53f2f25-9cdf-4782-add5-6ecf5f82590e",
+        "type": "research",
+        "content": "web_search: Targeted web search for hypothesis validation",
+        "data": {
+          "description": "Targeted web search for hypothesis validation",
+          "type": "targeted_search",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_web_search of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12fbec3d0>>",
+          "parameters": {
+            "search_type": "targeted",
+            "hypothesis": "Investigate Monitor social sentiment and retail trader behavior, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 620.34,
+                    "daily_change_pct": -0.0547786298897851,
+                    "week_change_pct": -0.0547786298897851,
+                    "data_source": "polygon_free_free_tier",
+                    "data_date": "2025-07-08"
+                  }
+                },
+                "market_sentiment": "neutral",
+                "spy_daily_change": -0.0547786298897851,
+                "timestamp": "2025-07-09T22:05:10.789212",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T22:05:10.789241",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "c53f2f25-9cdf-4782-add5-6ecf5f82590e",
+          "tool_name": "web_search"
+        },
+        "parent_id": "c5dd6c62-d67b-4686-b471-0b1fd0785aca",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.6,
+        "created_at": "2025-07-09T22:05:15.467510",
+        "updated_at": "2025-07-09T22:05:28.509880",
+        "result": {
+          "tool": "web_search",
+          "search_type": "targeted",
+          "results": [
+            {
+              "title": "Market Analysis:  market opportunity",
+              "snippet": "Latest market trends and analysis for  market opportunity. Recent performance indicators show mixed signals with potential for short-term volatility.",
+              "url": "https://www.marketwatch.com/story/-market-opportunity",
+              "source": "MarketWatch",
+              "relevance": 0.9
+            },
+            {
+              "title": "Investment Outlook:  market opportunity",
+              "snippet": "Expert analysis on  market opportunity investment opportunities. Key factors include market conditions, sector performance, and economic indicators.",
+              "url": "https://finance.yahoo.com/news/-market-opportunity",
+              "source": "Yahoo Finance",
+              "relevance": 0.8
+            },
+            {
+              "title": "Market Analysis:  investment analysis",
+              "snippet": "Latest market trends and analysis for  investment analysis. Recent performance indicators show mixed signals with potential for short-term volatility.",
+              "url": "https://www.marketwatch.com/story/-investment-analysis",
+              "source": "MarketWatch",
+              "relevance": 0.9
+            },
+            {
+              "title": "Investment Outlook:  investment analysis",
+              "snippet": "Expert analysis on  investment analysis investment opportunities. Key factors include market conditions, sector performance, and economic indicators.",
+              "url": "https://finance.yahoo.com/news/-investment-analysis",
+              "source": "Yahoo Finance",
+              "relevance": 0.8
+            },
+            {
+              "title": "Market Analysis:  market impact trends",
+              "snippet": "Latest market trends and analysis for  market impact trends. Recent performance indicators show mixed signals with potential for short-term volatility.",
+              "url": "https://www.marketwatch.com/story/-market-impact-trends",
+              "source": "MarketWatch",
+              "relevance": 0.9
+            },
+            {
+              "title": "Investment Outlook:  market impact trends",
+              "snippet": "Expert analysis on  market impact trends investment opportunities. Key factors include market conditions, sector performance, and economic indicators.",
+              "url": "https://finance.yahoo.com/news/-market-impact-trends",
+              "source": "Yahoo Finance",
+              "relevance": 0.8
+            }
+          ],
+          "confidence": 0.6,
+          "insights": [
+            "Web search insights for "
+          ]
+        }
+      },
+      "feea6b45-33df-45c8-bd51-ef53b95ffeb3": {
+        "id": "feea6b45-33df-45c8-bd51-ef53b95ffeb3",
+        "type": "research",
+        "content": "rag_agent: Retrieve similar research patterns",
+        "data": {
+          "description": "Retrieve similar research patterns",
+          "type": "pattern_retrieval",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_memory_lookup of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12fbec3d0>>",
+          "parameters": {
+            "lookup_type": "patterns",
+            "hypothesis": "Investigate Monitor social sentiment and retail trader behavior, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 620.34,
+                    "daily_change_pct": -0.0547786298897851,
+                    "week_change_pct": -0.0547786298897851,
+                    "data_source": "polygon_free_free_tier",
+                    "data_date": "2025-07-08"
+                  }
+                },
+                "market_sentiment": "neutral",
+                "spy_daily_change": -0.0547786298897851,
+                "timestamp": "2025-07-09T22:05:10.789212",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T22:05:10.789241",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "feea6b45-33df-45c8-bd51-ef53b95ffeb3",
+          "tool_name": "rag_agent"
+        },
+        "parent_id": "c5dd6c62-d67b-4686-b471-0b1fd0785aca",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T22:05:15.467622",
+        "updated_at": "2025-07-09T22:05:28.916927",
+        "result": {
+          "tool": "rag_agent",
+          "lookup_type": "patterns",
+          "results": {
+            "similar_trades": [
+              {
+                "action": "HOLD",
+                "budget": 0.1,
+                "confidence": 0.7,
+                "executed": false,
+                "id": "trade_4",
+                "reasoning": "The market is experiencing a downward trend across major indices, with significant negative percentage changes. The sentiment is neutral, indicating uncertainty. Given the current market conditions and the lack of strong positive news, it may be prudent to hold positions rather than make new trades.",
+                "symbol": "TLT",
+                "timestamp": "2025-07-07T14:17:28.029967"
+              },
+              {
+                "action": "HOLD",
+                "confidence": 0.75,
+                "id": "trade_2",
+                "reasoning": "The market is experiencing a downturn across major indices, with all observed assets showing negative change percentages. The neutral sentiment in the news suggests uncertainty, and given the current market conditions, it may be prudent to hold positions rather than make impulsive trades.",
+                "symbol": "TLT",
+                "timestamp": "2025-07-07T13:58:06.315920"
+              },
+              {
+                "action": "HOLD",
+                "budget": 0.1,
+                "confidence": 0.7,
+                "executed": false,
+                "id": "trade_3",
+                "reasoning": "The market sentiment is neutral, and the news surrounding Tesla indicates potential volatility due to Musk's political ambitions. Given the uncertainty and mixed signals, it is prudent to hold off on making any trades until the market direction becomes clearer.",
+                "symbol": "SPY",
+                "timestamp": "2025-07-07T14:10:01.706022"
+              },
+              {
+                "action": "HOLD",
+                "confidence": 0.2,
+                "id": "trade_0",
+                "reasoning": "LLM error fallback",
+                "symbol": "GLD",
+                "timestamp": "2025-07-07T13:54:44.829652"
+              },
+              {
+                "action": "HOLD",
+                "confidence": 0.2,
+                "id": "trade_1",
+                "reasoning": "LLM error fallback",
+                "symbol": "TLT",
+                "timestamp": "2025-07-07T13:56:28.517999"
+              }
+            ]
+          },
+          "confidence": 0.5,
+          "insights": [
+            "Memory lookup for  patterns"
+          ]
+        }
+      }
+    },
+    "best_path": null,
+    "best_confidence": 0.0,
+    "summary": {
+      "tree_id": "8f6311e6-d1db-4d94-b554-ddec07eb6878",
+      "agent_name": "enhanced_sentiment_tracking_agent",
+      "total_nodes": 7,
+      "by_status": {
+        "pending": 2,
+        "completed": 5
+      },
+      "by_type": {
+        "root": 1,
+        "hypothesis": 1,
+        "research": 5
+      },
+      "best_confidence": 0.0,
+      "active_leaves": 0
+    }
+  },
+  "insights": [],
+  "competitive_edges": [],
+  "timestamp": "2025-07-09T22:05:47.283440",
+  "session_duration": "research_complete",
+  "research_track": "sentiment_tracking",
+  "specialization": "sentiment_analysis",
+  "market_context": {
+    "market_data": {
+      "indices": {
+        "SPY": {
+          "current_price": 620.34,
+          "daily_change_pct": -0.0547786298897851,
+          "week_change_pct": -0.0547786298897851,
+          "data_source": "polygon_free_free_tier",
+          "data_date": "2025-07-08"
+        }
+      },
+      "market_sentiment": "neutral",
+      "spy_daily_change": -0.0547786298897851,
+      "timestamp": "2025-07-09T22:05:10.789212",
+      "data_source": "polygon_free_free_tier",
+      "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+      "premium_data": false
+    },
+    "timestamp": "2025-07-09T22:05:10.789241",
+    "market_session": "overnight",
+    "symbols": [
+      "SPY",
+      "QQQ",
+      "IWM",
+      "TLT",
+      "GLD",
+      "VIX"
+    ],
+    "focus_timeframe": "short_to_medium_term"
+  },
+  "completed_at": "2025-07-09T22:05:47.283484"
+}

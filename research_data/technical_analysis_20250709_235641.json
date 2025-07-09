@@ -1,0 +1,429 @@
+{
+  "session_id": "49f6787c-37e2-4021-b099-a8f043a852c7",
+  "agent_id": "technical_analysis_agent",
+  "objective": "Track momentum indicators and trend strength, focusing on after-hours developments and next-day preparation",
+  "hypotheses_explored": 1,
+  "research_plans_executed": 4,
+  "patterns_identified": 2,
+  "insights_generated": 0,
+  "decision_tree": {
+    "id": "462729df-4639-4c5c-9554-5272c3504a6e",
+    "agent_name": "enhanced_technical_analysis_agent",
+    "root_id": "ce49c375-b40b-425b-97f1-c23103556f5d",
+    "nodes": {
+      "ce49c375-b40b-425b-97f1-c23103556f5d": {
+        "id": "ce49c375-b40b-425b-97f1-c23103556f5d",
+        "type": "root",
+        "content": "Research Objective: Track momentum indicators and trend strength, focusing on after-hours developments and next-day preparation",
+        "data": {
+          "objective": "Track momentum indicators and trend strength, focusing on after-hours developments and next-day preparation",
+          "context": {
+            "market_data": {
+              "indices": {
+                "SPY": {
+                  "current_price": 622.48,
+                  "daily_change_pct": 0.3449721120675736,
+                  "week_change_pct": 0.29000451118129605,
+                  "data_source": "polygon_upgraded_free_tier",
+                  "data_date": "2025-07-09"
+                }
+              },
+              "market_sentiment": "positive",
+              "spy_daily_change": 0.3449721120675736,
+              "timestamp": "2025-07-09T23:56:05.306504",
+              "data_source": "polygon_upgraded_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": true
+            },
+            "timestamp": "2025-07-09T23:56:05.306518",
+            "market_session": "overnight",
+            "symbols": [
+              "SPY",
+              "QQQ",
+              "IWM",
+              "TLT",
+              "GLD",
+              "VIX"
+            ],
+            "focus_timeframe": "short_to_medium_term"
+          }
+        },
+        "parent_id": null,
+        "children": [
+          "7858698f-7893-4ad7-bf0f-939c05d11b15"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T23:56:05.307216",
+        "updated_at": "2025-07-09T23:56:18.097188",
+        "result": {}
+      },
+      "7858698f-7893-4ad7-bf0f-939c05d11b15": {
+        "id": "7858698f-7893-4ad7-bf0f-939c05d11b15",
+        "type": "hypothesis",
+        "content": "Investigate Track momentum indicators and trend strength, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+        "data": {
+          "exploration_priority": 1
+        },
+        "parent_id": "ce49c375-b40b-425b-97f1-c23103556f5d",
+        "children": [
+          "7c52b5e3-e7a4-444c-9026-487e327b5559",
+          "5c72c8cb-1c50-4c60-bf3d-321291c0d72a",
+          "573e642c-a8ca-494d-9d91-e89f4c95d91c",
+          "6f901f9c-0165-44e0-b93f-ab73d347cbbe"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T23:56:18.097181",
+        "updated_at": "2025-07-09T23:56:18.097669",
+        "result": {}
+      },
+      "7c52b5e3-e7a4-444c-9026-487e327b5559": {
+        "id": "7c52b5e3-e7a4-444c-9026-487e327b5559",
+        "type": "research",
+        "content": "calculator: Volatility analysis of market data",
+        "data": {
+          "description": "Volatility analysis of market data",
+          "type": "volatility_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x118012580>>",
+          "parameters": {
+            "analysis_type": "volatility",
+            "hypothesis": "Investigate Track momentum indicators and trend strength, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 622.48,
+                    "daily_change_pct": 0.3449721120675736,
+                    "week_change_pct": 0.29000451118129605,
+                    "data_source": "polygon_upgraded_free_tier",
+                    "data_date": "2025-07-09"
+                  }
+                },
+                "market_sentiment": "positive",
+                "spy_daily_change": 0.3449721120675736,
+                "timestamp": "2025-07-09T23:56:05.306504",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-09T23:56:05.306518",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "7c52b5e3-e7a4-444c-9026-487e327b5559",
+          "tool_name": "calculator"
+        },
+        "parent_id": "7858698f-7893-4ad7-bf0f-939c05d11b15",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.7,
+        "created_at": "2025-07-09T23:56:18.097392",
+        "updated_at": "2025-07-09T23:56:18.317394",
+        "result": {
+          "tool": "calculator",
+          "analysis_type": "statistical",
+          "results": {},
+          "confidence": 0.7,
+          "insights": [
+            "Calculator analysis for  on SPY"
+          ]
+        }
+      },
+      "5c72c8cb-1c50-4c60-bf3d-321291c0d72a": {
+        "id": "5c72c8cb-1c50-4c60-bf3d-321291c0d72a",
+        "type": "research",
+        "content": "calculator: Technical indicator calculations",
+        "data": {
+          "description": "Technical indicator calculations",
+          "type": "technical_indicators",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x118012580>>",
+          "parameters": {
+            "analysis_type": "technical",
+            "hypothesis": "Investigate Track momentum indicators and trend strength, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 622.48,
+                    "daily_change_pct": 0.3449721120675736,
+                    "week_change_pct": 0.29000451118129605,
+                    "data_source": "polygon_upgraded_free_tier",
+                    "data_date": "2025-07-09"
+                  }
+                },
+                "market_sentiment": "positive",
+                "spy_daily_change": 0.3449721120675736,
+                "timestamp": "2025-07-09T23:56:05.306504",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-09T23:56:05.306518",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "5c72c8cb-1c50-4c60-bf3d-321291c0d72a",
+          "tool_name": "calculator"
+        },
+        "parent_id": "7858698f-7893-4ad7-bf0f-939c05d11b15",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.7,
+        "created_at": "2025-07-09T23:56:18.097493",
+        "updated_at": "2025-07-09T23:56:18.317643",
+        "result": {
+          "tool": "calculator",
+          "analysis_type": "statistical",
+          "results": {},
+          "confidence": 0.7,
+          "insights": [
+            "Calculator analysis for  on SPY"
+          ]
+        }
+      },
+      "573e642c-a8ca-494d-9d91-e89f4c95d91c": {
+        "id": "573e642c-a8ca-494d-9d91-e89f4c95d91c",
+        "type": "research",
+        "content": "calculator: Correlation analysis between assets",
+        "data": {
+          "description": "Correlation analysis between assets",
+          "type": "correlation_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x118012580>>",
+          "parameters": {
+            "analysis_type": "correlation",
+            "hypothesis": "Investigate Track momentum indicators and trend strength, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 622.48,
+                    "daily_change_pct": 0.3449721120675736,
+                    "week_change_pct": 0.29000451118129605,
+                    "data_source": "polygon_upgraded_free_tier",
+                    "data_date": "2025-07-09"
+                  }
+                },
+                "market_sentiment": "positive",
+                "spy_daily_change": 0.3449721120675736,
+                "timestamp": "2025-07-09T23:56:05.306504",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-09T23:56:05.306518",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "573e642c-a8ca-494d-9d91-e89f4c95d91c",
+          "tool_name": "calculator"
+        },
+        "parent_id": "7858698f-7893-4ad7-bf0f-939c05d11b15",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.7,
+        "created_at": "2025-07-09T23:56:18.097580",
+        "updated_at": "2025-07-09T23:56:18.317821",
+        "result": {
+          "tool": "calculator",
+          "analysis_type": "statistical",
+          "results": {},
+          "confidence": 0.7,
+          "insights": [
+            "Calculator analysis for  on SPY"
+          ]
+        }
+      },
+      "6f901f9c-0165-44e0-b93f-ab73d347cbbe": {
+        "id": "6f901f9c-0165-44e0-b93f-ab73d347cbbe",
+        "type": "research",
+        "content": "rag_agent: Retrieve similar research patterns",
+        "data": {
+          "description": "Retrieve similar research patterns",
+          "type": "pattern_retrieval",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_memory_lookup of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x118012580>>",
+          "parameters": {
+            "lookup_type": "patterns",
+            "hypothesis": "Investigate Track momentum indicators and trend strength, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 622.48,
+                    "daily_change_pct": 0.3449721120675736,
+                    "week_change_pct": 0.29000451118129605,
+                    "data_source": "polygon_upgraded_free_tier",
+                    "data_date": "2025-07-09"
+                  }
+                },
+                "market_sentiment": "positive",
+                "spy_daily_change": 0.3449721120675736,
+                "timestamp": "2025-07-09T23:56:05.306504",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-09T23:56:05.306518",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "6f901f9c-0165-44e0-b93f-ab73d347cbbe",
+          "tool_name": "rag_agent"
+        },
+        "parent_id": "7858698f-7893-4ad7-bf0f-939c05d11b15",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T23:56:18.097666",
+        "updated_at": "2025-07-09T23:56:18.773686",
+        "result": {
+          "tool": "rag_agent",
+          "lookup_type": "patterns",
+          "results": {
+            "similar_trades": [
+              {
+                "action": "HOLD",
+                "budget": 0.1,
+                "confidence": 0.7,
+                "executed": false,
+                "id": "trade_4",
+                "reasoning": "The market is experiencing a downward trend across major indices, with significant negative percentage changes. The sentiment is neutral, indicating uncertainty. Given the current market conditions and the lack of strong positive news, it may be prudent to hold positions rather than make new trades.",
+                "symbol": "TLT",
+                "timestamp": "2025-07-07T14:17:28.029967"
+              },
+              {
+                "action": "HOLD",
+                "confidence": 0.75,
+                "id": "trade_2",
+                "reasoning": "The market is experiencing a downturn across major indices, with all observed assets showing negative change percentages. The neutral sentiment in the news suggests uncertainty, and given the current market conditions, it may be prudent to hold positions rather than make impulsive trades.",
+                "symbol": "TLT",
+                "timestamp": "2025-07-07T13:58:06.315920"
+              },
+              {
+                "action": "HOLD",
+                "budget": 0.1,
+                "confidence": 0.7,
+                "executed": false,
+                "id": "trade_3",
+                "reasoning": "The market sentiment is neutral, and the news surrounding Tesla indicates potential volatility due to Musk's political ambitions. Given the uncertainty and mixed signals, it is prudent to hold off on making any trades until the market direction becomes clearer.",
+                "symbol": "SPY",
+                "timestamp": "2025-07-07T14:10:01.706022"
+              },
+              {
+                "action": "HOLD",
+                "confidence": 0.2,
+                "id": "trade_0",
+                "reasoning": "LLM error fallback",
+                "symbol": "GLD",
+                "timestamp": "2025-07-07T13:54:44.829652"
+              },
+              {
+                "action": "HOLD",
+                "confidence": 0.2,
+                "id": "trade_1",
+                "reasoning": "LLM error fallback",
+                "symbol": "TLT",
+                "timestamp": "2025-07-07T13:56:28.517999"
+              }
+            ]
+          },
+          "confidence": 0.5,
+          "insights": [
+            "Memory lookup for  patterns"
+          ]
+        }
+      }
+    },
+    "best_path": null,
+    "best_confidence": 0.0,
+    "summary": {
+      "tree_id": "462729df-4639-4c5c-9554-5272c3504a6e",
+      "agent_name": "enhanced_technical_analysis_agent",
+      "total_nodes": 6,
+      "by_status": {
+        "pending": 2,
+        "completed": 4
+      },
+      "by_type": {
+        "root": 1,
+        "hypothesis": 1,
+        "research": 4
+      },
+      "best_confidence": 0.0,
+      "active_leaves": 0
+    }
+  },
+  "insights": [],
+  "competitive_edges": [],
+  "timestamp": "2025-07-09T23:56:41.103193",
+  "session_duration": "research_complete",
+  "research_track": "technical_analysis",
+  "specialization": "technical_analysis",
+  "market_context": {
+    "market_data": {
+      "indices": {
+        "SPY": {
+          "current_price": 622.48,
+          "daily_change_pct": 0.3449721120675736,
+          "week_change_pct": 0.29000451118129605,
+          "data_source": "polygon_upgraded_free_tier",
+          "data_date": "2025-07-09"
+        }
+      },
+      "market_sentiment": "positive",
+      "spy_daily_change": 0.3449721120675736,
+      "timestamp": "2025-07-09T23:56:05.306504",
+      "data_source": "polygon_upgraded_free_tier",
+      "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+      "premium_data": true
+    },
+    "timestamp": "2025-07-09T23:56:05.306518",
+    "market_session": "overnight",
+    "symbols": [
+      "SPY",
+      "QQQ",
+      "IWM",
+      "TLT",
+      "GLD",
+      "VIX"
+    ],
+    "focus_timeframe": "short_to_medium_term"
+  },
+  "completed_at": "2025-07-09T23:56:41.103396"
+}

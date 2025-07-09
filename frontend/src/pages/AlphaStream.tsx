@@ -98,7 +98,6 @@ export default function AlphaStream() {
   // WebSocket connection management with auto-reconnect
   const connectWebSocket = () => {
     try {
-      console.log("🔄 Attempting to connect to WebSocket...");
       setConnectionStatus("connecting");
       
       // Close existing connection if any
@@ -113,44 +112,36 @@ export default function AlphaStream() {
         
         wsRef.current.onopen = () => {
           setConnectionStatus("connected");
-          console.log("✅ WebSocket connected successfully!");
-          
-          // Send a ping to test connection
-          if (wsRef.current?.readyState === WebSocket.OPEN) {
-            wsRef.current.send(JSON.stringify({ type: "ping" }));
-          }
         };
         
         wsRef.current.onmessage = (event) => {
-          console.log("📥 Received message:", event.data);
+          console.log("📥 WebSocket message received:", event.data.substring(0, 100) + "...");
           try {
             const message = JSON.parse(event.data);
-            
             if (message.type === "ai_thought") {
-              setAiThoughts(prev => [...prev, message].slice(-20)); // Keep last 20 thoughts
+              setAiThoughts(prev => {
+                const updated = [...prev, message].slice(-20);
+                return updated;
+              });
             } else if (message.type === "research_update") {
               setResearchNodes(prev => {
                 const updated = [...prev];
                 const existingIndex = updated.findIndex(node => 
                   node.node_data.title === message.node_data.title
                 );
-                
                 if (existingIndex >= 0) {
                   updated[existingIndex] = message;
                 } else {
                   updated.push(message);
                 }
-                
-                return updated.slice(-6); // Keep last 6 research nodes
+                return updated.slice(-6);
               });
             } else if (message.type === "tree_update") {
-              // Update tree structure
-              console.log("🌳 Tree update received:", message.tree?.length, "nodes");
-              // Transform backend tree format to frontend format
               const transformedTree = message.tree?.map((node: any) => ({
                 ...node,
-                title: node.content || node.id, // Use content as title if available
-                parent: node.parent_id, // Map parent_id to parent
+                id: node.id || `node_${Date.now()}_${Math.random()}`,
+                title: node.content || node.id || `Node ${node.id}`,
+                parent: node.parent_id,
                 timestamp: node.created_at || node.timestamp || new Date().toISOString()
               })) || [];
               setTreeNodes(transformedTree);
@@ -205,14 +196,7 @@ export default function AlphaStream() {
   
   // Use decision trees data as fallback when websocket data is not available
   useEffect(() => {
-    console.log("🌳 Decision trees data check:", {
-      treeNodesLength: treeNodes.length,
-      decisionTreesDataLength: decisionTreesData?.length,
-      decisionTreesData: decisionTreesData
-    });
-    
     if (treeNodes.length === 0 && decisionTreesData && decisionTreesData.length > 0) {
-      console.log("🌳 Using fallback decision trees data:", decisionTreesData.length, "nodes");
       setTreeNodes(decisionTreesData);
     }
   }, [treeNodes.length, decisionTreesData]);
@@ -259,11 +243,11 @@ export default function AlphaStream() {
       if (data.data) {
         const flatTrees: any[] = [];
         Object.entries(data.data).forEach(([trackName, trackData]: [string, any]) => {
-          console.log(`🌳 Processing track: ${trackName}`, trackData);
           if (trackData?.tree?.nodes) {
             const nodes = Object.values(trackData.tree.nodes).map((node: any) => ({
               ...node,
-              title: node.content || node.id,
+              id: node.id || `node_${Date.now()}_${Math.random()}`, // Ensure unique ID
+              title: node.content || node.id || `Node ${node.id}`, // Use content as title if available
               parent: node.parent_id, // Map parent_id to parent
               timestamp: node.created_at || node.timestamp || new Date().toISOString(),
               track: trackName

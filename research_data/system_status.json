@@ -1,49 +1,49 @@
 {
-  "service_started": "2025-07-09T14:26:36.456968",
-  "total_research_cycles": 44,
-  "successful_cycles": 44,
+  "service_started": "2025-07-09T22:25:40.920398",
+  "total_research_cycles": 40,
+  "successful_cycles": 40,
   "failed_cycles": 0,
-  "last_cycle_time": "2025-07-09T18:10:02.856497",
-  "active_research_tracks": 4,
+  "last_cycle_time": "2025-07-10T00:41:12.397349",
+  "active_research_tracks": 1,
   "insights_generated": 0,
   "research_tracks": {
     "alpha_discovery": {
       "enabled": true,
       "interval_minutes": 15.0,
-      "last_run": "2025-07-09T17:20:28.503991",
-      "next_run_estimate": "2025-07-09T17:35:28.503991"
+      "last_run": "2025-07-10T00:30:33.029398",
+      "next_run_estimate": "2025-07-10T00:45:33.029398"
     },
     "market_monitoring": {
       "enabled": true,
       "interval_minutes": 10.0,
-      "last_run": "2025-07-09T17:20:28.503991",
-      "next_run_estimate": "2025-07-09T17:30:28.503991"
+      "last_run": "2025-07-10T00:40:50.376492",
+      "next_run_estimate": "2025-07-10T00:50:50.376492"
     },
     "sentiment_tracking": {
       "enabled": true,
       "interval_minutes": 20.0,
-      "last_run": "2025-07-09T17:20:28.503991",
-      "next_run_estimate": "2025-07-09T17:40:28.503991"
+      "last_run": "2025-07-10T00:30:33.029398",
+      "next_run_estimate": "2025-07-10T00:50:33.029398"
     },
     "technical_analysis": {
       "enabled": true,
       "interval_minutes": 30.0,
-      "last_run": "2025-07-09T17:20:28.503991",
-      "next_run_estimate": "2025-07-09T17:50:28.503991"
+      "last_run": "2025-07-10T00:26:09.997979",
+      "next_run_estimate": "2025-07-10T00:56:09.997979"
     },
     "risk_assessment": {
       "enabled": true,
       "interval_minutes": 60.0,
-      "last_run": "2025-07-09T16:45:36.139045",
-      "next_run_estimate": "2025-07-09T17:45:36.139045"
+      "last_run": "2025-07-10T00:26:09.997979",
+      "next_run_estimate": "2025-07-10T01:26:09.997979"
     },
     "deep_research": {
       "enabled": true,
       "interval_minutes": 120.0,
-      "last_run": "2025-07-09T16:26:41.055154",
-      "next_run_estimate": "2025-07-09T18:26:41.055154"
+      "last_run": "2025-07-10T00:26:09.997979",
+      "next_run_estimate": "2025-07-10T02:26:09.997979"
     }
   },
-  "uptime_minutes": 223.43999256666666,
-  "status_updated": "2025-07-09T18:10:02.856525"
+  "uptime_minutes": 136.52467003333334,
+  "status_updated": "2025-07-10T00:42:12.400603"
 }
