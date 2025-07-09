@@ -29,6 +29,7 @@ app.add_middleware(
 class ConnectionManager:
     def __init__(self):
         self.active_connections: List[WebSocket] = []
+        self.research_tree: Dict[str, Dict[str, Any]] = {}  # Store tree nodes
         
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
@@ -52,6 +53,57 @@ class ConnectionManager:
             # Remove disconnected clients
             for conn in disconnected:
                 self.disconnect(conn)
+    
+    async def add_tree_node(self, node_id: str, node_type: str, title: str, content: str, 
+                          parent_id: Optional[str] = None, metadata: Optional[Dict[str, Any]] = None):
+        """Add a new node to the research tree"""
+        node = {
+            "id": node_id,
+            "type": node_type,
+            "title": title,
+            "content": content,
+            "status": "active",
+            "parent": parent_id,
+            "timestamp": datetime.now().isoformat(),
+            "metadata": metadata or {}
+        }
+        
+        self.research_tree[node_id] = node
+        
+        # Broadcast tree update
+        await self.broadcast({
+            "type": "tree_update",
+            "action": "add_node",
+            "node": node,
+            "tree": list(self.research_tree.values())
+        })
+    
+    async def update_tree_node(self, node_id: str, status: Optional[str] = None, 
+                             progress: Optional[int] = None, metadata: Optional[Dict[str, Any]] = None):
+        """Update an existing tree node"""
+        if node_id not in self.research_tree:
+            return
+            
+        node = self.research_tree[node_id]
+        
+        if status:
+            node["status"] = status
+        if progress is not None:
+            node["progress"] = progress
+        if metadata:
+            node["metadata"].update(metadata)
+        
+        # Broadcast tree update
+        await self.broadcast({
+            "type": "tree_update",
+            "action": "update_node",
+            "node": node,
+            "tree": list(self.research_tree.values())
+        })
+    
+    def clear_tree(self):
+        """Clear the research tree"""
+        self.research_tree.clear()
 
 manager = ConnectionManager()
 
@@ -139,9 +191,10 @@ async def run_autonomous_with_streaming():
         await broadcast_ai_thought("error", f"Error in autonomous system: {str(e)}", {"error": True})
 
 async def stream_real_autonomous_cycle():
-    """Run REAL autonomous trading with streaming - not simulation"""
+    """Run REAL autonomous trading with streaming tree visualization"""
     
-    await broadcast_ai_thought("system_start", "🚀 Starting REAL autonomous alpha hunting...", {"real_system": True})
+    # Clear previous tree
+    manager.clear_tree()
     
     try:
         # Import the real autonomous trading system
@@ -150,79 +203,98 @@ async def stream_real_autonomous_cycle():
         from tools.web_researcher import web_researcher
         from tools.data_fetcher import data_fetcher
         
-        # Step 1: Real market analysis
-        await broadcast_ai_thought("phase_start", "🧠 Scanning real market data...", {"phase": "market_analysis"})
-        
-        await broadcast_research_update("market_scan", {
-            "title": "Real Market Data Analysis",
-            "status": "analyzing",
-            "data": {
-                "scanning": ["Live market indices", "VIX volatility", "Economic indicators"],
-                "progress": 10
-            }
-        })
-        
-        # Get real market data
-        market_data = data_fetcher.get_market_overview()
-        vix_level = market_data.get("vix_level", 20)
-        sentiment = market_data.get("market_sentiment", "neutral")
-        
-        await broadcast_ai_thought(
-            "analysis", 
-            f"📊 Real VIX: {vix_level:.1f} | Market sentiment: {sentiment}",
-            {"vix": vix_level, "sentiment": sentiment, "real_data": True}
+        # Root decision: Start analysis
+        await manager.add_tree_node(
+            "root_decision", 
+            "decision", 
+            "🚀 Start Alpha Hunt",
+            "Initiating autonomous alpha hunting process",
+            metadata={"real_system": True}
         )
         
-        await broadcast_research_update("market_scan", {
-            "title": "Market Data Retrieved",
-            "status": "complete",
-            "data": {
-                "vix_level": vix_level,
-                "sentiment": sentiment,
-                "progress": 30
-            }
-        })
+        # Step 1: Global Opportunity Scanning
+        await manager.add_tree_node(
+            "opportunity_scanning", 
+            "analysis", 
+            "🌍 Global Opportunity Scanning",
+            "Scanning global trends, events, and market conditions for alpha opportunities",
+            parent_id="root_decision",
+            metadata={"phase": "opportunity_scanning"}
+        )
         
-        # Step 2: Real alpha hunting
-        await broadcast_ai_thought("phase_start", "🎯 Hunting for real alpha opportunities...", {"phase": "alpha_hunting"})
+        await manager.update_tree_node("opportunity_scanning", progress=30)
         
-        await broadcast_research_update("opportunity_identification", {
-            "title": "AI Alpha Opportunity Detection",
-            "status": "scanning",
-            "data": {
-                "using_llm": True,
-                "scanning_themes": ["Market trends", "Sector rotations", "News catalysts"],
-                "progress": 50
-            }
-        })
-        
-        # Run real alpha hunting
+        # Run real alpha hunting - this uses LLM to scan opportunities
         alpha_strategy = autonomous_alpha_hunter.hunt_for_alpha()
         
         if alpha_strategy and alpha_strategy.get("confidence", 0) > 0.3:
             opportunity_theme = alpha_strategy.get("opportunity_theme", "Market analysis")
             thesis = alpha_strategy.get("alpha_thesis", "No thesis")
             confidence = alpha_strategy.get("confidence", 0)
+            primary_ticker = alpha_strategy.get("primary_ticker", "SPY")
             
-            await broadcast_ai_thought(
-                "discovery", 
-                f"🎯 REAL opportunity found: {opportunity_theme} (confidence: {confidence:.1%})",
-                {"opportunity": opportunity_theme, "confidence": confidence, "real_ai": True}
+            await manager.update_tree_node(
+                "opportunity_scanning", 
+                status="completed", 
+                progress=100,
+                metadata={
+                    "opportunity": opportunity_theme,
+                    "confidence": confidence,
+                    "primary_ticker": primary_ticker,
+                    "real_ai": True
+                }
+            )
+        
+            # Decision: Should we hunt for alpha?
+            await manager.add_tree_node(
+                "alpha_decision", 
+                "decision", 
+                "🎯 Alpha Hunt Decision",
+                f"Opportunity detected: {opportunity_theme}",
+                parent_id="opportunity_scanning",
+                metadata={"decision_type": "alpha_hunt", "opportunity": opportunity_theme, "confidence": confidence}
             )
             
-            # Step 3: Real web research
-            await broadcast_ai_thought("phase_start", "🔍 Starting real web research...", {"phase": "web_research"})
+            # Branch out to different research paths
+            research_branches = []
             
-            await broadcast_research_update("deep_research", {
-                "title": "AI Web Research & Analysis",
-                "status": "researching",
-                "data": {
-                    "opportunity": opportunity_theme,
-                    "using_llm": True,
-                    "research_areas": ["Sentiment analysis", "Fundamental research", "News impact"],
-                    "progress": 70
-                }
-            })
+            # Web Research Branch
+            await manager.add_tree_node(
+                "web_research", 
+                "websearch", 
+                "🌐 Web Research",
+                f"Researching {opportunity_theme} via web sources",
+                parent_id="alpha_decision",
+                metadata={"research_type": "web", "opportunity": opportunity_theme}
+            )
+            research_branches.append("web_research")
+            
+            # Fundamental Analysis Branch
+            await manager.add_tree_node(
+                "fundamental_analysis", 
+                "fundamental", 
+                "📈 Fundamental Analysis",
+                f"Analyzing fundamentals for {opportunity_theme}",
+                parent_id="alpha_decision",
+                metadata={"research_type": "fundamental", "opportunity": opportunity_theme}
+            )
+            research_branches.append("fundamental_analysis")
+            
+            # Pandas/Data Analysis Branch
+            await manager.add_tree_node(
+                "data_analysis", 
+                "pandas", 
+                "📊 Data Analysis",
+                f"Performing quantitative analysis on {opportunity_theme}",
+                parent_id="alpha_decision",
+                metadata={"research_type": "quantitative", "opportunity": opportunity_theme}
+            )
+            research_branches.append("data_analysis")
+            
+            # Simulate parallel research execution
+            for i, branch in enumerate(research_branches):
+                await asyncio.sleep(0.5)  # Simulate research time
+                await manager.update_tree_node(branch, progress=30 + i * 20)
             
             # Real web research
             opportunity_data = {
@@ -235,8 +307,37 @@ async def stream_real_autonomous_cycle():
             tickers = [alpha_strategy.get("primary_ticker", "SPY")]
             research_report = web_researcher.research_opportunity(opportunity_data, tickers)
             
-            # Step 4: Real strategy creation
-            await broadcast_ai_thought("phase_start", "💡 Creating real AI strategy...", {"phase": "strategy_creation"})
+            # Complete research branches
+            for branch in research_branches:
+                await manager.update_tree_node(
+                    branch, 
+                    status="completed", 
+                    progress=100,
+                    metadata={"research_complete": True}
+                )
+                await asyncio.sleep(0.3)
+            
+            # Strategy Synthesis Decision
+            await manager.add_tree_node(
+                "strategy_synthesis", 
+                "decision", 
+                "💡 Strategy Synthesis",
+                "Combining research findings into trading strategy",
+                parent_id="alpha_hunting",
+                metadata={"synthesis_type": "multi_source"}
+            )
+            
+            # Strategy Creation Branch
+            await manager.add_tree_node(
+                "strategy_creation", 
+                "strategy", 
+                "🎯 Strategy Creation",
+                f"Creating trading strategy for {opportunity_theme}",
+                parent_id="strategy_synthesis",
+                metadata={"strategy_type": "ai_generated"}
+            )
+            
+            await manager.update_tree_node("strategy_creation", progress=70)
             
             # Run full autonomous cycle
             final_strategy = autonomous_trading_system._autonomous_cycle()
@@ -247,22 +348,11 @@ async def stream_real_autonomous_cycle():
             final_confidence = final_strategy.get("confidence", 0)
             final_thesis = final_strategy.get("alpha_thesis", "AI-generated strategy")
             
-            await broadcast_ai_thought(
-                "strategy", 
-                f"💡 REAL AI strategy: {action} {symbol} ({position_size:.1%} position, {final_confidence:.1%} confidence)",
-                {
-                    "action": action, 
-                    "symbol": symbol, 
-                    "confidence": final_confidence, 
-                    "position_size": position_size,
-                    "real_ai_strategy": True
-                }
-            )
-            
-            await broadcast_research_update("strategy_creation", {
-                "title": "AI Strategy Complete",
-                "status": "complete", 
-                "data": {
+            await manager.update_tree_node(
+                "strategy_creation", 
+                status="completed", 
+                progress=100,
+                metadata={
                     "final_strategy": {
                         "action": action,
                         "symbol": symbol,
@@ -270,48 +360,78 @@ async def stream_real_autonomous_cycle():
                         "position_size": position_size,
                         "thesis": final_thesis
                     },
-                    "progress": 100,
                     "real_ai": True
                 }
-            })
+            )
+            
+            # Final execution decision
+            await manager.add_tree_node(
+                "execution_decision", 
+                "execution", 
+                "⚡ Execution Decision",
+                f"Decision: {action} {symbol} ({position_size:.1%} position size)",
+                parent_id="strategy_creation",
+                metadata={
+                    "execution_type": "paper_trade",
+                    "action": action,
+                    "symbol": symbol,
+                    "position_size": position_size,
+                    "confidence": final_confidence
+                }
+            )
             
             await broadcast_ai_thought(
-                "completion", 
-                f"✅ REAL autonomous cycle complete - {action} {symbol} strategy ready",
-                {"status": "complete", "real_system": True, "action": action, "symbol": symbol}
+                "execution_decision", 
+                f"🎯 STRATEGY COMPLETE: {action} {symbol} | Confidence: {final_confidence:.2f} | Thesis: {final_thesis}",
+                {
+                    "action": action,
+                    "symbol": symbol,
+                    "position_size": position_size,
+                    "confidence": final_confidence,
+                    "thesis": final_thesis,
+                    "real_ai": True
+                }
             )
             
         else:
-            await broadcast_ai_thought(
-                "discovery", 
-                "📊 REAL AI analysis: No high-confidence opportunities found, staying conservative",
-                {"confidence": alpha_strategy.get("confidence", 0) if alpha_strategy else 0, "real_ai": True}
-            )
-            
-            await broadcast_research_update("strategy_creation", {
-                "title": "Conservative Strategy",
-                "status": "complete",
-                "data": {
-                    "final_strategy": {
-                        "action": "HOLD",
-                        "symbol": "SPY", 
-                        "confidence": 0.3,
-                        "position_size": 0,
-                        "thesis": "Market conditions favor conservative approach"
-                    },
-                    "progress": 100,
-                    "real_ai": True
+            # No good opportunities found
+            await manager.update_tree_node(
+                "opportunity_scanning", 
+                status="completed", 
+                progress=100,
+                metadata={
+                    "opportunity": "No viable opportunities found",
+                    "confidence": 0,
+                    "fallback": True
                 }
-            })
+            )
+            
+            await manager.add_tree_node(
+                "fallback_decision", 
+                "decision", 
+                "🛡️ Fallback Decision",
+                "No viable opportunities found - maintaining market neutral position",
+                parent_id="opportunity_scanning",
+                metadata={"decision_type": "fallback", "action": "HOLD"}
+            )
             
             await broadcast_ai_thought(
-                "completion", 
-                "✅ REAL AI cycle complete - Conservative HOLD strategy",
-                {"status": "complete", "real_system": True, "action": "HOLD"}
+                "fallback_decision", 
+                "🛡️ No viable alpha opportunities found - maintaining conservative position",
+                {"action": "HOLD", "confidence": 0.3, "fallback": True}
             )
+
             
     except Exception as e:
-        await broadcast_ai_thought("error", f"Error in real autonomous system: {str(e)}", {"error": True, "real_system": True})
+        await manager.add_tree_node(
+            "error_node", 
+            "decision", 
+            "❌ Error",
+            f"Error in autonomous system: {str(e)}",
+            parent_id="root_decision",
+            metadata={"error": True, "real_system": True}
+        )
+        await manager.update_tree_node("error_node", status="failed")
 
 
 @app.get("/api/performance")

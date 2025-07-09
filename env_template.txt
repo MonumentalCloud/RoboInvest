@@ -8,6 +8,10 @@ ALPACA_BASE_URL=https://paper-api.alpaca.markets
 # Get this from: https://platform.openai.com/
 OPENAI_API_KEY=your_openai_api_key_here
 
+# Polygon.io API Key (for premium market data)
+# Get this from: https://polygon.io/
+POLYGON_API_KEY=your_polygon_api_key_here
+
 # Optional: Finnhub API Key (for additional market data)
 # Get this from: https://finnhub.io/
 FINNHUB_API_KEY=your_finnhub_api_key_here

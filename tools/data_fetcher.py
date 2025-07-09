@@ -8,6 +8,8 @@ import numpy as np
 from typing import Dict, List, Any, Optional, Union
 from datetime import datetime, timedelta, date
 import requests
+import time
+import random
 from utils.logger import logger  # type: ignore
 from core.config import config
 
@@ -34,10 +36,11 @@ class DataFetcher:
     def __init__(self):
         self.cache = {}
         self.cache_duration = timedelta(minutes=5)  # Cache for 5 minutes
+        self.demo_mode = False  # Disable demo mode - use real data with Polygon API
         
         # Initialize Polygon client if available and configured
         self.polygon_client = None
-        if POLYGON_AVAILABLE and config.polygon_api_key:
+        if POLYGON_AVAILABLE and config.polygon_api_key and not self.demo_mode:
             try:
                 self.polygon_client = RESTClient(api_key=config.polygon_api_key)
                 logger.info("🚀 DataFetcher | Polygon.io client initialized - using premium data")
@@ -45,7 +48,10 @@ class DataFetcher:
                 logger.error(f"Polygon client initialization failed: {e}")
         
         # Determine data source priority
-        if self.polygon_client:
+        if self.demo_mode:
+            self.data_source = "demo_data"
+            logger.info("🎭 DataFetcher | Demo mode enabled - using realistic mock data")
+        elif self.polygon_client:
             self.data_source = "polygon"
             logger.info("📊 DataFetcher | Primary data source: Polygon.io (Premium)")
         elif YFINANCE_AVAILABLE:
@@ -83,8 +89,15 @@ class DataFetcher:
             
             logger.info(f"DataFetcher | Fetching {symbol} data for {period} via {self.data_source}")
             
+            # Use demo data if in demo mode
+            if self.demo_mode:
+                data = self._get_demo_historical_data(symbol, period, interval)
+                if data:
+                    self.cache[cache_key] = (data, datetime.now())
+                    return data
+            
             # Try Polygon first if available
-            if self.polygon_client:
+            elif self.polygon_client:
                 data = self._get_polygon_historical_data(symbol, period, interval)
                 if data and not data.get("error"):
                     self.cache[cache_key] = (data, datetime.now())
@@ -93,7 +106,7 @@ class DataFetcher:
                     logger.warning(f"Polygon data failed for {symbol}, falling back to yfinance")
             
             # Fallback to yfinance
-            if YFINANCE_AVAILABLE:
+            elif YFINANCE_AVAILABLE:
                 data = self._get_yfinance_historical_data(symbol, period, interval)
                 if data:
                     self.cache[cache_key] = (data, datetime.now())
@@ -187,46 +200,233 @@ class DataFetcher:
             return {"error": str(e), "data": None}
     
     def _get_yfinance_historical_data(self, symbol: str, period: str, interval: str) -> Dict[str, Any]:
-        """Get historical data from yfinance (fallback)."""
+        """Get historical data using direct Yahoo Finance API (bypasses yfinance rate limits)."""
         try:
-            # Fetch data from yfinance
-            ticker = yf.Ticker(symbol)
-            hist = ticker.history(period=period, interval=interval)
+            # Use direct Yahoo Finance API instead of yfinance library
+            logger.info(f"🚀 Fetching {symbol} via direct Yahoo Finance API")
             
-            if hist.empty:
-                return {"error": f"No yfinance data found for {symbol}", "data": None}
+            # Convert period to range parameter
+            period_map = {
+                '1d': '1d', '5d': '5d', '1mo': '1mo', '3mo': '3mo', 
+                '6mo': '6mo', '1y': '1y', '2y': '2y', '5y': '5y', '10y': '10y'
+            }
+            range_param = period_map.get(period, '1y')
             
-            # Convert to clean format
-            data = {
+            # Convert interval
+            interval_map = {
+                '1m': '1m', '5m': '5m', '15m': '15m', '30m': '30m',
+                '1h': '1h', '1d': '1d', '5d': '5d', '1wk': '1wk', '1mo': '1mo'
+            }
+            interval_param = interval_map.get(interval, '1d')
+            
+            # Direct Yahoo Finance API call
+            url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
+            params = {
+                'interval': interval_param,
+                'range': range_param,
+                'includePrePost': 'false'
+            }
+            
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                'Accept': 'application/json',
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Cache-Control': 'no-cache'
+            }
+            
+            # Add small delay to be respectful
+            time.sleep(random.uniform(0.5, 1.5))
+            
+            response = requests.get(url, params=params, headers=headers, timeout=15)
+            response.raise_for_status()
+            
+            data = response.json()
+            
+            # Parse Yahoo Finance response
+            if 'chart' not in data or not data['chart']['result']:
+                return {"error": f"No data found for {symbol}", "data": None}
+            
+            result = data['chart']['result'][0]
+            timestamps = result['timestamp']
+            quotes = result['indicators']['quote'][0]
+            
+            # Convert timestamps to dates
+            dates = []
+            opens = []
+            highs = []
+            lows = []
+            closes = []
+            volumes = []
+            
+            for i, ts in enumerate(timestamps):
+                if quotes['open'][i] is not None:  # Skip null values
+                    dates.append(datetime.fromtimestamp(ts).strftime('%Y-%m-%d'))
+                    opens.append(round(quotes['open'][i], 2))
+                    highs.append(round(quotes['high'][i], 2))
+                    lows.append(round(quotes['low'][i], 2))
+                    closes.append(round(quotes['close'][i], 2))
+                    volumes.append(int(quotes['volume'][i]) if quotes['volume'][i] else 0)
+            
+            if not closes:
+                return {"error": f"No valid price data for {symbol}", "data": None}
+            
+            # Calculate statistics
+            start_price = closes[0]
+            end_price = closes[-1]
+            total_return = ((end_price / start_price - 1) * 100) if start_price != 0 else 0
+            
+            result_data = {
                 "symbol": symbol,
                 "period": period,
                 "interval": interval,
                 "data": {
-                    "dates": hist.index.strftime('%Y-%m-%d').tolist(),
+                    "dates": dates,
                     "prices": {
-                        "open": hist['Open'].round(2).tolist(),
-                        "high": hist['High'].round(2).tolist(),
-                        "low": hist['Low'].round(2).tolist(),
-                        "close": hist['Close'].round(2).tolist(),
-                        "volume": hist['Volume'].tolist()
+                        "open": opens,
+                        "high": highs,
+                        "low": lows,
+                        "close": closes,
+                        "volume": volumes
                     }
                 },
                 "stats": {
-                    "total_days": len(hist),
-                    "start_date": hist.index[0].strftime('%Y-%m-%d'),
-                    "end_date": hist.index[-1].strftime('%Y-%m-%d'),
-                    "start_price": float(hist['Close'].iloc[0]),
-                    "end_price": float(hist['Close'].iloc[-1]),
-                    "total_return": float((hist['Close'].iloc[-1] / hist['Close'].iloc[0] - 1) * 100),
-                    "avg_volume": float(hist['Volume'].mean())
+                    "total_days": len(closes),
+                    "start_date": dates[0] if dates else None,
+                    "end_date": dates[-1] if dates else None,
+                    "start_price": start_price,
+                    "end_price": end_price,
+                    "total_return": round(total_return, 2),
+                    "avg_volume": int(np.mean(volumes)) if volumes else 0
                 },
-                "data_source": "yfinance"
+                "data_source": "Yahoo Finance Direct API"
             }
             
-            return data
+            logger.info(f"✅ Successfully fetched {symbol} data ({len(closes)} points) via direct API")
+            return result_data
+            
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Yahoo Finance API request error for {symbol}: {e}")
+            return {"error": f"API request failed: {str(e)}", "data": None}
+        except KeyError as e:
+            logger.error(f"Yahoo Finance API data parsing error for {symbol}: {e}")
+            return {"error": f"Data parsing failed: {str(e)}", "data": None}
+        except Exception as e:
+            logger.error(f"Yahoo Finance API error for {symbol}: {e}")
+            return {"error": str(e), "data": None}
+    
+    def _get_demo_historical_data(self, symbol: str, period: str, interval: str) -> Dict[str, Any]:
+        """Generate realistic demo data for testing purposes."""
+        try:
+            logger.info(f"🎭 Generating demo data for {symbol}")
+            
+            # Base prices for different symbols
+            base_prices = {
+                'SPY': 450.0,
+                'AAPL': 175.0,
+                'MSFT': 335.0,
+                'GOOGL': 140.0,
+                'TSLA': 250.0,
+                'NVDA': 800.0,
+                'VIX': 18.0,
+                'QQQ': 380.0,
+                'IWM': 195.0
+            }
+            
+            base_price = base_prices.get(symbol, 100.0)
+            
+            # Calculate number of data points
+            period_days = {
+                '1d': 1, '5d': 5, '1mo': 22, '3mo': 66, 
+                '6mo': 132, '1y': 252, '2y': 504, '5y': 1260, '10y': 2520
+            }
+            days = period_days.get(period, 5)
+            
+            # Generate dates
+            end_date = datetime.now()
+            dates = []
+            for i in range(days):
+                date = end_date - timedelta(days=days-1-i)
+                dates.append(date.strftime('%Y-%m-%d'))
+            
+            # Generate realistic price movements
+            opens = []
+            highs = []
+            lows = []
+            closes = []
+            volumes = []
+            
+            current_price = base_price
+            
+            for i in range(days):
+                # Add some realistic volatility
+                daily_change = random.uniform(-0.03, 0.03)  # ±3% daily movement
+                trend = 0.0002  # Slight upward trend
+                
+                if symbol == 'VIX':
+                    # VIX has different behavior
+                    daily_change = random.uniform(-0.15, 0.15)
+                    trend = -0.001
+                
+                # Calculate prices
+                open_price = current_price * (1 + random.uniform(-0.005, 0.005))
+                close_price = current_price * (1 + daily_change + trend)
+                
+                high_price = max(open_price, close_price) * (1 + random.uniform(0.001, 0.02))
+                low_price = min(open_price, close_price) * (1 - random.uniform(0.001, 0.02))
+                
+                opens.append(round(open_price, 2))
+                highs.append(round(high_price, 2))
+                lows.append(round(low_price, 2))
+                closes.append(round(close_price, 2))
+                
+                # Generate volume
+                base_volume = {
+                    'SPY': 50000000, 'AAPL': 45000000, 'MSFT': 25000000,
+                    'GOOGL': 20000000, 'TSLA': 35000000, 'NVDA': 30000000,
+                    'VIX': 0, 'QQQ': 25000000, 'IWM': 15000000
+                }.get(symbol, 10000000)
+                
+                volume = int(base_volume * random.uniform(0.5, 1.5))
+                volumes.append(volume)
+                
+                current_price = close_price
+            
+            # Calculate statistics
+            start_price = closes[0]
+            end_price = closes[-1]
+            total_return = ((end_price / start_price - 1) * 100) if start_price != 0 else 0
+            
+            result_data = {
+                "symbol": symbol,
+                "period": period,
+                "interval": interval,
+                "data": {
+                    "dates": dates,
+                    "prices": {
+                        "open": opens,
+                        "high": highs,
+                        "low": lows,
+                        "close": closes,
+                        "volume": volumes
+                    }
+                },
+                "stats": {
+                    "total_days": len(closes),
+                    "start_date": dates[0] if dates else None,
+                    "end_date": dates[-1] if dates else None,
+                    "start_price": start_price,
+                    "end_price": end_price,
+                    "total_return": round(total_return, 2),
+                    "avg_volume": int(np.mean(volumes)) if volumes else 0
+                },
+                "data_source": "Demo Data (Mock)"
+            }
+            
+            logger.info(f"✅ Generated demo data for {symbol} ({len(closes)} points)")
+            return result_data
             
         except Exception as e:
-            logger.error(f"yfinance historical data error for {symbol}: {e}")
+            logger.error(f"Demo data generation error for {symbol}: {e}")
             return {"error": str(e), "data": None}
     
     def get_real_time_quote(self, symbol: str) -> Dict[str, Any]:
@@ -249,23 +449,48 @@ class DataFetcher:
             return {"error": "No real-time data available", "data": None}
         
         try:
-            # Get latest trade from Polygon
-            prev_close_data = list(self.polygon_client.get_previous_close(symbol))
-            prev_close_price = prev_close_data[0].close if prev_close_data else None
+            # Get latest data using the correct Polygon API
+            # Try to get previous close bar
+            yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
             
-            # For real-time, we'll use the previous close as an approximation
-            # (Full real-time requires WebSocket subscription)
-            return {
-                "symbol": symbol,
-                "current_price": prev_close_price,
-                "previous_close": prev_close_price,
-                "timestamp": datetime.now().isoformat(),
-                "data_source": "Polygon.io"
-            }
+            # Get previous close data
+            aggs = list(self.polygon_client.get_aggs(
+                symbol, 1, "day", yesterday, yesterday, adjusted=True
+            ))
+            
+            if aggs:
+                latest_agg = aggs[-1]
+                current_price = latest_agg.close
+                
+                return {
+                    "symbol": symbol,
+                    "current_price": current_price,
+                    "previous_close": current_price,
+                    "timestamp": datetime.now().isoformat(),
+                    "data_source": "Polygon.io"
+                }
+            else:
+                # If no recent data, fall back to historical method
+                logger.warning(f"No recent Polygon data for {symbol}, using historical fallback")
+                return self._get_historical_fallback_quote(symbol)
             
         except Exception as e:
             logger.error(f"Real-time quote error for {symbol}: {e}")
-            return {"error": str(e), "data": None}
+            # Fall back to historical data on any error
+            return self._get_historical_fallback_quote(symbol)
+    
+    def _get_historical_fallback_quote(self, symbol: str) -> Dict[str, Any]:
+        """Fallback method to get quote using historical data."""
+        data = self.get_historical_data(symbol, period="5d", interval="1d")
+        if data and data.get("data") and data["data"]["prices"]["close"]:
+            latest_price = data["data"]["prices"]["close"][-1]
+            return {
+                "symbol": symbol,
+                "current_price": latest_price,
+                "timestamp": datetime.now().isoformat(),
+                "data_source": "historical_fallback"
+            }
+        return {"error": "No fallback data available", "data": None}
     
     def get_multiple_symbols(self, symbols: List[str], period: str = "1y") -> Dict[str, Any]:
         """

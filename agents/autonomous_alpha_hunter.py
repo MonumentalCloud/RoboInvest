@@ -111,7 +111,13 @@ class AutonomousAlphaHunter:
                 {"role": "user", "content": scan_prompt}
             ], temperature=self.temperature)
             
-            opportunities = json.loads(response.get("content", "[]"))
+            # Handle both dict and string response formats
+            if isinstance(response, dict):
+                content = response.get("content", "[]")
+            else:
+                content = response or "[]"
+            
+            opportunities = json.loads(content)
             
             logger.info(f"AlphaHunter | Identified {len(opportunities)} potential opportunities")
             return opportunities
@@ -187,7 +193,13 @@ class AutonomousAlphaHunter:
                 {"role": "user", "content": validation_prompt}
             ], temperature=0.3)  # Lower temperature for more focused analysis
             
-            validation = json.loads(response.get("content", "{}"))
+            # Handle both dict and string response formats
+            if isinstance(response, dict):
+                content = response.get("content", "{}")
+            else:
+                content = response or "{}"
+            
+            validation = json.loads(content)
             
             return validation
             
@@ -269,7 +281,13 @@ class AutonomousAlphaHunter:
                 {"role": "user", "content": strategy_prompt}
             ], temperature=0.2)
             
-            strategy = json.loads(response.get("content", "{}"))
+            # Handle both dict and string response formats
+            if isinstance(response, dict):
+                content = response.get("content", "{}")
+            else:
+                content = response or "{}"
+            
+            strategy = json.loads(content)
             
             # Add opportunity context
             strategy["opportunity_theme"] = opportunity.get("theme", "Unknown")
