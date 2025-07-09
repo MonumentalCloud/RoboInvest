@@ -6,10 +6,11 @@ langchain-openai>=0.1.0
 
 # Trading and Market Data
 alpaca-py>=0.20.0
+alpaca-trade-api>=3.0.0
+polygon-api-client>=1.15.0
 yfinance==0.2.37
 pandas>=2.0.0
 numpy<2.0
-alpaca-trade-api>=3.0.0
 
 # Technical Analysis
 ta-lib>=0.4.25

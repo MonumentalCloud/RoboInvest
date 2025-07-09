@@ -29,6 +29,9 @@ class Config:
         self.alpaca_secret_key: str = get_local_or_env("ALPACA_SECRET_KEY", "")
         self.alpaca_base_url: str = get_local_or_env("ALPACA_BASE_URL", "https://paper-api.alpaca.markets")
         
+        # Polygon.io Market Data
+        self.polygon_api_key: str = get_local_or_env("POLYGON_API_KEY", "")
+        
         # OpenAI
         self.openai_api_key: str = get_local_or_env("OPENAI_API_KEY", "")
         self.openai_model: str = "gpt-4o-mini"  # Using mini for cost efficiency
