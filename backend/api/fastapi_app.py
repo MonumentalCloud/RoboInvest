@@ -5,7 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import json
 import asyncio
 from typing import List, Dict, Any, Optional
-from datetime import datetime
+from datetime import datetime, timedelta
+from pathlib import Path
 import uvicorn
 
 from core.config import config
@@ -480,6 +481,230 @@ async def get_lessons():
         return {"lessons": lessons}
     except Exception as e:
         return {"lessons": []}
+
+# Research API endpoints for continuous research data
+research_data_dir = Path("research_data")
+research_data_dir.mkdir(exist_ok=True)
+
+@app.get("/api/research/status")
+async def get_research_status():
+    """Get current research service status."""
+    try:
+        status_file = research_data_dir / "system_status.json"
+        if status_file.exists():
+            with open(status_file, 'r') as f:
+                status = json.load(f)
+            return {"status": "success", "data": status}
+        else:
+            return {
+                "status": "error", 
+                "message": "Research service not running",
+                "data": {"running": False}
+            }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+@app.get("/api/research/insights")
+async def get_research_insights(limit: int = 50):
+    """Get consolidated insights from all research tracks."""
+    try:
+        insights_file = research_data_dir / "consolidated_insights.json"
+        if insights_file.exists():
+            with open(insights_file, 'r') as f:
+                data = json.load(f)
+            
+            # Limit results
+            insights = data.get("insights", [])[-limit:]
+            
+            return {
+                "status": "success",
+                "data": {
+                    "insights": insights,
+                    "total_available": data.get("total_insights", 0),
+                    "last_updated": data.get("last_updated"),
+                    "returned": len(insights)
+                }
+            }
+        else:
+            return {
+                "status": "success",
+                "data": {
+                    "insights": [],
+                    "total_available": 0,
+                    "last_updated": None,
+                    "returned": 0
+                }
+            }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+@app.get("/api/research/track/{track_name}")
+async def get_track_data(track_name: str):
+    """Get latest data for a specific research track."""
+    try:
+        track_file = research_data_dir / f"{track_name}_latest.json"
+        if track_file.exists():
+            with open(track_file, 'r') as f:
+                data = json.load(f)
+            return {"status": "success", "data": data}
+        else:
+            return {"status": "error", "message": f"No data found for track: {track_name}"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+@app.get("/api/research/tracks")
+async def get_all_tracks():
+    """Get latest data for all research tracks."""
+    try:
+        tracks = {}
+        track_names = [
+            "alpha_discovery", "market_monitoring", "sentiment_tracking",
+            "technical_analysis", "risk_assessment", "deep_research"
+        ]
+        
+        for track_name in track_names:
+            track_file = research_data_dir / f"{track_name}_latest.json"
+            if track_file.exists():
+                with open(track_file, 'r') as f:
+                    tracks[track_name] = json.load(f)
+        
+        return {"status": "success", "data": tracks}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+@app.get("/api/research/history/{track_name}")
+async def get_track_history(track_name: str, hours: int = 24):
+    """Get historical data for a research track."""
+    try:
+        cutoff_time = datetime.now() - timedelta(hours=hours)
+        history_files = []
+        
+        # Find all history files for the track
+        for file_path in research_data_dir.glob(f"{track_name}_*.json"):
+            if file_path.name.endswith("_latest.json"):
+                continue
+            
+            # Extract timestamp from filename
+            try:
+                timestamp_str = file_path.stem.split('_', 1)[1]
+                file_time = datetime.strptime(timestamp_str, "%Y%m%d_%H%M%S")
+                
+                if file_time >= cutoff_time:
+                    history_files.append((file_time, file_path))
+            except ValueError:
+                continue
+        
+        # Sort by timestamp
+        history_files.sort(key=lambda x: x[0])
+        
+        # Load the data
+        history_data = []
+        for file_time, file_path in history_files:
+            try:
+                with open(file_path, 'r') as f:
+                    data = json.load(f)
+                    data["file_timestamp"] = file_time.isoformat()
+                    history_data.append(data)
+            except Exception:
+                continue
+        
+        return {
+            "status": "success",
+            "data": {
+                "track_name": track_name,
+                "hours_requested": hours,
+                "entries_found": len(history_data),
+                "history": history_data
+            }
+        }
+        
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+@app.get("/api/research/decision-trees")
+async def get_decision_trees():
+    """Get current decision trees from active research."""
+    try:
+        trees = {}
+        
+        # Get decision trees from latest track data
+        track_names = [
+            "alpha_discovery", "market_monitoring", "sentiment_tracking",
+            "technical_analysis", "risk_assessment", "deep_research"
+        ]
+        
+        for track_name in track_names:
+            track_file = research_data_dir / f"{track_name}_latest.json"
+            if track_file.exists():
+                with open(track_file, 'r') as f:
+                    data = json.load(f)
+                    
+                    # Extract decision tree data
+                    decision_tree = data.get("decision_tree")
+                    if decision_tree:
+                        trees[track_name] = {
+                            "tree": decision_tree,
+                            "completed_at": data.get("completed_at"),
+                            "specialization": data.get("specialization"),
+                            "research_track": data.get("research_track")
+                        }
+        
+        return {"status": "success", "data": trees}
+        
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+@app.get("/api/research/alpha-opportunities")
+async def get_alpha_opportunities(min_confidence: float = 0.0):
+    """Get current alpha opportunities."""
+    try:
+        opportunities = []
+        
+        # Get opportunities from all tracks
+        track_names = [
+            "alpha_discovery", "market_monitoring", "sentiment_tracking",
+            "technical_analysis", "risk_assessment", "deep_research"
+        ]
+        
+        for track_name in track_names:
+            track_file = research_data_dir / f"{track_name}_latest.json"
+            if track_file.exists():
+                with open(track_file, 'r') as f:
+                    data = json.load(f)
+                    
+                    # Extract opportunities from insights
+                    insights = data.get("insights", [])
+                    for insight in insights:
+                        confidence = insight.get("confidence", 0.0)
+                        if confidence >= min_confidence:
+                            opportunity = {
+                                "id": f"{track_name}_{hash(str(insight))}",
+                                "track": track_name,
+                                "specialization": data.get("specialization", "unknown"),
+                                "opportunity": insight.get("insight", str(insight)),
+                                "confidence": confidence,
+                                "competitive_edge": insight.get("competitive_edge", ""),
+                                "action_plan": insight.get("actionable_steps", []),
+                                "discovered_at": data.get("completed_at"),
+                                "market_session": data.get("market_context", {}).get("market_session", "unknown")
+                            }
+                            opportunities.append(opportunity)
+        
+        # Sort by confidence
+        opportunities.sort(key=lambda x: x["confidence"], reverse=True)
+        
+        return {
+            "status": "success",
+            "data": {
+                "opportunities": opportunities,
+                "total_found": len(opportunities),
+                "min_confidence": min_confidence,
+                "last_updated": datetime.now().isoformat()
+            }
+        }
+        
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000) 

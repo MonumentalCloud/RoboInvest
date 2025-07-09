@@ -45,6 +45,16 @@ if [ -f "$PROJECT_ROOT/.frontend.pid" ]; then
     rm -f "$PROJECT_ROOT/.frontend.pid"
 fi
 
+if [ -f "$PROJECT_ROOT/.research.pid" ]; then
+    RESEARCH_PID=$(cat "$PROJECT_ROOT/.research.pid")
+    if kill -0 "$RESEARCH_PID" 2>/dev/null; then
+        echo "🔪 Stopping research service (PID: $RESEARCH_PID)"
+        kill "$RESEARCH_PID"
+        sleep 2
+    fi
+    rm -f "$PROJECT_ROOT/.research.pid"
+fi
+
 # Kill by port as backup
 echo "🧹 Cleaning up ports..."
 kill_port 8081  # Backend
@@ -53,6 +63,7 @@ kill_port 5173  # Frontend
 # Kill any remaining processes
 pkill -f "uvicorn.*fastapi_app" 2>/dev/null && echo "🔪 Killed remaining uvicorn processes"
 pkill -f "vite" 2>/dev/null && echo "🔪 Killed remaining vite processes"
+pkill -f "background_research_service" 2>/dev/null && echo "🔪 Killed remaining research processes"
 
 # Clean up log files
 if [ -f "$PROJECT_ROOT/backend.log" ]; then
@@ -63,6 +74,11 @@ fi
 if [ -f "$PROJECT_ROOT/frontend.log" ]; then
     echo "🗑️  Archiving frontend.log" 
     mv "$PROJECT_ROOT/frontend.log" "$PROJECT_ROOT/frontend.log.$(date +%Y%m%d_%H%M%S)"
+fi
+
+if [ -f "$PROJECT_ROOT/research.log" ]; then
+    echo "🗑️  Archiving research.log"
+    mv "$PROJECT_ROOT/research.log" "$PROJECT_ROOT/research.log.$(date +%Y%m%d_%H%M%S)"
 fi
 
 echo ""

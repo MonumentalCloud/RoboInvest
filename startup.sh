@@ -66,6 +66,13 @@ nohup python -m uvicorn backend.api.fastapi_app:app --reload --port 8081 > backe
 BACKEND_PID=$!
 echo "   Backend PID: $BACKEND_PID"
 
+# Start continuous research service
+echo "🔍 Starting continuous research service..."
+cd "$PROJECT_ROOT"
+nohup python background_research_service.py > research.log 2>&1 &
+RESEARCH_PID=$!
+echo "   Research Service PID: $RESEARCH_PID"
+
 # Start frontend
 echo "🌐 Starting frontend development server..."
 cd "$PROJECT_ROOT/frontend"
@@ -117,13 +124,15 @@ echo ""
 echo "📝 Logs:"
 echo "   • Backend:  $PROJECT_ROOT/backend.log"
 echo "   • Frontend: $PROJECT_ROOT/frontend.log"
+echo "   • Research: $PROJECT_ROOT/research.log"
 echo ""
 echo "🛑 To stop services:"
-echo "   kill $BACKEND_PID $FRONTEND_PID"
+echo "   kill $BACKEND_PID $FRONTEND_PID $RESEARCH_PID"
 echo "   or use: ./stop.sh"
 echo ""
 echo "🤖 Ready for autonomous trading!"
 
 # Save PIDs for stop script
 echo "$BACKEND_PID" > "$PROJECT_ROOT/.backend.pid"
-echo "$FRONTEND_PID" > "$PROJECT_ROOT/.frontend.pid" 
+echo "$FRONTEND_PID" > "$PROJECT_ROOT/.frontend.pid"
+echo "$RESEARCH_PID" > "$PROJECT_ROOT/.research.pid" 

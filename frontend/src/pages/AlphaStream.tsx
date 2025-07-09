@@ -6,18 +6,22 @@ import {
   Search, 
   Target, 
   CheckCircle, 
-  Play, 
-  Pause, 
   Wifi,
   WifiOff,
-  Activity
+  Activity,
+  Eye,
+  Clock,
+  Target as TargetIcon,
+  DollarSign,
+  AlertTriangle,
+  ArrowUp,
+  ArrowDown
 } from "lucide-react";
 import {
   Box,
   Card,
   CardContent,
   Typography,
-  Button,
   LinearProgress,
   Chip,
   List,
@@ -27,10 +31,14 @@ import {
   Paper,
   Alert,
   Fade,
-  Zoom
+  Zoom,
+  Grid,
+  Divider,
+  Button
 } from '@mui/material';
 import ResearchTreeFlow from '../components/ResearchTreeFlow';
 import type { TreeNode } from '../components/ResearchTreeFlow';
+import { useResearchInsights, useAlphaOpportunities, useResearchStatus, useDecisionTrees } from '../hooks';
 
 interface AIThought {
   type: string;
@@ -52,11 +60,16 @@ interface ResearchNode {
 }
 
 export default function AlphaStream() {
-  const [isStreaming, setIsStreaming] = useState(false);
   const [aiThoughts, setAiThoughts] = useState<AIThought[]>([]);
   const [researchNodes, setResearchNodes] = useState<ResearchNode[]>([]);
   const [treeNodes, setTreeNodes] = useState<TreeNode[]>([]);
   const [connectionStatus, setConnectionStatus] = useState<"connecting" | "connected" | "disconnected">("disconnected");
+  
+  // Research data hooks
+  const { data: researchStatus } = useResearchStatus();
+  const { data: insightsData } = useResearchInsights(20);
+  const { data: opportunitiesData } = useAlphaOpportunities(0.6);
+  const { data: decisionTreesData, refetch: refetchDecisionTrees } = useDecisionTrees();
   
   const wsRef = useRef<WebSocket | null>(null);
   const thoughtsEndRef = useRef<HTMLDivElement>(null);
@@ -133,7 +146,14 @@ export default function AlphaStream() {
             } else if (message.type === "tree_update") {
               // Update tree structure
               console.log("🌳 Tree update received:", message.tree?.length, "nodes");
-              setTreeNodes(message.tree || []);
+              // Transform backend tree format to frontend format
+              const transformedTree = message.tree?.map((node: any) => ({
+                ...node,
+                title: node.content || node.id, // Use content as title if available
+                parent: node.parent_id, // Map parent_id to parent
+                timestamp: node.created_at || node.timestamp || new Date().toISOString()
+              })) || [];
+              setTreeNodes(transformedTree);
             }
           } catch (err) {
             console.error("Error parsing message:", err);
@@ -178,29 +198,24 @@ export default function AlphaStream() {
     }
   };
 
-
-
-  // Start autonomous trading with streaming
-  const startAutonomousTrading = async () => {
-    try {
-      const response = await fetch("http://localhost:8081/api/autonomous/start", {
-        method: "POST",
-      });
-      
-      if (response.ok) {
-        setIsStreaming(true);
-      }
-    } catch (error) {
-      console.error("Failed to start autonomous trading:", error);
+  // Research data processing
+  const insights = insightsData?.data?.insights || [];
+  const opportunities = opportunitiesData?.data?.opportunities || [];
+  const status = researchStatus?.data;
+  
+  // Use decision trees data as fallback when websocket data is not available
+  useEffect(() => {
+    console.log("🌳 Decision trees data check:", {
+      treeNodesLength: treeNodes.length,
+      decisionTreesDataLength: decisionTreesData?.length,
+      decisionTreesData: decisionTreesData
+    });
+    
+    if (treeNodes.length === 0 && decisionTreesData && decisionTreesData.length > 0) {
+      console.log("🌳 Using fallback decision trees data:", decisionTreesData.length, "nodes");
+      setTreeNodes(decisionTreesData);
     }
-  };
-
-  const stopStreaming = () => {
-    setIsStreaming(false);
-    setAiThoughts([]);
-    setResearchNodes([]);
-    setTreeNodes([]);
-  };
+  }, [treeNodes.length, decisionTreesData]);
 
   // Test websocket connection
   const testWebSocket = async () => {
@@ -213,203 +228,381 @@ export default function AlphaStream() {
         console.log("✅ Test message sent successfully");
       }
     } catch (error) {
-      console.error("❌ Failed to send test message:", error);
+      console.error("Failed to send test message:", error);
     }
   };
 
-  // Test tree visualization with sample data
   const testTreeVisualization = () => {
-    const sampleNodes: TreeNode[] = [
+    // Simulate tree update for testing
+    const testTree: TreeNode[] = [
       {
-        id: 'root_decision',
-        type: 'decision',
-        title: '🚀 Start Alpha Hunt',
-        status: 'completed',
-        content: 'Initiating autonomous alpha hunting process',
+        id: "test_root",
+        type: "decision",
+        title: "Test Research",
+        content: "Testing tree visualization",
+        status: "active",
         timestamp: new Date().toISOString(),
-        metadata: { real_system: true }
-      },
-      {
-        id: 'market_analysis',
-        type: 'analysis',
-        title: '📊 Market Analysis',
-        status: 'completed',
-        content: 'Analyzing current market conditions and sentiment',
-        parent: 'root_decision',
-        timestamp: new Date().toISOString(),
-        confidence: 0.85,
-        metadata: { vix_level: 18.5, sentiment: 'bullish' }
-      },
-      {
-        id: 'alpha_hunting',
-        type: 'analysis',
-        title: '🔍 Alpha Detection',
-        status: 'completed',
-        content: 'Scanning for alpha opportunities using AI analysis',
-        parent: 'market_analysis',
-        timestamp: new Date().toISOString(),
-        confidence: 0.72,
-        metadata: { using_llm: true }
-      },
-      {
-        id: 'web_research',
-        type: 'websearch',
-        title: '🌐 Web Research',
-        status: 'active',
-        content: 'Researching market trends via web sources',
-        parent: 'alpha_hunting',
-        timestamp: new Date().toISOString(),
-        progress: 60,
-        metadata: { sources: 3 }
-      },
-      {
-        id: 'fundamental_analysis',
-        type: 'fundamental',
-        title: '📈 Fundamental Analysis',
-        status: 'active',
-        content: 'Analyzing company fundamentals and financials',
-        parent: 'alpha_hunting',
-        timestamp: new Date().toISOString(),
-        progress: 40,
-        metadata: { real_ai: true }
-      },
-      {
-        id: 'data_analysis',
-        type: 'pandas',
-        title: '📊 Quantitative Analysis',
-        status: 'pending',
-        content: 'Performing statistical analysis on historical data',
-        parent: 'alpha_hunting',
-        timestamp: new Date().toISOString(),
-        metadata: { dataset_size: '5Y' }
-      },
-      {
-        id: 'strategy_creation',
-        type: 'strategy',
-        title: '🎯 Strategy Synthesis',
-        status: 'pending',
-        content: 'Creating trading strategy from research findings',
-        parent: 'fundamental_analysis',
-        timestamp: new Date().toISOString(),
-        metadata: { strategy_type: 'momentum' }
+        children: []
       }
     ];
-    
-    setTreeNodes(sampleNodes);
-    console.log("🌳 Test tree data loaded:", sampleNodes.length, "nodes");
+    setTreeNodes(testTree);
   };
 
-  // Get thought type styling
-  const getThoughtStyle = (thoughtType: string) => {
-    switch (thoughtType) {
-      case "system_start":
-        return { icon: <Zap />, color: "primary" as const, bgColor: "#1a2332" };
-      case "analysis":
-        return { icon: <Brain />, color: "info" as const, bgColor: "#2a1a32" };
-      case "discovery":
-        return { icon: <Target />, color: "success" as const, bgColor: "#1a321a" };
-      case "strategy":
-        return { icon: <TrendingUp />, color: "warning" as const, bgColor: "#323228" };
-      case "completion":
-        return { icon: <CheckCircle />, color: "success" as const, bgColor: "#1a321a" };
-      case "error":
-        return { icon: <Activity />, color: "error" as const, bgColor: "#321a1a" };
-      default:
-        return { icon: <Brain />, color: "default" as const, bgColor: "#2a2a2a" };
+  const loadDecisionTreesFromAPI = async () => {
+    try {
+      console.log("🌳 Loading decision trees from API...");
+      const response = await fetch("http://localhost:8081/api/research/decision-trees");
+      const data = await response.json();
+      
+      console.log("🌳 Raw API response:", data);
+      
+      if (data.data) {
+        const flatTrees: any[] = [];
+        Object.entries(data.data).forEach(([trackName, trackData]: [string, any]) => {
+          console.log(`🌳 Processing track: ${trackName}`, trackData);
+          if (trackData?.tree?.nodes) {
+            const nodes = Object.values(trackData.tree.nodes).map((node: any) => ({
+              ...node,
+              title: node.content || node.id,
+              parent: node.parent_id, // Map parent_id to parent
+              timestamp: node.created_at || node.timestamp || new Date().toISOString(),
+              track: trackName
+            }));
+            flatTrees.push(...nodes);
+          }
+        });
+        
+        console.log("🌳 Loaded decision trees from API:", flatTrees.length, "nodes");
+        console.log("🌳 Sample nodes:", flatTrees.slice(0, 3));
+        setTreeNodes(flatTrees);
+      } else {
+        console.log("🌳 No data.data found in response");
+      }
+    } catch (error) {
+      console.error("Failed to load decision trees:", error);
     }
   };
 
-  // Get research node status styling
+  const getThoughtStyle = (thoughtType: string) => {
+    switch (thoughtType.toLowerCase()) {
+      case "system_start":
+        return { bgColor: "#1a332a", icon: <CheckCircle color="#4caf50" /> };
+      case "opportunity_scanning":
+        return { bgColor: "#332a1a", icon: <Search color="#ff9800" /> };
+      case "execution_decision":
+        return { bgColor: "#1a1a2a", icon: <Target color="#4a90e2" /> };
+      case "fallback_decision":
+        return { bgColor: "#2a1a1a", icon: <AlertTriangle color="#f44336" /> };
+      default:
+        return { bgColor: "#1a1a1a", icon: <Brain color="#64b5f6" /> };
+    }
+  };
+
   const getNodeStyle = (status: string) => {
     switch (status) {
-      case "analyzing":
-      case "scanning":
-      case "researching":
-        return { color: "primary" as const, progress: true };
-      case "complete":
+      case "active":
+        return { color: "warning" as const, progress: true };
+      case "completed":
         return { color: "success" as const, progress: false };
+      case "failed":
+        return { color: "error" as const, progress: false };
       default:
         return { color: "default" as const, progress: false };
     }
   };
 
   return (
-    <Box sx={{ p: 2, minHeight: "100vh", bgcolor: "#0a0a0a" }}>
+    <Box sx={{ p: 3, minHeight: "100vh", bgcolor: "#0a0a0a", color: "#ffffff" }}>
       {/* Header */}
-      <Box sx={{ mb: 3, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <Typography variant="h4" sx={{ display: "flex", alignItems: "center", gap: 1, color: "#ffffff" }}>
-          <Brain color="#64b5f6" />
-          🚀 Autonomous Alpha Stream
-        </Typography>
+      <Box sx={{ 
+        display: "flex", 
+        justifyContent: "space-between", 
+        alignItems: "center", 
+        mb: 3,
+        flexWrap: "wrap",
+        gap: 2
+      }}>
+        <Box>
+          <Typography variant="h4" sx={{ 
+            display: "flex", 
+            alignItems: "center", 
+            gap: 1,
+            color: "#ff9800",
+            fontWeight: "bold"
+          }}>
+            <Eye />
+            🔍 Continuous Research Dashboard
+          </Typography>
+          <Typography variant="body2" sx={{ color: "#888", mt: 1 }}>
+            Live AI research insights and alpha opportunities
+          </Typography>
+        </Box>
         
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           {/* Connection Status */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            {connectionStatus === "connected" ? <Wifi color="#4caf50" /> : <WifiOff color="#757575" />}
-            <Typography variant="body2" sx={{ color: connectionStatus === "connected" ? "#4caf50" : "#ffffff" }}>
+          <Box sx={{ 
+            display: "flex", 
+            alignItems: "center", 
+            gap: 1,
+            px: 2,
+            py: 1,
+            borderRadius: 2,
+            bgcolor: connectionStatus === "connected" ? "#1a332a" : "#332a1a",
+            border: `1px solid ${connectionStatus === "connected" ? "#4caf50" : "#ff9800"}`
+          }}>
+            {connectionStatus === "connected" ? <Wifi color="#4caf50" /> : <WifiOff color="#ff9800" />}
+            <Typography variant="body2" sx={{ 
+              color: connectionStatus === "connected" ? "#4caf50" : "#ff9800",
+              fontWeight: "bold"
+            }}>
               {connectionStatus === "connected" ? "Live" : 
                connectionStatus === "connecting" ? "Connecting..." : "Reconnecting..."}
             </Typography>
           </Box>
           
-          {/* Control Buttons */}
+          {/* Research Status */}
+          {status && (
+            <Box sx={{ 
+              display: "flex", 
+              alignItems: "center", 
+              gap: 1,
+              px: 2,
+              py: 1,
+              borderRadius: 2,
+              bgcolor: "#1a1a2a",
+              border: "1px solid #4a90e2"
+            }}>
+              <Activity color="#4a90e2" />
+              <Typography variant="body2" sx={{ color: "#4a90e2", fontWeight: "bold" }}>
+                {status.insights_generated || 0} insights
+              </Typography>
+            </Box>
+          )}
+          
+          {/* Load Decision Trees Button */}
           <Button
             variant="outlined"
-            onClick={testWebSocket}
-            disabled={connectionStatus !== "connected"}
-            startIcon={<Zap />}
-            sx={{ mr: 1 }}
+            onClick={loadDecisionTreesFromAPI}
+            sx={{ color: "#2196f3", borderColor: "#2196f3", mr: 1 }}
           >
-            Test Connection
-          </Button>
-
-          <Button
-            variant="outlined"
-            onClick={testTreeVisualization}
-            startIcon={<Search />}
-            sx={{ mr: 1 }}
-          >
-            Test Tree
+            Load Trees
           </Button>
           
+          {/* Refetch Decision Trees Button */}
           <Button
-            variant="contained"
-            color={isStreaming ? "secondary" : "primary"}
-            onClick={isStreaming ? stopStreaming : startAutonomousTrading}
-            disabled={connectionStatus !== "connected"}
-            startIcon={isStreaming ? <Pause /> : <Play />}
+            variant="outlined"
+            onClick={() => refetchDecisionTrees()}
+            sx={{ color: "#ff9800", borderColor: "#ff9800" }}
           >
-            {isStreaming ? "Stop Alpha Hunt" : "Start Alpha Hunt"}
+            Refetch Trees
           </Button>
         </Box>
       </Box>
 
-
-
-      {/* Real AI System Indicator */}
+      {/* Continuous Research Status */}
       <Alert 
-        severity="success" 
+        severity="info" 
         icon={<Activity />}
         sx={{ 
           mb: 3, 
-          bgcolor: "#1a332a", 
-          color: "#4caf50",
-          border: "1px solid #4caf50",
-          "& .MuiAlert-icon": { color: "#4caf50" }
+          bgcolor: "#1a1a2a", 
+          color: "#4a90e2",
+          border: "1px solid #4a90e2",
+          "& .MuiAlert-icon": { color: "#4a90e2" }
         }}
       >
         <Typography variant="body1" fontWeight="bold">
-          🤖 Real AI Research System Active
+          🤖 Continuous AI Research System Active
         </Typography>
         <Typography variant="body2" sx={{ color: "#81c784" }}>
-          • Live market data via yfinance • OpenAI LLM analysis • Real web research • Dynamic strategies
-          {aiThoughts.some(t => t.metadata?.real_system || t.metadata?.real_ai || t.metadata?.real_data) && 
-            " • Currently processing real data"}
+          • 6 research tracks running 24/7 • Real-time market analysis • Alpha opportunity detection • Automated insights generation
         </Typography>
       </Alert>
 
-      {/* Main Content - Research Tree Visualization */}
-      <Box sx={{ height: "70vh", mb: 3 }}>
+      {/* Alpha Opportunities Grid */}
+      <Box sx={{ display: "flex", gap: 3, mb: 3, flexDirection: { xs: "column", md: "row" } }}>
+        <Box sx={{ flex: 1 }}>
+          <Card sx={{ 
+            bgcolor: "#1a1a1a",
+            border: "1px solid #333",
+            height: "100%"
+          }}>
+            <CardContent>
+              <Typography variant="h6" sx={{ 
+                display: "flex", 
+                alignItems: "center", 
+                gap: 1, 
+                mb: 2, 
+                color: "#ff9800" 
+              }}>
+                <TargetIcon />
+                🎯 High-Confidence Alpha Opportunities
+              </Typography>
+              
+              {opportunities.length === 0 ? (
+                <Box sx={{ 
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "center", 
+                  height: "200px",
+                  flexDirection: "column",
+                  color: "#888"
+                }}>
+                  <Target size={48} />
+                  <Typography variant="body1" sx={{ mt: 2, color: "#888" }}>
+                    No high-confidence opportunities yet
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: "#666" }}>
+                    AI agents are continuously scanning for alpha
+                  </Typography>
+                </Box>
+              ) : (
+                <List dense>
+                  {opportunities.slice(0, 5).map((opportunity: any, index: number) => (
+                    <Fade in={true} key={opportunity.id} timeout={500 + index * 100}>
+                      <ListItem sx={{
+                        mb: 2,
+                        bgcolor: "#2a2a2a",
+                        borderRadius: 2,
+                        border: "1px solid #444"
+                      }}>
+                        <ListItemIcon>
+                          <Chip
+                            label={`${(opportunity.confidence * 100).toFixed(0)}%`}
+                            size="small"
+                            color={opportunity.confidence > 0.8 ? "success" : "warning"}
+                          />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <Typography sx={{ color: "#ffffff", fontWeight: "bold" }}>
+                              {opportunity.opportunity}
+                            </Typography>
+                          }
+                          secondary={
+                            <Typography variant="body2" sx={{ color: "#888", mt: 1 }}>
+                              <strong>Edge:</strong> {opportunity.competitive_edge}
+                              {opportunity.action_plan && opportunity.action_plan.length > 0 && (
+                                <> • <strong>Actions:</strong> {opportunity.action_plan.join(", ")}</>
+                              )}
+                              {opportunity.buy_conditions && opportunity.buy_conditions.length > 0 && (
+                                <> • <strong style={{color: "#4caf50"}}>Buy:</strong> {opportunity.buy_conditions.join(", ")}</>
+                              )}
+                              {opportunity.exit_conditions && opportunity.exit_conditions.length > 0 && (
+                                <> • <strong style={{color: "#ff9800"}}>Exit:</strong> {opportunity.exit_conditions.join(", ")}</>
+                              )}
+                              <br />
+                              <span style={{color: "#666", fontSize: "0.75rem"}}>
+                                {new Date(opportunity.discovered_at).toLocaleString()}
+                              </span>
+                            </Typography>
+                          }
+                        />
+                        <Box sx={{ display: "flex", gap: 1, mt: 1, flexWrap: "wrap" }}>
+                          <Chip 
+                            label={`SL: ${opportunity.stop_loss || "5%"}`} 
+                            size="small" 
+                            color="error" 
+                            variant="outlined"
+                          />
+                          <Chip 
+                            label={`TP: ${opportunity.take_profit || "15%"}`} 
+                            size="small" 
+                            color="success" 
+                            variant="outlined"
+                          />
+                          <Chip 
+                            label={opportunity.position_sizing || "Standard"} 
+                            size="small" 
+                            color="primary" 
+                            variant="outlined"
+                          />
+                        </Box>
+                      </ListItem>
+                    </Fade>
+                  ))}
+                </List>
+              )}
+            </CardContent>
+          </Card>
+        </Box>
+
+        <Box sx={{ flex: 1 }}>
+          <Card sx={{ 
+            bgcolor: "#1a1a1a",
+            border: "1px solid #333",
+            height: "100%"
+          }}>
+            <CardContent>
+              <Typography variant="h6" sx={{ 
+                display: "flex", 
+                alignItems: "center", 
+                gap: 1, 
+                mb: 2, 
+                color: "#64b5f6" 
+              }}>
+                <Brain />
+                🧠 Latest Research Insights
+              </Typography>
+              
+              {insights.length === 0 ? (
+                <Box sx={{ 
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "center", 
+                  height: "200px",
+                  flexDirection: "column",
+                  color: "#888"
+                }}>
+                  <Brain size={48} />
+                  <Typography variant="body1" sx={{ mt: 2, color: "#888" }}>
+                    No insights available yet
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: "#666" }}>
+                    AI agents are working in the background
+                  </Typography>
+                </Box>
+              ) : (
+                <List dense>
+                  {insights.slice(0, 5).map((insight: any, index: number) => (
+                    <Fade in={true} key={index} timeout={500 + index * 100}>
+                      <ListItem sx={{
+                        mb: 2,
+                        bgcolor: "#2a2a2a",
+                        borderRadius: 2,
+                        border: "1px solid #444"
+                      }}>
+                        <ListItemIcon>
+                          <Chip
+                            label={insight.track}
+                            size="small"
+                            color="primary"
+                          />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <Typography sx={{ color: "#ffffff" }}>
+                              {insight.insight}
+                            </Typography>
+                          }
+                          secondary={
+                            <Typography variant="body2" sx={{ color: "#888", mt: 1 }}>
+                              <strong>Confidence:</strong> {(insight.confidence * 100).toFixed(0)}% • {new Date(insight.timestamp).toLocaleString()}
+                            </Typography>
+                          }
+                        />
+                      </ListItem>
+                    </Fade>
+                  ))}
+                </List>
+              )}
+            </CardContent>
+          </Card>
+        </Box>
+      </Box>
+
+      {/* Research Tree Visualization */}
+      <Box sx={{ height: "50vh", mb: 3 }}>
         <Card sx={{ 
           height: "100%", 
           display: "flex", 
@@ -418,23 +611,20 @@ export default function AlphaStream() {
           border: "1px solid #333"
         }}>
           <CardContent sx={{ pb: 1 }}>
-            <Typography variant="h5" sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2, color: "#ffffff" }}>
-              <Search color="#ff9800" />
-              🌳 AI Research Decision Tree
-              {isStreaming && <Activity size={20} className="animate-pulse" />}
-              {treeNodes.some(n => n.metadata?.real_system || n.metadata?.real_ai || n.metadata?.real_data) && (
-                <Chip
-                  label="REAL AI ACTIVE"
-                  size="small"
-                  sx={{
-                    bgcolor: "#1a332a",
-                    color: "#4caf50",
-                    border: "1px solid #4caf50",
-                    fontSize: "0.75rem"
-                  }}
-                />
-              )}
-            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
+              <Typography variant="h5" sx={{ display: "flex", alignItems: "center", gap: 1, color: "#ffffff" }}>
+                <Search color="#ff9800" />
+                🌳 Live Research Decision Trees
+              </Typography>
+              <Button 
+                variant="outlined" 
+                size="small" 
+                onClick={loadDecisionTreesFromAPI}
+                sx={{ color: "#ff9800", borderColor: "#ff9800" }}
+              >
+                Load Trees
+              </Button>
+            </Box>
           </CardContent>
           
           <Box sx={{ flex: 1, overflow: "hidden", px: 2, pb: 2 }}>
@@ -447,12 +637,12 @@ export default function AlphaStream() {
                 flexDirection: "column",
                 color: "#888"
               }}>
-                <Brain size={48} />
+                <Search size={48} />
                 <Typography variant="h6" sx={{ mt: 2, color: "#888" }}>
-                  Waiting for AI research tree...
+                  Waiting for research trees...
                 </Typography>
                 <Typography variant="body2" sx={{ color: "#666" }}>
-                  Start the alpha hunt to see the decision-making process
+                  Decision trees will appear as AI agents work
                 </Typography>
               </Box>
             ) : (
@@ -464,265 +654,78 @@ export default function AlphaStream() {
         </Card>
       </Box>
 
-      {/* Legacy Thought Stream (for backup/debugging) */}
-      <Box sx={{ display: "flex", gap: 3, flexDirection: { xs: "column", md: "row" } }}>
-        {/* Left Panel - Real-time AI Thoughts */}
-        <Box sx={{ flex: 2 }}>
-          <Card sx={{ 
-            height: "40vh", 
+      {/* Live AI Thoughts Stream */}
+      <Card sx={{ 
+        bgcolor: "#1a1a1a",
+        border: "1px solid #333"
+      }}>
+        <CardContent>
+          <Typography variant="h6" sx={{ 
             display: "flex", 
-            flexDirection: "column",
-            bgcolor: "#1a1a1a",
-            border: "1px solid #333"
+            alignItems: "center", 
+            gap: 1, 
+            mb: 2, 
+            color: "#64b5f6" 
           }}>
-            <CardContent sx={{ pb: 1 }}>
-              <Typography variant="h6" sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2, color: "#ffffff" }}>
-                <Brain color="#64b5f6" />
-                🧠 Legacy Thought Stream
-                {aiThoughts.some(t => t.metadata?.real_system || t.metadata?.real_ai || t.metadata?.real_data) && (
-                  <Chip
-                    label="REAL AI ACTIVE"
-                    size="small"
-                    sx={{
-                      bgcolor: "#1a332a",
-                      color: "#4caf50",
-                      border: "1px solid #4caf50",
-                      fontSize: "0.75rem"
-                    }}
-                  />
-                )}
-              </Typography>
-            </CardContent>
-            
-            <Box sx={{ flex: 1, overflow: "auto", px: 2, pb: 2 }}>
-              {aiThoughts.length === 0 ? (
-                <Box sx={{ 
-                  display: "flex", 
-                  alignItems: "center", 
-                  justifyContent: "center", 
-                  height: "100%",
-                  flexDirection: "column",
-                  color: "#888"
-                }}>
-                  <Brain size={48} />
-                  <Typography variant="h6" sx={{ mt: 2, color: "#888" }}>
-                    Waiting for AI thoughts...
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: "#666" }}>
-                    Start the alpha hunt to see live reasoning
-                  </Typography>
-                </Box>
-              ) : (
-                <List dense>
-                  {aiThoughts.map((thought, index) => {
-                    const style = getThoughtStyle(thought.thought_type);
-                    return (
-                      <Fade in={true} key={index} timeout={500}>
-                        <ListItem
-                                                     sx={{
-                             mb: 1,
-                             backgroundColor: style.bgColor,
-                             borderRadius: 2,
-                             border: "1px solid #444"
-                           }}
-                        >
-                          <ListItemIcon>
-                            <Chip
-                              icon={style.icon}
-                              label={thought.thought_type}
-                              size="small"
-                            />
-                          </ListItemIcon>
-                                                                               <ListItemText
-                            primary={
-                              <Box component="span">
-                                <Typography component="span" sx={{ color: "#ffffff" }}>
-                                  {thought.content}
-                                </Typography>
-                                {(thought.metadata?.real_system || thought.metadata?.real_ai || thought.metadata?.real_data) && (
-                                  <Chip
-                                    label="REAL AI"
-                                    size="small"
-                                    sx={{
-                                      mt: 1,
-                                      bgcolor: "#1a332a",
-                                      color: "#4caf50",
-                                      border: "1px solid #4caf50",
-                                      fontSize: "0.75rem"
-                                    }}
-                                  />
-                                )}
-                              </Box>
-                            }
-                            secondary={
-                              <Box component="span" sx={{ display: "flex", justifyContent: "space-between", mt: 1, flexWrap: "wrap", gap: 1 }}>
-                                <Typography variant="caption" component="span" sx={{ color: "#aaa" }}>
-                                  {new Date(thought.timestamp).toLocaleTimeString()}
-                                </Typography>
-                                <Box component="span" sx={{ display: "flex", gap: 1 }}>
-                                  {thought.metadata?.confidence && (
-                                    <Typography variant="caption" component="span" sx={{ color: "#64b5f6" }}>
-                                      Confidence: {(thought.metadata.confidence * 100).toFixed(0)}%
-                                    </Typography>
-                                  )}
-                                  {thought.metadata?.vix && (
-                                    <Typography variant="caption" component="span" sx={{ color: "#ff9800" }}>
-                                      VIX: {thought.metadata.vix.toFixed(1)}
-                                    </Typography>
-                                  )}
-                                  {thought.metadata?.action && (
-                                    <Typography variant="caption" component="span" sx={{ color: "#4caf50" }}>
-                                      {thought.metadata.action} {thought.metadata.symbol}
-                                    </Typography>
-                                  )}
-                                </Box>
-                              </Box>
-                            }
-                          />
-                        </ListItem>
-                      </Fade>
-                    );
-                  })}
-                  <div ref={thoughtsEndRef} />
-                </List>
-              )}
-            </Box>
-          </Card>
-        </Box>
-
-        {/* Right Panel - Alpha Research Tree */}
-        <Box sx={{ flex: 1 }}>
-          <Card sx={{ 
-            height: "70vh", 
-            display: "flex", 
-            flexDirection: "column",
-            bgcolor: "#1a1a1a",
-            border: "1px solid #333"
-          }}>
-            <CardContent sx={{ pb: 1 }}>
-              <Typography variant="h5" sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2, color: "#ffffff" }}>
-                <Search color="#ff9800" />
-                🔍 Research Pipeline
-                {researchNodes.some(n => n.node_data?.data?.real_ai || n.node_data?.data?.using_llm) && (
-                  <Chip
-                    label="REAL AI ACTIVE"
-                    size="small"
-                    sx={{
-                      bgcolor: "#1a332a",
-                      color: "#4caf50",
-                      border: "1px solid #4caf50",
-                      fontSize: "0.75rem"
-                    }}
-                  />
-                )}
-              </Typography>
-            </CardContent>
-            
-            <Box sx={{ flex: 1, overflow: "auto", px: 2, pb: 2 }}>
-              {researchNodes.length === 0 ? (
-                <Box sx={{ 
-                  display: "flex", 
-                  alignItems: "center", 
-                  justifyContent: "center", 
-                  height: "100%",
-                  flexDirection: "column",
-                  color: "#888"
-                }}>
-                  <Search size={48} />
-                  <Typography variant="h6" sx={{ mt: 2, color: "#888" }}>
-                    Research Tree Empty
-                  </Typography>
-                  <Typography variant="body2" textAlign="center" sx={{ color: "#666" }}>
-                    Alpha research pipeline will appear here during analysis
-                  </Typography>
-                </Box>
-              ) : (
-                <List>
-                  {researchNodes.map((node, index) => {
-                    const style = getNodeStyle(node.node_data.status);
-                    return (
-                                             <Zoom in={true} key={index} timeout={300}>
-                         <Paper
-                           elevation={2}
-                           sx={{
-                             p: 2,
-                             mb: 2,
-                             bgcolor: "#2a2a2a",
-                             borderLeft: `4px solid ${
-                               style.color === "success" ? "#4caf50" :
-                               style.color === "primary" ? "#2196f3" : "#757575"
-                             }`
-                           }}
-                        >
-                                                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1 }}>
-                             <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-                               <Typography variant="subtitle1" fontWeight="bold" sx={{ color: "#ffffff" }}>
-                                 {node.node_data.title}
-                               </Typography>
-                               {(node.node_data.data?.real_ai || node.node_data.data?.using_llm) && (
-                                 <Chip
-                                   label="REAL AI RESEARCH"
-                                   size="small"
-                                   sx={{
-                                     bgcolor: "#1a332a",
-                                     color: "#4caf50",
-                                     border: "1px solid #4caf50",
-                                     fontSize: "0.7rem",
-                                     alignSelf: "flex-start"
-                                   }}
-                                 />
-                               )}
-                             </Box>
-                             <Chip
-                               label={node.node_data.status}
-                               color={style.color}
-                               size="small"
-                             />
-                           </Box>
-                          
-                          {style.progress && node.node_data.data?.progress !== undefined && (
-                            <LinearProgress
-                              variant="determinate"
-                              value={node.node_data.data.progress}
-                              sx={{ mb: 1 }}
-                            />
-                          )}
-                          
-                                                     {/* Research Data */}
-                           {node.node_data.data && (
-                             <Box sx={{ mt: 1 }}>
-                               {node.node_data.data.opportunities_found && (
-                                 <Typography variant="body2" sx={{ color: "#aaa" }}>
-                                   Found {node.node_data.data.opportunities_found} opportunities
-                                 </Typography>
-                               )}
-                               {node.node_data.data.sources_analyzed && (
-                                 <Typography variant="body2" sx={{ color: "#aaa" }}>
-                                   Analyzed {node.node_data.data.sources_analyzed} sources
-                                 </Typography>
-                               )}
-                               {node.node_data.data.final_strategy && (
-                                 <Box sx={{ mt: 1 }}>
-                                   <Typography variant="body2" fontWeight="bold" sx={{ color: "#ffffff" }}>
-                                     Strategy: {node.node_data.data.final_strategy.action} {node.node_data.data.final_strategy.symbol}
-                                   </Typography>
-                                   <Typography variant="body2" sx={{ color: "#aaa" }}>
-                                     Confidence: {(node.node_data.data.final_strategy.confidence * 100).toFixed(0)}%
-                                   </Typography>
-                                 </Box>
-                               )}
-                             </Box>
-                           )}
-                        </Paper>
-                      </Zoom>
-                    );
-                  })}
-                </List>
-              )}
-            </Box>
-          </Card>
-        </Box>
-      </Box>
+            <Brain />
+            🧠 Live AI Research Thoughts
+          </Typography>
+          
+          <Box sx={{ maxHeight: "300px", overflow: "auto" }}>
+            {aiThoughts.length === 0 ? (
+              <Box sx={{ 
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center", 
+                height: "200px",
+                flexDirection: "column",
+                color: "#888"
+              }}>
+                <Brain size={48} />
+                <Typography variant="body1" sx={{ mt: 2, color: "#888" }}>
+                  Waiting for AI thoughts...
+                </Typography>
+                <Typography variant="body2" sx={{ color: "#666" }}>
+                  AI agents will share their reasoning in real-time
+                </Typography>
+              </Box>
+            ) : (
+              <List dense>
+                {aiThoughts.map((thought, index) => {
+                  const style = getThoughtStyle(thought.thought_type);
+                  return (
+                    <Fade in={true} key={index} timeout={500}>
+                      <ListItem sx={{
+                        mb: 1,
+                        backgroundColor: style.bgColor,
+                        borderRadius: 2,
+                        border: "1px solid #444"
+                      }}>
+                        <ListItemIcon>
+                          {style.icon}
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <Typography sx={{ color: "#ffffff" }}>
+                              {thought.content}
+                            </Typography>
+                          }
+                          secondary={
+                            <Typography variant="caption" sx={{ color: "#888" }}>
+                              {new Date(thought.timestamp).toLocaleString()}
+                            </Typography>
+                          }
+                        />
+                      </ListItem>
+                    </Fade>
+                  );
+                })}
+                <div ref={thoughtsEndRef} />
+              </List>
+            )}
+          </Box>
+        </CardContent>
+      </Card>
     </Box>
   );
 } 

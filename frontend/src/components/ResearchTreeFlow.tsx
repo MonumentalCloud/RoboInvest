@@ -99,7 +99,7 @@ const getStatusIcon = (status: string) => {
 };
 
 // Custom Node Component
-const CustomNode = ({ data }: { data: any }) => {
+const CustomNode = React.memo(({ data }: { data: any }) => {
   const { nodeType, status, title, content, progress, confidence, metadata } = data;
   const colors = getNodeColor(nodeType, status);
 
@@ -194,7 +194,7 @@ const CustomNode = ({ data }: { data: any }) => {
       <Handle type="source" position={Position.Bottom} />
     </Box>
   );
-};
+});
 
 // Node types
 const nodeTypes: NodeTypes = {
@@ -206,6 +206,10 @@ const ResearchTreeFlow: React.FC<ResearchTreeProps> = ({ treeData }) => {
 
   // Convert tree data to React Flow format
   const { nodes, edges } = useMemo(() => {
+    console.log("🌳 Building tree with", treeData.length, "nodes");
+    console.log("🌳 RAW treeData:", treeData);
+    console.log("🌳 Sample nodes:", treeData.slice(0, 3).map(n => ({ id: n.id, parent: n.parent, type: n.type })));
+    
     const flowNodes: Node[] = [];
     const flowEdges: Edge[] = [];
     const nodeMap = new Map<string, TreeNode>();
@@ -214,6 +218,9 @@ const ResearchTreeFlow: React.FC<ResearchTreeProps> = ({ treeData }) => {
     treeData.forEach(node => {
       nodeMap.set(node.id, node);
     });
+    
+    console.log("🌳 Original treeData:", treeData.map(n => ({ id: n.id, parent: n.parent, type: n.type })));
+    console.log("🌳 nodeMap after construction:", Array.from(nodeMap.values()).map(n => ({ id: n.id, parent: n.parent, type: n.type })));
 
     // Add root node if not present
     let rootExists = treeData.some(node => !node.parent);
@@ -234,23 +241,83 @@ const ResearchTreeFlow: React.FC<ResearchTreeProps> = ({ treeData }) => {
     const levelWidth = new Map<number, number>();
     const nodeLevel = new Map<string, number>();
 
-    // Assign levels
+    // Assign levels - completely rewritten to handle the hierarchy properly
     const assignLevels = (nodeId: string, level: number) => {
-      if (nodeLevel.has(nodeId)) return;
+      if (nodeLevel.has(nodeId)) {
+        console.log(`🌳 Node ${nodeId} already has level ${nodeLevel.get(nodeId)}`);
+        return;
+      }
+      
+      console.log(`🌳 Assigning level ${level} to node ${nodeId}`);
       nodeLevel.set(nodeId, level);
       levelWidth.set(level, (levelWidth.get(level) || 0) + 1);
 
-      // Process children
-      treeData.filter(n => n.parent === nodeId).forEach(child => {
+      // Find all children of this node
+      const children = Array.from(nodeMap.values()).filter(n => n.parent === nodeId);
+      console.log(`🌳 Node ${nodeId} has ${children.length} children:`, children.map(c => ({ id: c.id, parent: c.parent })));
+      
+      // Process children recursively
+      children.forEach(child => {
+        console.log(`🌳 Processing child ${child.id} of ${nodeId} at level ${level + 1}`);
         assignLevels(child.id, level + 1);
       });
     };
 
-    // Start with root or first node
-    const rootId = treeData.find(n => !n.parent)?.id || 'root';
-    assignLevels(rootId, 0);
+    // Find all root nodes (nodes without parents)
+    const rootNodes = treeData.filter(n => !n.parent);
+    console.log("🌳 Found", rootNodes.length, "root nodes:", rootNodes.map(n => ({ id: n.id, type: n.type, title: n.title })));
+    
+    // If we have multiple root nodes, create a virtual root
+    if (rootNodes.length > 1) {
+      console.log("🌳 Creating virtual root for", rootNodes.length, "research tracks");
+      const virtualRoot: TreeNode = {
+        id: 'virtual_root',
+        type: 'root',
+        title: 'Research Tracks',
+        status: 'active',
+        content: 'Multiple Research Tracks',
+        timestamp: new Date().toISOString(),
+        parent: undefined
+      };
+      nodeMap.set('virtual_root', virtualRoot);
+      
+      // Assign all root nodes as children of virtual root
+      rootNodes.forEach(root => {
+        const nodeInMap = nodeMap.get(root.id);
+        if (nodeInMap) {
+          nodeInMap.parent = 'virtual_root';
+          console.log("🌳 Connected root", root.id, "to virtual root");
+        } else {
+          console.log("🌳 WARNING: Root node", root.id, "not found in nodeMap");
+        }
+      });
+      
+      // Debug: Check what's in nodeMap after connecting
+      console.log("🌳 nodeMap after connecting roots:", Array.from(nodeMap.values()).map(n => ({ id: n.id, parent: n.parent })));
+      
+      // Start level assignment from virtual root - this will traverse the entire tree
+      assignLevels('virtual_root', 0);
+    } else if (rootNodes.length === 1) {
+      // Single root node
+      assignLevels(rootNodes[0].id, 0);
+    } else {
+      // No root nodes found, use first node
+      const firstNode = treeData[0];
+      if (firstNode) {
+        assignLevels(firstNode.id, 0);
+      }
+    }
+    
+    // Ensure all nodes have levels assigned (fallback for disconnected nodes)
+    Array.from(nodeMap.values()).forEach(node => {
+      if (!nodeLevel.has(node.id)) {
+        console.log(`🌳 Assigning fallback level 0 to disconnected node ${node.id}`);
+        nodeLevel.set(node.id, 0);
+        levelWidth.set(0, (levelWidth.get(0) || 0) + 1);
+      }
+    });
 
-    // Calculate positions
+    // Calculate positions with better spacing
     const levelCounters = new Map<number, number>();
     const calculatePosition = (nodeId: string): { x: number; y: number } => {
       const level = nodeLevel.get(nodeId) || 0;
@@ -258,8 +325,16 @@ const ResearchTreeFlow: React.FC<ResearchTreeProps> = ({ treeData }) => {
       const currentIndex = levelCounters.get(level) || 0;
       levelCounters.set(level, currentIndex + 1);
 
-      const x = (currentIndex - (nodesInLevel - 1) / 2) * 350;
-      const y = level * 150;
+      // Increase horizontal spacing for better distribution
+      // Use adaptive spacing: more nodes = less spacing, but with minimum and maximum bounds
+      const baseSpacing = 500;
+      const maxSpacing = 800;
+      const minSpacing = 300;
+      const horizontalSpacing = Math.max(minSpacing, Math.min(maxSpacing, baseSpacing / Math.max(nodesInLevel, 1)));
+      const verticalSpacing = 200; // Increase vertical spacing
+      
+      const x = (currentIndex - (nodesInLevel - 1) / 2) * horizontalSpacing;
+      const y = level * verticalSpacing;
 
       return { x, y };
     };
@@ -268,6 +343,9 @@ const ResearchTreeFlow: React.FC<ResearchTreeProps> = ({ treeData }) => {
     Array.from(nodeMap.values()).forEach(node => {
       const position = calculatePosition(node.id);
       positions.set(node.id, position);
+      
+      const level = nodeLevel.get(node.id) || 0;
+      console.log(`🌳 Node ${node.id} (${node.title?.substring(0, 30)}...) at level ${level}, position (${position.x}, ${position.y})`);
 
       flowNodes.push({
         id: node.id,
@@ -282,7 +360,8 @@ const ResearchTreeFlow: React.FC<ResearchTreeProps> = ({ treeData }) => {
     });
 
     // Create edges
-    treeData.forEach(node => {
+    let edgeCount = 0;
+    Array.from(nodeMap.values()).forEach(node => {
       if (node.parent && nodeMap.has(node.parent)) {
         flowEdges.push({
           id: `${node.parent}-${node.id}`,
@@ -295,8 +374,36 @@ const ResearchTreeFlow: React.FC<ResearchTreeProps> = ({ treeData }) => {
           },
           animated: node.status === 'active',
         });
+        edgeCount++;
       }
     });
+    console.log("🌳 Created", edgeCount, "edges from nodeMap");
+    
+    // Log level distribution
+    const levelDistribution = new Map<number, number>();
+    Array.from(nodeLevel.values()).forEach(level => {
+      levelDistribution.set(level, (levelDistribution.get(level) || 0) + 1);
+    });
+    console.log("🌳 Level distribution:", Object.fromEntries(levelDistribution));
+    
+    // Also create edges for virtual root if it exists
+    if (nodeMap.has('virtual_root')) {
+      console.log("🌳 Creating virtual root edges for", rootNodes.length, "root nodes");
+      rootNodes.forEach(root => {
+        flowEdges.push({
+          id: `virtual_root-${root.id}`,
+          source: 'virtual_root',
+          target: root.id,
+          type: 'smoothstep',
+          style: {
+            stroke: '#4caf50',
+            strokeWidth: 3,
+          },
+          animated: false,
+        });
+      });
+      console.log("🌳 Created", rootNodes.length, "virtual root edges");
+    }
 
     return { nodes: flowNodes, edges: flowEdges };
   }, [treeData]);
@@ -322,7 +429,12 @@ const ResearchTreeFlow: React.FC<ResearchTreeProps> = ({ treeData }) => {
   return (
     <Box sx={{ display: 'flex', height: '100%', width: '100%' }}>
       {/* Main Flow */}
-      <Box sx={{ flex: 1, height: '100%' }}>
+      <Box sx={{ 
+        flex: 1, 
+        height: '100%', 
+        overflow: 'hidden',
+        position: 'relative'
+      }}>
         <ReactFlow
           nodes={flowNodes}
           edges={flowEdges}
@@ -332,6 +444,9 @@ const ResearchTreeFlow: React.FC<ResearchTreeProps> = ({ treeData }) => {
           onNodeClick={onNodeClick}
           nodeTypes={nodeTypes}
           fitView
+          fitViewOptions={{ padding: 0.1, includeHiddenNodes: false }}
+          minZoom={0.1}
+          maxZoom={2}
           attributionPosition="bottom-left"
           style={{
             backgroundColor: '#0a0a0a',

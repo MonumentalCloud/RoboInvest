@@ -31,19 +31,21 @@ except ImportError:
 
 
 class DataFetcher:
-    """Enhanced market data fetcher with Polygon.io integration."""
+    """Enhanced market data fetcher with Polygon.io integration - Free Tier Optimized."""
     
     def __init__(self):
         self.cache = {}
-        self.cache_duration = timedelta(minutes=5)  # Cache for 5 minutes
+        self.cache_duration = timedelta(minutes=15)  # Longer cache for free tier
         self.demo_mode = False  # Disable demo mode - use real data with Polygon API
+        self.last_request_time = 0  # Track last API request for rate limiting
+        self.free_tier_delay = 15  # 15 seconds between requests for free tier (5 req/min = 12s + buffer)
         
         # Initialize Polygon client if available and configured
         self.polygon_client = None
         if POLYGON_AVAILABLE and config.polygon_api_key and not self.demo_mode:
             try:
                 self.polygon_client = RESTClient(api_key=config.polygon_api_key)
-                logger.info("🚀 DataFetcher | Polygon.io client initialized - using premium data")
+                logger.info("🚀 DataFetcher | Polygon.io FREE TIER initialized - using historical data only")
             except Exception as e:
                 logger.error(f"Polygon client initialization failed: {e}")
         
@@ -52,17 +54,29 @@ class DataFetcher:
             self.data_source = "demo_data"
             logger.info("🎭 DataFetcher | Demo mode enabled - using realistic mock data")
         elif self.polygon_client:
-            self.data_source = "polygon"
-            logger.info("📊 DataFetcher | Primary data source: Polygon.io (Premium)")
+            self.data_source = "polygon_free"
+            logger.info("📊 DataFetcher | Primary data source: Polygon.io FREE TIER (5 req/min, historical only)")
         elif YFINANCE_AVAILABLE:
             self.data_source = "yfinance"
             logger.info("📊 DataFetcher | Primary data source: yfinance (Free)")
         else:
             logger.error("❌ No market data source available!")
     
+    def _wait_for_rate_limit(self):
+        """Implement rate limiting for Polygon free tier (5 requests per minute)."""
+        current_time = time.time()
+        time_since_last_request = current_time - self.last_request_time
+        
+        if time_since_last_request < self.free_tier_delay:
+            wait_time = self.free_tier_delay - time_since_last_request
+            logger.info(f"⏳ Polygon free tier rate limiting: waiting {wait_time:.1f}s")
+            time.sleep(wait_time)
+        
+        self.last_request_time = time.time()
+    
     def is_premium_data_available(self) -> bool:
         """Check if premium Polygon data is available."""
-        return self.polygon_client is not None
+        return False  # We're using free tier only
     
     def get_historical_data(self, symbol: str, period: str = "1y", interval: str = "1d") -> Dict[str, Any]:
         """
@@ -98,6 +112,7 @@ class DataFetcher:
             
             # Try Polygon first if available
             elif self.polygon_client:
+                self._wait_for_rate_limit() # Apply rate limiting
                 data = self._get_polygon_historical_data(symbol, period, interval)
                 if data and not data.get("error"):
                     self.cache[cache_key] = (data, datetime.now())
@@ -139,7 +154,7 @@ class DataFetcher:
             }
             timespan, multiplier = interval_map.get(interval, ('day', 1))
             
-            # Get aggregates from Polygon
+            # Get aggregates from Polygon (rate limiting applied at caller level)
             aggs = list(self.polygon_client.get_aggs(
                 symbol, multiplier, timespan, start_date, end_date,
                 adjusted=True, sort="asc", limit=5000
@@ -431,53 +446,26 @@ class DataFetcher:
     
     def get_real_time_quote(self, symbol: str) -> Dict[str, Any]:
         """
-        Get real-time quote for a symbol (Polygon premium feature).
-        Falls back to latest available data if real-time not available.
+        Get quote for a symbol - FREE TIER uses latest historical data only.
+        Real-time quotes require paid Polygon plan ($199/month).
         """
-        if not self.polygon_client:
-            logger.warning("Real-time quotes require Polygon.io - using latest historical data")
-            # Fallback to latest historical data
-            data = self.get_historical_data(symbol, period="5d", interval="1d")
-            if data and data.get("data") and data["data"]["prices"]["close"]:
-                latest_price = data["data"]["prices"]["close"][-1]
-                return {
-                    "symbol": symbol,
-                    "current_price": latest_price,
-                    "timestamp": datetime.now().isoformat(),
-                    "data_source": "historical_fallback"
-                }
-            return {"error": "No real-time data available", "data": None}
+        logger.info(f"📊 Getting latest price for {symbol} (FREE TIER: using end-of-day data)")
         
-        try:
-            # Get latest data using the correct Polygon API
-            # Try to get previous close bar
-            yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
-            
-            # Get previous close data
-            aggs = list(self.polygon_client.get_aggs(
-                symbol, 1, "day", yesterday, yesterday, adjusted=True
-            ))
-            
-            if aggs:
-                latest_agg = aggs[-1]
-                current_price = latest_agg.close
-                
-                return {
-                    "symbol": symbol,
-                    "current_price": current_price,
-                    "previous_close": current_price,
-                    "timestamp": datetime.now().isoformat(),
-                    "data_source": "Polygon.io"
-                }
-            else:
-                # If no recent data, fall back to historical method
-                logger.warning(f"No recent Polygon data for {symbol}, using historical fallback")
-                return self._get_historical_fallback_quote(symbol)
-            
-        except Exception as e:
-            logger.error(f"Real-time quote error for {symbol}: {e}")
-            # Fall back to historical data on any error
-            return self._get_historical_fallback_quote(symbol)
+        # For free tier, always use latest historical data
+        data = self.get_historical_data(symbol, period="5d", interval="1d")
+        if data and data.get("data") and data["data"]["prices"]["close"]:
+            latest_price = data["data"]["prices"]["close"][-1]
+            latest_date = data["data"]["dates"][-1]
+            return {
+                "symbol": symbol,
+                "current_price": latest_price,
+                "timestamp": datetime.now().isoformat(),
+                "data_date": latest_date,
+                "data_source": "polygon_free_tier_eod",
+                "note": "End-of-day data only (free tier)"
+            }
+        
+        return {"error": "No historical data available for quote", "data": None}
     
     def _get_historical_fallback_quote(self, symbol: str) -> Dict[str, Any]:
         """Fallback method to get quote using historical data."""
@@ -520,50 +508,45 @@ class DataFetcher:
         return self.get_historical_data("SPY", period)
     
     def get_market_overview(self) -> Dict[str, Any]:
-        """Get a comprehensive market overview with premium data if available."""
+        """Get market overview - FREE TIER optimized to minimize API calls."""
         try:
-            # Major indices
-            indices = ["SPY", "QQQ", "IWM", "VIX"]
+            # For free tier, get only SPY to avoid rate limits
+            # Users can upgrade to get full market overview
+            logger.info("📊 Getting market overview (FREE TIER: SPY only to avoid rate limits)")
+            
             index_data = {}
             
-            for index in indices:
-                if self.polygon_client:
-                    # Use real-time/latest data from Polygon
-                    quote = self.get_real_time_quote(index)
-                    if not quote.get("error"):
-                        index_data[index] = {
-                            "current_price": quote.get("current_price"),
-                            "data_source": "Polygon.io"
-                        }
-                else:
-                    # Fallback to historical data
-                    data = self.get_historical_data(index, period="5d")
-                    if data.get("data"):
-                        prices = data["data"]["prices"]["close"]
-                        index_data[index] = {
-                            "current_price": prices[-1],
-                            "daily_change_pct": ((prices[-1] - prices[-2]) / prices[-2] * 100) if len(prices) > 1 else 0,
-                            "week_change_pct": ((prices[-1] - prices[0]) / prices[0] * 100) if len(prices) > 0 else 0,
-                            "data_source": self.data_source
-                        }
+            # Get SPY data only to stay within rate limits
+            data = self.get_historical_data("SPY", period="5d")
+            if data.get("data"):
+                prices = data["data"]["prices"]["close"]
+                dates = data["data"]["dates"]
+                index_data["SPY"] = {
+                    "current_price": prices[-1],
+                    "daily_change_pct": ((prices[-1] - prices[-2]) / prices[-2] * 100) if len(prices) > 1 else 0,
+                    "week_change_pct": ((prices[-1] - prices[0]) / prices[0] * 100) if len(prices) > 0 else 0,
+                    "data_source": f"{self.data_source}_free_tier",
+                    "data_date": dates[-1]
+                }
             
-            # Market sentiment based on VIX
-            vix_level = index_data.get("VIX", {}).get("current_price", 20)
-            if vix_level < 15:
-                sentiment = "complacent"
-            elif vix_level < 25:
-                sentiment = "normal"
-            elif vix_level < 35:
-                sentiment = "fearful"
+            # Estimate market sentiment based on SPY performance
+            spy_daily_change = index_data.get("SPY", {}).get("daily_change_pct", 0)
+            if spy_daily_change > 1:
+                sentiment = "bullish"
+            elif spy_daily_change > 0:
+                sentiment = "positive"
+            elif spy_daily_change > -1:
+                sentiment = "neutral"
             else:
-                sentiment = "panic"
+                sentiment = "bearish"
             
             return {
                 "indices": index_data,
                 "market_sentiment": sentiment,
-                "vix_level": vix_level,
+                "spy_daily_change": spy_daily_change,
                 "timestamp": datetime.now().isoformat(),
-                "data_source": self.data_source,
+                "data_source": f"{self.data_source}_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
                 "premium_data": self.is_premium_data_available()
             }
             

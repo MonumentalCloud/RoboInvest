@@ -117,10 +117,20 @@ class AutonomousAlphaHunter:
             else:
                 content = response or "[]"
             
-            opportunities = json.loads(content)
-            
-            logger.info(f"AlphaHunter | Identified {len(opportunities)} potential opportunities")
-            return opportunities
+            try:
+                opportunities = json.loads(content)
+                
+                # Ensure opportunities is a list
+                if not isinstance(opportunities, list):
+                    logger.warning(f"Opportunities parsing returned non-list: {type(opportunities)}")
+                    return self._fallback_opportunities()
+                
+                logger.info(f"AlphaHunter | Identified {len(opportunities)} potential opportunities")
+                return opportunities
+                
+            except json.JSONDecodeError as e:
+                logger.error(f"JSON decode error in opportunity scanning: {e}")
+                return self._fallback_opportunities()
             
         except Exception as e:
             logger.error(f"Opportunity scanning error: {e}")
@@ -199,9 +209,19 @@ class AutonomousAlphaHunter:
             else:
                 content = response or "{}"
             
-            validation = json.loads(content)
-            
-            return validation
+            try:
+                validation = json.loads(content)
+                
+                # Ensure validation is a dictionary
+                if not isinstance(validation, dict):
+                    logger.warning(f"Validation parsing returned non-dict: {type(validation)}")
+                    return {"is_valid": False}
+                
+                return validation
+                
+            except json.JSONDecodeError as e:
+                logger.error(f"JSON decode error in validation: {e}")
+                return {"is_valid": False}
             
         except Exception as e:
             logger.error(f"Validation error: {e}")
@@ -287,14 +307,24 @@ class AutonomousAlphaHunter:
             else:
                 content = response or "{}"
             
-            strategy = json.loads(content)
-            
-            # Add opportunity context
-            strategy["opportunity_theme"] = opportunity.get("theme", "Unknown")
-            strategy["research_basis"] = opportunity.get("thesis", "")
-            strategy["catalysts"] = opportunity.get("catalysts", [])
-            
-            return strategy
+            try:
+                strategy = json.loads(content)
+                
+                # Ensure strategy is a dictionary
+                if not isinstance(strategy, dict):
+                    logger.warning(f"Strategy parsing returned non-dict: {type(strategy)}")
+                    return None
+                
+                # Add opportunity context
+                strategy["opportunity_theme"] = opportunity.get("theme", "Unknown")
+                strategy["research_basis"] = opportunity.get("thesis", "")
+                strategy["catalysts"] = opportunity.get("catalysts", [])
+                
+                return strategy
+                
+            except json.JSONDecodeError as e:
+                logger.error(f"JSON decode error in strategy building: {e}")
+                return None
             
         except Exception as e:
             logger.error(f"Strategy building error: {e}")
@@ -307,6 +337,13 @@ class AutonomousAlphaHunter:
         if not strategies:
             return self._fallback_strategy()
         
+        # Filter out any non-dictionary strategies
+        valid_strategies = [s for s in strategies if isinstance(s, dict)]
+        
+        if not valid_strategies:
+            logger.warning("No valid strategies found, using fallback")
+            return self._fallback_strategy()
+        
         # Score strategies based on confidence, risk-adjusted potential
         def strategy_score(strategy):
             confidence = strategy.get('confidence', 0.5)
@@ -317,7 +354,7 @@ class AutonomousAlphaHunter:
             
             return confidence * risk_multiplier * (1 + position_size)
         
-        best_strategy = max(strategies, key=strategy_score)
+        best_strategy = max(valid_strategies, key=strategy_score)
         
         return best_strategy
     
