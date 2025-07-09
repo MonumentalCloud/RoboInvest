@@ -1,0 +1,26 @@
+{
+  "code_search": {
+    "description": "Search for code using natural language",
+    "example": "await codebase_analyzer.search_code('authentication function', n_results=5)"
+  },
+  "issue_detection": {
+    "description": "Find issues in specific files",
+    "example": "await codebase_analyzer.suggest_code_improvements('agents/my_agent.py')"
+  },
+  "self_editing": {
+    "description": "Fix issues in the agent's own code",
+    "example": "await self_editing_agent.fix_self_issue('Fix memory leak in data processing')"
+  },
+  "code_optimization": {
+    "description": "Optimize code for performance",
+    "example": "await self_editing_agent.optimize_self('performance')"
+  },
+  "feature_addition": {
+    "description": "Add new features to the agent",
+    "example": "await self_editing_agent.add_self_feature('Add caching mechanism for API calls')"
+  },
+  "debugging": {
+    "description": "Debug issues automatically",
+    "example": "await self_editing_agent.debug_self('API timeout error')"
+  }
+}

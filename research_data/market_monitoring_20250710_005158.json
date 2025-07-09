@@ -1,5 +1,5 @@
 {
-  "session_id": "5d6dab88-d2f1-4397-b470-3c6beb1c3c61",
+  "session_id": "066f5e1c-0388-4adf-9cd0-304aafdccc9e",
   "agent_id": "market_monitoring_agent",
   "objective": "Identify breakout patterns and momentum shifts, focusing on pre-market developments and overnight news",
   "hypotheses_explored": 1,
@@ -7,12 +7,12 @@
   "patterns_identified": 2,
   "insights_generated": 0,
   "decision_tree": {
-    "id": "9912574f-14c4-44e5-920e-81352c367368",
+    "id": "3f06bd2c-491d-434d-a3d9-9e3992366c57",
     "agent_name": "enhanced_market_monitoring_agent",
-    "root_id": "fd7e85e1-d50c-43a1-b649-e787f576ae8c",
+    "root_id": "7408b0bf-05dd-43b8-a5cb-b2da15bfb22a",
     "nodes": {
-      "fd7e85e1-d50c-43a1-b649-e787f576ae8c": {
-        "id": "fd7e85e1-d50c-43a1-b649-e787f576ae8c",
+      "7408b0bf-05dd-43b8-a5cb-b2da15bfb22a": {
+        "id": "7408b0bf-05dd-43b8-a5cb-b2da15bfb22a",
         "type": "root",
         "content": "Research Objective: Identify breakout patterns and momentum shifts, focusing on pre-market developments and overnight news",
         "data": {
@@ -21,21 +21,21 @@
             "market_data": {
               "indices": {
                 "SPY": {
-                  "current_price": 622.36,
-                  "daily_change_pct": 0.32562788148434435,
-                  "week_change_pct": 0.27067087710254295,
+                  "current_price": 622.12,
+                  "daily_change_pct": 0.2869394203178858,
+                  "week_change_pct": 0.23200360894503683,
                   "data_source": "polygon_upgraded_free_tier",
                   "data_date": "2025-07-09"
                 }
               },
               "market_sentiment": "positive",
-              "spy_daily_change": 0.32562788148434435,
-              "timestamp": "2025-07-10T01:01:39.044472",
+              "spy_daily_change": 0.2869394203178858,
+              "timestamp": "2025-07-10T00:51:32.973106",
               "data_source": "polygon_upgraded_free_tier",
               "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
               "premium_data": true
             },
-            "timestamp": "2025-07-10T01:01:39.044490",
+            "timestamp": "2025-07-10T00:51:32.973130",
             "market_session": "pre_market",
             "symbols": [
               "SPY",
@@ -50,43 +50,43 @@
         },
         "parent_id": null,
         "children": [
-          "0803ccd4-3d0f-41e4-be4e-6bd9fbb7042d"
+          "b0477abc-c78b-441a-abe0-5cf3a7e81978"
         ],
         "status": "pending",
         "confidence": 0.5,
-        "created_at": "2025-07-10T01:01:39.045302",
-        "updated_at": "2025-07-10T01:01:43.706727",
+        "created_at": "2025-07-10T00:51:32.973393",
+        "updated_at": "2025-07-10T00:51:41.334434",
         "result": {}
       },
-      "0803ccd4-3d0f-41e4-be4e-6bd9fbb7042d": {
-        "id": "0803ccd4-3d0f-41e4-be4e-6bd9fbb7042d",
+      "b0477abc-c78b-441a-abe0-5cf3a7e81978": {
+        "id": "b0477abc-c78b-441a-abe0-5cf3a7e81978",
         "type": "hypothesis",
         "content": "Investigate Identify breakout patterns and momentum shifts, focusing on pre-market developments and overnight news using multi-tool analysis",
         "data": {
           "exploration_priority": 1
         },
-        "parent_id": "fd7e85e1-d50c-43a1-b649-e787f576ae8c",
+        "parent_id": "7408b0bf-05dd-43b8-a5cb-b2da15bfb22a",
         "children": [
-          "70574e3f-80e8-42dd-b50c-e418f8eb53b9",
-          "ae37af9e-13c6-4136-98ea-e0edeb419b09",
-          "da363c90-5a97-4c94-829d-64810d7edb8f",
-          "95567253-ae88-44ad-a082-1a889805a5d4",
-          "3ffc0707-a8f9-4c52-b4b1-c0baed1f7e01"
+          "d21fd486-e71a-44f7-8f0e-ab086e3f1153",
+          "a1a8ad7e-2b42-4990-aae5-465d2be1dc92",
+          "fbd90851-b92a-466e-87c3-dfd456c34b50",
+          "e5b742c6-75d1-46aa-aa03-db4c224f3f21",
+          "df435058-39b7-405a-a11e-b401dcbe3beb"
         ],
         "status": "pending",
         "confidence": 0.5,
-        "created_at": "2025-07-10T01:01:43.706725",
-        "updated_at": "2025-07-10T01:01:43.706940",
+        "created_at": "2025-07-10T00:51:41.334427",
+        "updated_at": "2025-07-10T00:51:41.334986",
         "result": {}
       },
-      "70574e3f-80e8-42dd-b50c-e418f8eb53b9": {
-        "id": "70574e3f-80e8-42dd-b50c-e418f8eb53b9",
+      "d21fd486-e71a-44f7-8f0e-ab086e3f1153": {
+        "id": "d21fd486-e71a-44f7-8f0e-ab086e3f1153",
         "type": "research",
         "content": "calculator: Volatility analysis of market data",
         "data": {
           "description": "Volatility analysis of market data",
           "type": "volatility_analysis",
-          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x1183c4a90>>",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x16fcf4a00>>",
           "parameters": {
             "analysis_type": "volatility",
             "hypothesis": "Investigate Identify breakout patterns and momentum shifts, focusing on pre-market developments and overnight news using multi-tool analysis",
@@ -94,21 +94,21 @@
               "market_data": {
                 "indices": {
                   "SPY": {
-                    "current_price": 622.36,
-                    "daily_change_pct": 0.32562788148434435,
-                    "week_change_pct": 0.27067087710254295,
+                    "current_price": 622.12,
+                    "daily_change_pct": 0.2869394203178858,
+                    "week_change_pct": 0.23200360894503683,
                     "data_source": "polygon_upgraded_free_tier",
                     "data_date": "2025-07-09"
                   }
                 },
                 "market_sentiment": "positive",
-                "spy_daily_change": 0.32562788148434435,
-                "timestamp": "2025-07-10T01:01:39.044472",
+                "spy_daily_change": 0.2869394203178858,
+                "timestamp": "2025-07-10T00:51:32.973106",
                 "data_source": "polygon_upgraded_free_tier",
                 "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
                 "premium_data": true
               },
-              "timestamp": "2025-07-10T01:01:39.044490",
+              "timestamp": "2025-07-10T00:51:32.973130",
               "market_session": "pre_market",
               "symbols": [
                 "SPY",
@@ -121,15 +121,15 @@
               "focus_timeframe": "short_to_medium_term"
             }
           },
-          "node_id": "70574e3f-80e8-42dd-b50c-e418f8eb53b9",
+          "node_id": "d21fd486-e71a-44f7-8f0e-ab086e3f1153",
           "tool_name": "calculator"
         },
-        "parent_id": "0803ccd4-3d0f-41e4-be4e-6bd9fbb7042d",
+        "parent_id": "b0477abc-c78b-441a-abe0-5cf3a7e81978",
         "children": [],
         "status": "completed",
         "confidence": 0.7,
-        "created_at": "2025-07-10T01:01:43.706802",
-        "updated_at": "2025-07-10T01:01:43.930711",
+        "created_at": "2025-07-10T00:51:41.334613",
+        "updated_at": "2025-07-10T00:51:41.335590",
         "result": {
           "tool": "calculator",
           "analysis_type": "statistical",
@@ -140,14 +140,14 @@
           ]
         }
       },
-      "ae37af9e-13c6-4136-98ea-e0edeb419b09": {
-        "id": "ae37af9e-13c6-4136-98ea-e0edeb419b09",
+      "a1a8ad7e-2b42-4990-aae5-465d2be1dc92": {
+        "id": "a1a8ad7e-2b42-4990-aae5-465d2be1dc92",
         "type": "research",
         "content": "calculator: Technical indicator calculations",
         "data": {
           "description": "Technical indicator calculations",
           "type": "technical_indicators",
-          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x1183c4a90>>",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x16fcf4a00>>",
           "parameters": {
             "analysis_type": "technical",
             "hypothesis": "Investigate Identify breakout patterns and momentum shifts, focusing on pre-market developments and overnight news using multi-tool analysis",
@@ -155,21 +155,21 @@
               "market_data": {
                 "indices": {
                   "SPY": {
-                    "current_price": 622.36,
-                    "daily_change_pct": 0.32562788148434435,
-                    "week_change_pct": 0.27067087710254295,
+                    "current_price": 622.12,
+                    "daily_change_pct": 0.2869394203178858,
+                    "week_change_pct": 0.23200360894503683,
                     "data_source": "polygon_upgraded_free_tier",
                     "data_date": "2025-07-09"
                   }
                 },
                 "market_sentiment": "positive",
-                "spy_daily_change": 0.32562788148434435,
-                "timestamp": "2025-07-10T01:01:39.044472",
+                "spy_daily_change": 0.2869394203178858,
+                "timestamp": "2025-07-10T00:51:32.973106",
                 "data_source": "polygon_upgraded_free_tier",
                 "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
                 "premium_data": true
               },
-              "timestamp": "2025-07-10T01:01:39.044490",
+              "timestamp": "2025-07-10T00:51:32.973130",
               "market_session": "pre_market",
               "symbols": [
                 "SPY",
@@ -182,15 +182,15 @@
               "focus_timeframe": "short_to_medium_term"
             }
           },
-          "node_id": "ae37af9e-13c6-4136-98ea-e0edeb419b09",
+          "node_id": "a1a8ad7e-2b42-4990-aae5-465d2be1dc92",
           "tool_name": "calculator"
         },
-        "parent_id": "0803ccd4-3d0f-41e4-be4e-6bd9fbb7042d",
+        "parent_id": "b0477abc-c78b-441a-abe0-5cf3a7e81978",
         "children": [],
         "status": "completed",
         "confidence": 0.7,
-        "created_at": "2025-07-10T01:01:43.706843",
-        "updated_at": "2025-07-10T01:01:43.930874",
+        "created_at": "2025-07-10T00:51:41.334716",
+        "updated_at": "2025-07-10T00:51:41.335730",
         "result": {
           "tool": "calculator",
           "analysis_type": "statistical",
@@ -201,14 +201,14 @@
           ]
         }
       },
-      "da363c90-5a97-4c94-829d-64810d7edb8f": {
-        "id": "da363c90-5a97-4c94-829d-64810d7edb8f",
+      "fbd90851-b92a-466e-87c3-dfd456c34b50": {
+        "id": "fbd90851-b92a-466e-87c3-dfd456c34b50",
         "type": "research",
         "content": "calculator: Correlation analysis between assets",
         "data": {
           "description": "Correlation analysis between assets",
           "type": "correlation_analysis",
-          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x1183c4a90>>",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x16fcf4a00>>",
           "parameters": {
             "analysis_type": "correlation",
             "hypothesis": "Investigate Identify breakout patterns and momentum shifts, focusing on pre-market developments and overnight news using multi-tool analysis",
@@ -216,21 +216,21 @@
               "market_data": {
                 "indices": {
                   "SPY": {
-                    "current_price": 622.36,
-                    "daily_change_pct": 0.32562788148434435,
-                    "week_change_pct": 0.27067087710254295,
+                    "current_price": 622.12,
+                    "daily_change_pct": 0.2869394203178858,
+                    "week_change_pct": 0.23200360894503683,
                     "data_source": "polygon_upgraded_free_tier",
                     "data_date": "2025-07-09"
                   }
                 },
                 "market_sentiment": "positive",
-                "spy_daily_change": 0.32562788148434435,
-                "timestamp": "2025-07-10T01:01:39.044472",
+                "spy_daily_change": 0.2869394203178858,
+                "timestamp": "2025-07-10T00:51:32.973106",
                 "data_source": "polygon_upgraded_free_tier",
                 "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
                 "premium_data": true
               },
-              "timestamp": "2025-07-10T01:01:39.044490",
+              "timestamp": "2025-07-10T00:51:32.973130",
               "market_session": "pre_market",
               "symbols": [
                 "SPY",
@@ -243,15 +243,15 @@
               "focus_timeframe": "short_to_medium_term"
             }
           },
-          "node_id": "da363c90-5a97-4c94-829d-64810d7edb8f",
+          "node_id": "fbd90851-b92a-466e-87c3-dfd456c34b50",
           "tool_name": "calculator"
         },
-        "parent_id": "0803ccd4-3d0f-41e4-be4e-6bd9fbb7042d",
+        "parent_id": "b0477abc-c78b-441a-abe0-5cf3a7e81978",
         "children": [],
         "status": "completed",
         "confidence": 0.7,
-        "created_at": "2025-07-10T01:01:43.706877",
-        "updated_at": "2025-07-10T01:01:43.931000",
+        "created_at": "2025-07-10T00:51:41.334799",
+        "updated_at": "2025-07-10T00:51:41.335864",
         "result": {
           "tool": "calculator",
           "analysis_type": "statistical",
@@ -262,14 +262,14 @@
           ]
         }
       },
-      "95567253-ae88-44ad-a082-1a889805a5d4": {
-        "id": "95567253-ae88-44ad-a082-1a889805a5d4",
+      "e5b742c6-75d1-46aa-aa03-db4c224f3f21": {
+        "id": "e5b742c6-75d1-46aa-aa03-db4c224f3f21",
         "type": "research",
         "content": "data_fetcher: Real-time market data analysis",
         "data": {
           "description": "Real-time market data analysis",
           "type": "market_data",
-          "executor": "<bound method EnhancedAutonomousAgent._execute_market_data_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x1183c4a90>>",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_market_data_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x16fcf4a00>>",
           "parameters": {
             "data_type": "real_time",
             "hypothesis": "Investigate Identify breakout patterns and momentum shifts, focusing on pre-market developments and overnight news using multi-tool analysis",
@@ -277,21 +277,21 @@
               "market_data": {
                 "indices": {
                   "SPY": {
-                    "current_price": 622.36,
-                    "daily_change_pct": 0.32562788148434435,
-                    "week_change_pct": 0.27067087710254295,
+                    "current_price": 622.12,
+                    "daily_change_pct": 0.2869394203178858,
+                    "week_change_pct": 0.23200360894503683,
                     "data_source": "polygon_upgraded_free_tier",
                     "data_date": "2025-07-09"
                   }
                 },
                 "market_sentiment": "positive",
-                "spy_daily_change": 0.32562788148434435,
-                "timestamp": "2025-07-10T01:01:39.044472",
+                "spy_daily_change": 0.2869394203178858,
+                "timestamp": "2025-07-10T00:51:32.973106",
                 "data_source": "polygon_upgraded_free_tier",
                 "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
                 "premium_data": true
               },
-              "timestamp": "2025-07-10T01:01:39.044490",
+              "timestamp": "2025-07-10T00:51:32.973130",
               "market_session": "pre_market",
               "symbols": [
                 "SPY",
@@ -304,15 +304,15 @@
               "focus_timeframe": "short_to_medium_term"
             }
           },
-          "node_id": "95567253-ae88-44ad-a082-1a889805a5d4",
+          "node_id": "e5b742c6-75d1-46aa-aa03-db4c224f3f21",
           "tool_name": "data_fetcher"
         },
-        "parent_id": "0803ccd4-3d0f-41e4-be4e-6bd9fbb7042d",
+        "parent_id": "b0477abc-c78b-441a-abe0-5cf3a7e81978",
         "children": [],
         "status": "completed",
         "confidence": 0.8,
-        "created_at": "2025-07-10T01:01:43.706909",
-        "updated_at": "2025-07-10T01:01:46.537448",
+        "created_at": "2025-07-10T00:51:41.334879",
+        "updated_at": "2025-07-10T00:51:41.336694",
         "result": {
           "tool": "data_fetcher",
           "data_type": "real_time",
@@ -320,16 +320,16 @@
             "market_overview": {
               "indices": {
                 "SPY": {
-                  "current_price": 622.36,
-                  "daily_change_pct": 0.32562788148434435,
-                  "week_change_pct": 0.27067087710254295,
+                  "current_price": 622.12,
+                  "daily_change_pct": 0.2869394203178858,
+                  "week_change_pct": 0.23200360894503683,
                   "data_source": "polygon_upgraded_free_tier",
                   "data_date": "2025-07-09"
                 }
               },
               "market_sentiment": "positive",
-              "spy_daily_change": 0.32562788148434435,
-              "timestamp": "2025-07-10T01:01:43.931134",
+              "spy_daily_change": 0.2869394203178858,
+              "timestamp": "2025-07-10T00:51:41.336010",
               "data_source": "polygon_upgraded_free_tier",
               "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
               "premium_data": true
@@ -1599,7 +1599,7 @@
                       256.96,
                       254.92,
                       256.29,
-                      256.64
+                      256.46
                     ],
                     "volume": [
                       4374692.0,
@@ -1851,7 +1851,7 @@
                       3556147.0,
                       5780415.0,
                       7854486.0,
-                      2722602.0
+                      2605275.0
                     ]
                   }
                 },
@@ -1860,9 +1860,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 237.68,
-                  "end_price": 256.64,
-                  "total_return": 7.98,
-                  "avg_volume": 5217804
+                  "end_price": 256.46,
+                  "total_return": 7.9,
+                  "avg_volume": 5217335
                 },
                 "data_source": "Polygon.io"
               },
@@ -3130,7 +3130,7 @@
                       135.5,
                       134.36,
                       134.97,
-                      134.69
+                      134.64
                     ],
                     "volume": [
                       5342450.0,
@@ -3382,7 +3382,7 @@
                       7281963.0,
                       14052702.0,
                       19480595.0,
-                      7613090.0
+                      7369591.0
                     ]
                   }
                 },
@@ -3391,9 +3391,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 146.32,
-                  "end_price": 134.69,
-                  "total_return": -7.95,
-                  "avg_volume": 8897686
+                  "end_price": 134.64,
+                  "total_return": -7.98,
+                  "avg_volume": 8896712
                 },
                 "data_source": "Polygon.io"
               },
@@ -4661,7 +4661,7 @@
                       53.19,
                       52.68,
                       52.21,
-                      52.32
+                      52.33
                     ],
                     "volume": [
                       28445376.0,
@@ -4913,7 +4913,7 @@
                       25900769.0,
                       34048977.0,
                       53702926.0,
-                      13513158.0
+                      12811345.0
                     ]
                   }
                 },
@@ -4922,9 +4922,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 41.91,
-                  "end_price": 52.32,
-                  "total_return": 24.84,
-                  "avg_volume": 42636139
+                  "end_price": 52.33,
+                  "total_return": 24.86,
+                  "avg_volume": 42633332
                 },
                 "data_source": "Polygon.io"
               },
@@ -6192,7 +6192,7 @@
                       221.21,
                       218.4,
                       217.66,
-                      218.61
+                      218.37
                     ],
                     "volume": [
                       2279145.0,
@@ -6444,7 +6444,7 @@
                       3451473.0,
                       5040790.0,
                       3426292.0,
-                      969102
+                      937026
                     ]
                   }
                 },
@@ -6453,9 +6453,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 191.45,
-                  "end_price": 218.61,
-                  "total_return": 14.19,
-                  "avg_volume": 3616444
+                  "end_price": 218.37,
+                  "total_return": 14.06,
+                  "avg_volume": 3616315
                 },
                 "data_source": "Polygon.io"
               },
@@ -7723,7 +7723,7 @@
                       108.04,
                       107,
                       106.78,
-                      107.29
+                      107.32
                     ],
                     "volume": [
                       5169648.0,
@@ -7975,7 +7975,7 @@
                       3206104.0,
                       5533911.0,
                       4352040.0,
-                      1860072.0
+                      1764421.0
                     ]
                   }
                 },
@@ -7984,9 +7984,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 87.79,
-                  "end_price": 107.29,
-                  "total_return": 22.21,
-                  "avg_volume": 4677995
+                  "end_price": 107.32,
+                  "total_return": 22.25,
+                  "avg_volume": 4677612
                 },
                 "data_source": "Polygon.io"
               },
@@ -9254,7 +9254,7 @@
                       149.42,
                       148.9,
                       148.86,
-                      149.49
+                      149.33
                     ],
                     "volume": [
                       6930874.0,
@@ -9506,7 +9506,7 @@
                       4863602.0,
                       10687731.0,
                       10842991.0,
-                      5046351.0
+                      4855711.0
                     ]
                   }
                 },
@@ -9515,9 +9515,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 121.92,
-                  "end_price": 149.49,
-                  "total_return": 22.61,
-                  "avg_volume": 9156414
+                  "end_price": 149.33,
+                  "total_return": 22.48,
+                  "avg_volume": 9155651
                 },
                 "data_source": "Polygon.io"
               },
@@ -10785,7 +10785,7 @@
                       82.18,
                       82.11,
                       81.35,
-                      80.53
+                      80.59
                     ],
                     "volume": [
                       7249075.0,
@@ -11037,7 +11037,7 @@
                       10898226.0,
                       14365327.0,
                       15709334.0,
-                      9875708.0
+                      9064089.0
                     ]
                   }
                 },
@@ -11046,9 +11046,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 77.4,
-                  "end_price": 80.53,
-                  "total_return": 4.04,
-                  "avg_volume": 11892794
+                  "end_price": 80.59,
+                  "total_return": 4.12,
+                  "avg_volume": 11889548
                 },
                 "data_source": "Polygon.io"
               },
@@ -12316,7 +12316,7 @@
                       87.03,
                       86.19,
                       88.51,
-                      88.31
+                      88.19
                     ],
                     "volume": [
                       9646378.0,
@@ -12568,7 +12568,7 @@
                       11132810.0,
                       17836602.0,
                       23760633.0,
-                      7036994.0
+                      6752784.0
                     ]
                   }
                 },
@@ -12577,9 +12577,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 89.36,
-                  "end_price": 88.31,
-                  "total_return": -1.18,
-                  "avg_volume": 16104496
+                  "end_price": 88.19,
+                  "total_return": -1.31,
+                  "avg_volume": 16103359
                 },
                 "data_source": "Polygon.io"
               },
@@ -13343,7 +13343,7 @@
                       82.17,
                       82.06,
                       81.44,
-                      81.67
+                      81.66
                     ],
                     "low": [
                       68.56,
@@ -13847,7 +13847,7 @@
                       81.84,
                       82.01,
                       81.14,
-                      81.66
+                      81.64
                     ],
                     "volume": [
                       6899961.0,
@@ -14099,7 +14099,7 @@
                       7448490.0,
                       10107823.0,
                       22137651.0,
-                      8278277.0
+                      7441640.0
                     ]
                   }
                 },
@@ -14108,9 +14108,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 69.47,
-                  "end_price": 81.66,
-                  "total_return": 17.55,
-                  "avg_volume": 10880557
+                  "end_price": 81.64,
+                  "total_return": 17.52,
+                  "avg_volume": 10877211
                 },
                 "data_source": "Polygon.io"
               },
@@ -15630,7 +15630,7 @@
                       5757966.0,
                       6417908.0,
                       5767335.0,
-                      2612099.0
+                      2559585.0
                     ]
                   }
                 },
@@ -15641,7 +15641,7 @@
                   "start_price": 38.67,
                   "end_price": 41.41,
                   "total_return": 7.09,
-                  "avg_volume": 5750707
+                  "avg_volume": 5750497
                 },
                 "data_source": "Polygon.io"
               },
@@ -16909,7 +16909,7 @@
                       91.37,
                       90.49,
                       91.23,
-                      91.18
+                      91.11
                     ],
                     "volume": [
                       3957661.0,
@@ -17161,7 +17161,7 @@
                       3382853.0,
                       5881108.0,
                       8172399.0,
-                      3256841.0
+                      3115701.0
                     ]
                   }
                 },
@@ -17170,9 +17170,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 88.43,
-                  "end_price": 91.18,
-                  "total_return": 3.11,
-                  "avg_volume": 5201460
+                  "end_price": 91.11,
+                  "total_return": 3.03,
+                  "avg_volume": 5200895
                 },
                 "data_source": "Polygon.io"
               }
@@ -17184,14 +17184,14 @@
           ]
         }
       },
-      "3ffc0707-a8f9-4c52-b4b1-c0baed1f7e01": {
-        "id": "3ffc0707-a8f9-4c52-b4b1-c0baed1f7e01",
+      "df435058-39b7-405a-a11e-b401dcbe3beb": {
+        "id": "df435058-39b7-405a-a11e-b401dcbe3beb",
         "type": "research",
         "content": "data_fetcher: Historical data pattern analysis",
         "data": {
           "description": "Historical data pattern analysis",
           "type": "historical_analysis",
-          "executor": "<bound method EnhancedAutonomousAgent._execute_market_data_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x1183c4a90>>",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_market_data_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x16fcf4a00>>",
           "parameters": {
             "data_type": "historical",
             "hypothesis": "Investigate Identify breakout patterns and momentum shifts, focusing on pre-market developments and overnight news using multi-tool analysis",
@@ -17199,21 +17199,21 @@
               "market_data": {
                 "indices": {
                   "SPY": {
-                    "current_price": 622.36,
-                    "daily_change_pct": 0.32562788148434435,
-                    "week_change_pct": 0.27067087710254295,
+                    "current_price": 622.12,
+                    "daily_change_pct": 0.2869394203178858,
+                    "week_change_pct": 0.23200360894503683,
                     "data_source": "polygon_upgraded_free_tier",
                     "data_date": "2025-07-09"
                   }
                 },
                 "market_sentiment": "positive",
-                "spy_daily_change": 0.32562788148434435,
-                "timestamp": "2025-07-10T01:01:39.044472",
+                "spy_daily_change": 0.2869394203178858,
+                "timestamp": "2025-07-10T00:51:32.973106",
                 "data_source": "polygon_upgraded_free_tier",
                 "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
                 "premium_data": true
               },
-              "timestamp": "2025-07-10T01:01:39.044490",
+              "timestamp": "2025-07-10T00:51:32.973130",
               "market_session": "pre_market",
               "symbols": [
                 "SPY",
@@ -17226,15 +17226,15 @@
               "focus_timeframe": "short_to_medium_term"
             }
           },
-          "node_id": "3ffc0707-a8f9-4c52-b4b1-c0baed1f7e01",
+          "node_id": "df435058-39b7-405a-a11e-b401dcbe3beb",
           "tool_name": "data_fetcher"
         },
-        "parent_id": "0803ccd4-3d0f-41e4-be4e-6bd9fbb7042d",
+        "parent_id": "b0477abc-c78b-441a-abe0-5cf3a7e81978",
         "children": [],
         "status": "completed",
         "confidence": 0.8,
-        "created_at": "2025-07-10T01:01:43.706939",
-        "updated_at": "2025-07-10T01:01:46.538091",
+        "created_at": "2025-07-10T00:51:41.334984",
+        "updated_at": "2025-07-10T00:51:41.337397",
         "result": {
           "tool": "data_fetcher",
           "data_type": "real_time",
@@ -17242,16 +17242,16 @@
             "market_overview": {
               "indices": {
                 "SPY": {
-                  "current_price": 622.36,
-                  "daily_change_pct": 0.32562788148434435,
-                  "week_change_pct": 0.27067087710254295,
+                  "current_price": 622.12,
+                  "daily_change_pct": 0.2869394203178858,
+                  "week_change_pct": 0.23200360894503683,
                   "data_source": "polygon_upgraded_free_tier",
                   "data_date": "2025-07-09"
                 }
               },
               "market_sentiment": "positive",
-              "spy_daily_change": 0.32562788148434435,
-              "timestamp": "2025-07-10T01:01:46.537622",
+              "spy_daily_change": 0.2869394203178858,
+              "timestamp": "2025-07-10T00:51:41.336818",
               "data_source": "polygon_upgraded_free_tier",
               "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
               "premium_data": true
@@ -18521,7 +18521,7 @@
                       256.96,
                       254.92,
                       256.29,
-                      256.64
+                      256.46
                     ],
                     "volume": [
                       4374692.0,
@@ -18773,7 +18773,7 @@
                       3556147.0,
                       5780415.0,
                       7854486.0,
-                      2722602.0
+                      2605275.0
                     ]
                   }
                 },
@@ -18782,9 +18782,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 237.68,
-                  "end_price": 256.64,
-                  "total_return": 7.98,
-                  "avg_volume": 5217804
+                  "end_price": 256.46,
+                  "total_return": 7.9,
+                  "avg_volume": 5217335
                 },
                 "data_source": "Polygon.io"
               },
@@ -20052,7 +20052,7 @@
                       135.5,
                       134.36,
                       134.97,
-                      134.69
+                      134.64
                     ],
                     "volume": [
                       5342450.0,
@@ -20304,7 +20304,7 @@
                       7281963.0,
                       14052702.0,
                       19480595.0,
-                      7613090.0
+                      7369591.0
                     ]
                   }
                 },
@@ -20313,9 +20313,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 146.32,
-                  "end_price": 134.69,
-                  "total_return": -7.95,
-                  "avg_volume": 8897686
+                  "end_price": 134.64,
+                  "total_return": -7.98,
+                  "avg_volume": 8896712
                 },
                 "data_source": "Polygon.io"
               },
@@ -21583,7 +21583,7 @@
                       53.19,
                       52.68,
                       52.21,
-                      52.32
+                      52.33
                     ],
                     "volume": [
                       28445376.0,
@@ -21835,7 +21835,7 @@
                       25900769.0,
                       34048977.0,
                       53702926.0,
-                      13513158.0
+                      12811345.0
                     ]
                   }
                 },
@@ -21844,9 +21844,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 41.91,
-                  "end_price": 52.32,
-                  "total_return": 24.84,
-                  "avg_volume": 42636139
+                  "end_price": 52.33,
+                  "total_return": 24.86,
+                  "avg_volume": 42633332
                 },
                 "data_source": "Polygon.io"
               },
@@ -23114,7 +23114,7 @@
                       221.21,
                       218.4,
                       217.66,
-                      218.61
+                      218.37
                     ],
                     "volume": [
                       2279145.0,
@@ -23366,7 +23366,7 @@
                       3451473.0,
                       5040790.0,
                       3426292.0,
-                      969102
+                      937026
                     ]
                   }
                 },
@@ -23375,9 +23375,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 191.45,
-                  "end_price": 218.61,
-                  "total_return": 14.19,
-                  "avg_volume": 3616444
+                  "end_price": 218.37,
+                  "total_return": 14.06,
+                  "avg_volume": 3616315
                 },
                 "data_source": "Polygon.io"
               },
@@ -24645,7 +24645,7 @@
                       108.04,
                       107,
                       106.78,
-                      107.29
+                      107.32
                     ],
                     "volume": [
                       5169648.0,
@@ -24897,7 +24897,7 @@
                       3206104.0,
                       5533911.0,
                       4352040.0,
-                      1860072.0
+                      1764421.0
                     ]
                   }
                 },
@@ -24906,9 +24906,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 87.79,
-                  "end_price": 107.29,
-                  "total_return": 22.21,
-                  "avg_volume": 4677995
+                  "end_price": 107.32,
+                  "total_return": 22.25,
+                  "avg_volume": 4677612
                 },
                 "data_source": "Polygon.io"
               },
@@ -26176,7 +26176,7 @@
                       149.42,
                       148.9,
                       148.86,
-                      149.49
+                      149.33
                     ],
                     "volume": [
                       6930874.0,
@@ -26428,7 +26428,7 @@
                       4863602.0,
                       10687731.0,
                       10842991.0,
-                      5046351.0
+                      4855711.0
                     ]
                   }
                 },
@@ -26437,9 +26437,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 121.92,
-                  "end_price": 149.49,
-                  "total_return": 22.61,
-                  "avg_volume": 9156414
+                  "end_price": 149.33,
+                  "total_return": 22.48,
+                  "avg_volume": 9155651
                 },
                 "data_source": "Polygon.io"
               },
@@ -27707,7 +27707,7 @@
                       82.18,
                       82.11,
                       81.35,
-                      80.53
+                      80.59
                     ],
                     "volume": [
                       7249075.0,
@@ -27959,7 +27959,7 @@
                       10898226.0,
                       14365327.0,
                       15709334.0,
-                      9875708.0
+                      9064089.0
                     ]
                   }
                 },
@@ -27968,9 +27968,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 77.4,
-                  "end_price": 80.53,
-                  "total_return": 4.04,
-                  "avg_volume": 11892794
+                  "end_price": 80.59,
+                  "total_return": 4.12,
+                  "avg_volume": 11889548
                 },
                 "data_source": "Polygon.io"
               },
@@ -29238,7 +29238,7 @@
                       87.03,
                       86.19,
                       88.51,
-                      88.31
+                      88.19
                     ],
                     "volume": [
                       9646378.0,
@@ -29490,7 +29490,7 @@
                       11132810.0,
                       17836602.0,
                       23760633.0,
-                      7036994.0
+                      6752784.0
                     ]
                   }
                 },
@@ -29499,9 +29499,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 89.36,
-                  "end_price": 88.31,
-                  "total_return": -1.18,
-                  "avg_volume": 16104496
+                  "end_price": 88.19,
+                  "total_return": -1.31,
+                  "avg_volume": 16103359
                 },
                 "data_source": "Polygon.io"
               },
@@ -30265,7 +30265,7 @@
                       82.17,
                       82.06,
                       81.44,
-                      81.67
+                      81.66
                     ],
                     "low": [
                       68.56,
@@ -30769,7 +30769,7 @@
                       81.84,
                       82.01,
                       81.14,
-                      81.66
+                      81.64
                     ],
                     "volume": [
                       6899961.0,
@@ -31021,7 +31021,7 @@
                       7448490.0,
                       10107823.0,
                       22137651.0,
-                      8278277.0
+                      7441640.0
                     ]
                   }
                 },
@@ -31030,9 +31030,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 69.47,
-                  "end_price": 81.66,
-                  "total_return": 17.55,
-                  "avg_volume": 10880557
+                  "end_price": 81.64,
+                  "total_return": 17.52,
+                  "avg_volume": 10877211
                 },
                 "data_source": "Polygon.io"
               },
@@ -32552,7 +32552,7 @@
                       5757966.0,
                       6417908.0,
                       5767335.0,
-                      2612099.0
+                      2559585.0
                     ]
                   }
                 },
@@ -32563,7 +32563,7 @@
                   "start_price": 38.67,
                   "end_price": 41.41,
                   "total_return": 7.09,
-                  "avg_volume": 5750707
+                  "avg_volume": 5750497
                 },
                 "data_source": "Polygon.io"
               },
@@ -33831,7 +33831,7 @@
                       91.37,
                       90.49,
                       91.23,
-                      91.18
+                      91.11
                     ],
                     "volume": [
                       3957661.0,
@@ -34083,7 +34083,7 @@
                       3382853.0,
                       5881108.0,
                       8172399.0,
-                      3256841.0
+                      3115701.0
                     ]
                   }
                 },
@@ -34092,9 +34092,9 @@
                   "start_date": "2024-07-10",
                   "end_date": "2025-07-09",
                   "start_price": 88.43,
-                  "end_price": 91.18,
-                  "total_return": 3.11,
-                  "avg_volume": 5201460
+                  "end_price": 91.11,
+                  "total_return": 3.03,
+                  "avg_volume": 5200895
                 },
                 "data_source": "Polygon.io"
               }
@@ -34110,7 +34110,7 @@
     "best_path": null,
     "best_confidence": 0.0,
     "summary": {
-      "tree_id": "9912574f-14c4-44e5-920e-81352c367368",
+      "tree_id": "3f06bd2c-491d-434d-a3d9-9e3992366c57",
       "agent_name": "enhanced_market_monitoring_agent",
       "total_nodes": 7,
       "by_status": {
@@ -34128,7 +34128,7 @@
   },
   "insights": [],
   "competitive_edges": [],
-  "timestamp": "2025-07-10T01:01:58.124133",
+  "timestamp": "2025-07-10T00:51:58.097722",
   "session_duration": "research_complete",
   "research_track": "market_monitoring",
   "specialization": "market_analysis",
@@ -34136,21 +34136,21 @@
     "market_data": {
       "indices": {
         "SPY": {
-          "current_price": 622.36,
-          "daily_change_pct": 0.32562788148434435,
-          "week_change_pct": 0.27067087710254295,
+          "current_price": 622.12,
+          "daily_change_pct": 0.2869394203178858,
+          "week_change_pct": 0.23200360894503683,
           "data_source": "polygon_upgraded_free_tier",
           "data_date": "2025-07-09"
         }
       },
       "market_sentiment": "positive",
-      "spy_daily_change": 0.32562788148434435,
-      "timestamp": "2025-07-10T01:01:39.044472",
+      "spy_daily_change": 0.2869394203178858,
+      "timestamp": "2025-07-10T00:51:32.973106",
       "data_source": "polygon_upgraded_free_tier",
       "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
       "premium_data": true
     },
-    "timestamp": "2025-07-10T01:01:39.044490",
+    "timestamp": "2025-07-10T00:51:32.973130",
     "market_session": "pre_market",
     "symbols": [
       "SPY",
@@ -34162,5 +34162,5 @@
     ],
     "focus_timeframe": "short_to_medium_term"
   },
-  "completed_at": "2025-07-10T01:01:58.124198"
+  "completed_at": "2025-07-10T00:51:58.097903"
 }
