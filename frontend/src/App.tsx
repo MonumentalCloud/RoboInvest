@@ -9,6 +9,7 @@ import Trades from './pages/Trades';
 import Positions from './pages/Positions';
 import Insights from './pages/Insights';
 import AlphaStream from './pages/AlphaStream';
+import PlayExecutor from './pages/PlayExecutor';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/trades" element={<Trades />} />
           <Route path="/positions" element={<Positions />} />
           <Route path="/insights" element={<Insights />} />
+          <Route path="/plays" element={<PlayExecutor />} />
         </Route>
       </Routes>
     </Router>

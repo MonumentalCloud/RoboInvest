@@ -31,6 +31,7 @@ from agents.agent_monitoring_system import agent_monitor
 from agents.specialized_meta_agents import CodeEditorAgent, PromptEngineerAgent, SystemArchitectAgent, PerformanceAnalystAgent
 from agents.meta_agent_system import MetaAgent, AgentHealth, SystemPriority, SystemAlert
 from agents.notification_system import notification_system
+from core.notification_aggregator import notification_aggregator
 
 class ImprovementType(Enum):
     PERFORMANCE = "performance"
@@ -112,7 +113,7 @@ class EnhancedMetaAgent:
         # Performance thresholds
         self.performance_thresholds = {
             "response_time": 30.0,  # seconds
-            "success_rate": 0.8,
+            "success_rate": 0.3,  # Lowered from 0.8 to 0.3 (30%) to prevent false alerts during startup
             "cpu_usage": 80.0,  # percentage
             "memory_usage": 85.0,  # percentage
             "error_rate": 0.1  # percentage
@@ -355,7 +356,8 @@ class EnhancedMetaAgent:
                 0.85
             )
         
-        if metrics.avg_success_rate < self.performance_thresholds["success_rate"]:
+        # Only create improvement suggestions if agents are actually running
+        if metrics.total_agents > 0 and metrics.avg_success_rate < self.performance_thresholds["success_rate"]:
             await self._create_improvement_suggestion(
                 ImprovementType.RELIABILITY,
                 ImprovementPriority.HIGH,
@@ -469,18 +471,26 @@ class EnhancedMetaAgent:
         
         logger.info(f"💡 Created improvement suggestion: {title} (Priority: {priority.value})")
         
-        # Send notification for high-priority improvements
+        # Send notification for high-priority improvements only if system is operational
         if priority in [ImprovementPriority.CRITICAL, ImprovementPriority.HIGH]:
-            await notification_system.send_emergency_alert(
-                "system_improvement",
-                f"High-priority improvement: {title}",
-                {
-                    "improvement_id": improvement.id,
-                    "priority": priority.value,
-                    "type": improvement_type.value,
-                    "description": description
-                }
-            )
+            # Check if system has active agents before sending alerts
+            if len(self.system_metrics_history) > 0:
+                latest_metrics = self.system_metrics_history[-1]
+                if latest_metrics.total_agents > 0 and latest_metrics.active_agents > 0:
+                    notification_aggregator.add_alert(
+                        "system_improvement",
+                        f"High-priority improvement: {title}",
+                        {
+                            "improvement_id": improvement.id,
+                            "priority": priority.value,
+                            "type": improvement_type.value,
+                            "description": description
+                        }
+                    )
+                else:
+                    logger.info(f"⚠️  Suppressing alert '{title}' - system not fully operational (agents: {latest_metrics.total_agents}, active: {latest_metrics.active_agents})")
+            else:
+                logger.info(f"⚠️  Suppressing alert '{title}' - no system metrics available yet")
     
     async def _performance_optimization_loop(self):
         """Continuously optimize system performance."""
@@ -727,7 +737,7 @@ class EnhancedMetaAgent:
                 
                 # Send to administrative agents for review
                 for improvement in critical_improvements:
-                    await notification_system.send_emergency_alert(
+                    notification_aggregator.add_alert(
                         "admin_review_required",
                         f"Critical improvement requires admin review: {improvement.title}",
                         asdict(improvement)

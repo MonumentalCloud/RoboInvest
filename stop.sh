@@ -61,9 +61,13 @@ kill_port 8081  # Backend
 kill_port 5173  # Frontend
 
 # Kill any remaining processes
+echo "🔍 Killing all RoboInvest processes..."
 pkill -f "uvicorn.*fastapi_app" 2>/dev/null && echo "🔪 Killed remaining uvicorn processes"
 pkill -f "vite" 2>/dev/null && echo "🔪 Killed remaining vite processes"
 pkill -f "background_research_service" 2>/dev/null && echo "🔪 Killed remaining research processes"
+pkill -f "start_enhanced_meta_agent.py" 2>/dev/null && echo "🔪 Killed remaining meta-agent processes"
+pkill -f "enhanced_meta_agent" 2>/dev/null && echo "🔪 Killed remaining enhanced meta-agent processes"
+pkill -f "meta_agent" 2>/dev/null && echo "🔪 Killed remaining meta-agent processes"
 
 # Clean up log files
 if [ -f "$PROJECT_ROOT/backend.log" ]; then
@@ -79,6 +83,22 @@ fi
 if [ -f "$PROJECT_ROOT/research.log" ]; then
     echo "🗑️  Archiving research.log"
     mv "$PROJECT_ROOT/research.log" "$PROJECT_ROOT/research.log.$(date +%Y%m%d_%H%M%S)"
+fi
+
+if [ -f "$PROJECT_ROOT/meta_agent.log" ]; then
+    echo "🗑️  Archiving meta_agent.log"
+    mv "$PROJECT_ROOT/meta_agent.log" "$PROJECT_ROOT/meta_agent.log.$(date +%Y%m%d_%H%M%S)"
+fi
+
+# Final verification
+echo ""
+echo "🔍 Final verification..."
+sleep 2
+if pgrep -f "start_enhanced_meta_agent\|background_research_service\|uvicorn.*fastapi_app\|vite" >/dev/null; then
+    echo "⚠️  Some processes may still be running"
+    echo "   Run ./kill_duplicates.sh for emergency cleanup"
+else
+    echo "✅ All RoboInvest processes successfully stopped"
 fi
 
 echo ""

@@ -6,6 +6,7 @@ export default function Layout() {
   const navItems = [
     { label: '🚀 Alpha Stream', path: '/' },
     { label: '📊 Profit Analysis', path: '/insights' },
+    { label: '🎭 Play Executor', path: '/plays' },
   ];
 
   return (

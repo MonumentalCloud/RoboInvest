@@ -4,10 +4,12 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 import json
 import asyncio
+import os
 from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
 from pathlib import Path
 import uvicorn
+import sqlite3
 
 from core.config import config
 from core.pnl_tracker import pnl_tracker
@@ -15,7 +17,16 @@ from core.performance_tracker import performance_tracker
 from agents.rag_playbook import rag_agent
 from autonomous_trading_system import autonomous_trading_system
 from agents.trade_executor import TradeExecutorAgent
-trade_executor = TradeExecutorAgent()
+from agents.play_executor import play_executor, PlayStatus, InterventionType
+from agents.enhanced_trade_executor import enhanced_trade_executor
+from core.structured_order import OrderManager
+from core.play_reporting import play_reporting
+from core.notification_aggregator import notification_aggregator
+from tools.data_fetcher import data_fetcher
+from core.central_event_bus import central_event_bus, EventType, EventPriority
+
+# Use enhanced trade executor with structured orders
+trade_executor = enhanced_trade_executor
 
 app = FastAPI(title="RoboInvest API", version="1.0.0")
 
@@ -36,14 +47,28 @@ autonomous_task = None
 async def startup_event():
     """Start autonomous streaming system automatically on startup"""
     global autonomous_task
-    print("🚀 FastAPI startup - starting REAL autonomous agents for paper trading...")
     
-    # Start the task without waiting for it to complete
-    autonomous_task = asyncio.create_task(run_real_autonomous_agents())
-    print(f"✅ Real autonomous task created on startup: {autonomous_task}")
+    # Start the central event bus
+    await central_event_bus.start()
     
-    # Don't await the task - let it run in background
-    # This prevents the startup from hanging
+    # Check if autonomous trading should start automatically
+    # You can control this by setting an environment variable
+    auto_start_trading = os.getenv("AUTO_START_TRADING", "false").lower() == "true"
+    
+    if auto_start_trading:
+        print("🚀 FastAPI startup - starting REAL autonomous agents for paper trading...")
+        
+        # Start the task without waiting for it to complete
+        autonomous_task = asyncio.create_task(run_real_autonomous_agents())
+        print(f"✅ Real autonomous task created on startup: {autonomous_task}")
+        
+        # Don't await the task - let it run in background
+        # This prevents the startup from hanging
+    else:
+        print("🚀 FastAPI startup - autonomous trading disabled (set AUTO_START_TRADING=true to enable)")
+
+    # Start the notification aggregator background loop
+    notification_aggregator.start_background_loop()
 
 # Store active websocket connections for streaming
 class ConnectionManager:
@@ -153,7 +178,7 @@ async def websocket_research_tree(websocket: WebSocket):
 
 # Function to broadcast AI thoughts (called by autonomous system)
 async def broadcast_ai_thought(thought_type: str, content: str, metadata: Optional[Dict[str, Any]] = None):
-    """Broadcast AI thought to all connected clients"""
+    """Broadcast AI thought to all connected clients and capture in central event bus"""
     message = {
         "type": "ai_thought",
         "thought_type": thought_type,
@@ -163,6 +188,10 @@ async def broadcast_ai_thought(thought_type: str, content: str, metadata: Option
     }
     print(f"[broadcast_ai_thought] Sending: {message}")
     await manager.broadcast(message)
+    
+    # Also capture in central event bus
+    from core.central_event_bus import capture_ai_thought
+    capture_ai_thought(thought_type, content, metadata)
 
 # Function to broadcast research tree updates
 async def broadcast_research_update(node_type: str, node_data: Dict[str, Any]):
@@ -257,6 +286,38 @@ async def get_autonomous_status():
         return {"status": "cancelled", "message": "Autonomous system was cancelled"}
     else:
         return {"status": "running", "message": "Autonomous system is running"}
+
+@app.post("/api/autonomous/stop")
+async def stop_autonomous_streaming():
+    """Stop the autonomous trading system"""
+    global autonomous_task
+    
+    if autonomous_task is None:
+        return {"status": "not_running", "message": "Autonomous system is not running"}
+    
+    if not autonomous_task.done():
+        print("🛑 Stopping autonomous trading system...")
+        autonomous_task.cancel()
+        
+        # Wait for task to be cancelled
+        try:
+            await autonomous_task
+        except asyncio.CancelledError:
+            pass
+        
+        autonomous_task = None
+        
+        # Broadcast stop message
+        await broadcast_ai_thought(
+            "system_stop", 
+            "🛑 Autonomous trading system stopped",
+            {"status": "stopped"}
+        )
+        
+        print("✅ Autonomous trading system stopped")
+        return {"status": "stopped", "message": "Autonomous trading system stopped"}
+    else:
+        return {"status": "already_stopped", "message": "Autonomous system was already stopped"}
 
 async def run_autonomous_with_streaming():
     """Run autonomous trading system with real-time streaming of thoughts"""
@@ -541,23 +602,48 @@ async def run_real_autonomous_agents():
                 await manager.update_tree_node("paper_execution", status="active")
                 await broadcast_ai_thought("paper_execution", "📝 Executing paper trades...", {"phase": "paper_execution", "status": "active"})
                 
-                # Execute paper trades
+                # Execute paper trades using structured orders
                 try:
-                    # Example for a BUY trade on SPY (replace with dynamic logic as needed)
-                    trade_decision = {
-                        "action": "BUY",
-                        "symbol": "SPY",
-                        "qty": 100,  # You can make this dynamic
-                        "timestamp": datetime.now().isoformat(),
-                    }
-                    trade_result = trade_executor(trade_decision)
-
-                    # Broadcast the real trade result
-                    await broadcast_ai_thought(
-                        "trade_execution",
-                        f"Real trade executed: {trade_result}",
-                        {"phase": "trade_execution", "status": "active", "trade_result": trade_result}
-                    )
+                    # Get current market data for SPY
+                    spy_market_data = data_fetcher.get_historical_data("SPY", period="1d", interval="1d")
+                    current_price = 0
+                    if spy_market_data and not spy_market_data.get("error") and spy_market_data.get("data", {}).get("prices", {}).get("close"):
+                        current_price = spy_market_data["data"]["prices"]["close"][-1]
+                    
+                    if current_price > 0:
+                        # Create structured trade with full analysis
+                        structured_order = trade_executor.create_structured_trade(
+                            symbol="SPY",
+                            side="buy",
+                            quantity=100,
+                            market_data={"price": current_price, "historical_data": spy_market_data},
+                            news_data=[],  # Could be enhanced with real news
+                            play_title="Alpha Momentum Strategy",
+                            play_description="Automated alpha momentum play based on market analysis",
+                            confidence_score=0.75,
+                            priority=5,
+                            tags=["alpha", "momentum", "paper_trading"],
+                            notes="Paper trading execution from autonomous system"
+                        )
+                        
+                        # Execute the structured order
+                        execution_result = trade_executor.execute_order(structured_order)
+                        
+                        # Broadcast the structured trade result
+                        await broadcast_ai_thought(
+                            "trade_execution",
+                            f"Structured trade created: {structured_order.symbol} {structured_order.side} {structured_order.quantity} shares",
+                            {
+                                "phase": "trade_execution", 
+                                "status": "active", 
+                                "order_id": structured_order.order_id,
+                                "swot_score": structured_order.swot_analysis.overall_score,
+                                "risk_level": structured_order.risk_assessment.risk_level.value,
+                                "execution_result": execution_result
+                            }
+                        )
+                    else:
+                        await broadcast_ai_thought("trade_execution", "⚠️ Unable to get current price for structured trade", {"phase": "trade_execution", "status": "error"})
                     
                 except Exception as e:
                     await broadcast_ai_thought("paper_execution", f"⚠️ Paper trade error: {str(e)}", {"phase": "paper_execution", "status": "active"})
@@ -798,6 +884,99 @@ async def get_decision_trees():
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
+# ============================================================================
+# NEW: ALL RESEARCH TREES ENDPOINT
+# ============================================================================
+
+@app.get("/api/research/decision-trees/all")
+async def get_all_decision_trees():
+    """Get all research decision trees ever made (from all historical files)."""
+    try:
+        import glob
+        trees = []
+        # Find all *_latest.json and *_*.json files in research_data
+        for file_path in glob.glob(str(research_data_dir / "*.json")):
+            if not file_path.endswith(".json"):
+                continue
+            with open(file_path, 'r') as f:
+                try:
+                    data = json.load(f)
+                    decision_tree = data.get("decision_tree")
+                    if decision_tree:
+                        trees.append({
+                            "tree": decision_tree,
+                            "completed_at": data.get("completed_at"),
+                            "specialization": data.get("specialization"),
+                            "research_track": data.get("research_track"),
+                            "file": file_path
+                        })
+                except Exception:
+                    continue
+        return {"status": "success", "data": trees}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+# ============================================================================
+# NEW: RESEARCH EVENTS ENDPOINT
+# ============================================================================
+
+@app.get("/api/research/events")
+async def get_research_events(limit: int = 100):
+    """Get the last N research events (AI thoughts, research updates, etc.) from persistent storage."""
+    try:
+        import glob
+        import heapq
+        events = []
+        # Scan all research_data files for events
+        for file_path in glob.glob(str(research_data_dir / "*.json")):
+            with open(file_path, 'r') as f:
+                try:
+                    data = json.load(f)
+                    # Collect AI thoughts and research updates if present
+                    for key in ["ai_thoughts", "research_updates", "events"]:
+                        if key in data and isinstance(data[key], list):
+                            for event in data[key]:
+                                # Attach file and timestamp if available
+                                event["_file"] = file_path
+                                event["_file_timestamp"] = data.get("completed_at")
+                                events.append(event)
+                except Exception:
+                    continue
+        # Sort by timestamp if available
+        def get_ts(e):
+            return e.get("timestamp") or e.get("created_at") or e.get("_file_timestamp") or ""
+        events = sorted(events, key=get_ts, reverse=True)
+        return {"status": "success", "data": events[:limit]}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+# ============================================================================
+# NEW: LAST 100 RESEARCH EVENTS ENDPOINT
+# ============================================================================
+
+@app.get("/api/research/events/last100")
+async def get_last_100_research_events():
+    """Get the last 100 research events from all available history files, sorted by timestamp descending."""
+    import glob
+    import heapq
+    events = []
+    # Find all *_history.json files in research_data
+    for file_path in glob.glob(str(research_data_dir / "*_history.json")):
+        with open(file_path, 'r') as f:
+            try:
+                data = json.load(f)
+                if isinstance(data, list):
+                    events.extend(data)
+                elif isinstance(data, dict) and 'events' in data:
+                    events.extend(data['events'])
+            except Exception:
+                continue
+    # Sort by timestamp descending and take last 100
+    def get_ts(ev):
+        return ev.get('timestamp') or ev.get('created_at') or ''
+    events = sorted(events, key=get_ts, reverse=True)[:100]
+    return {"status": "success", "events": events}
+
 @app.get("/api/research/alpha-opportunities")
 async def get_alpha_opportunities(min_confidence: float = 0.0):
     """Get current alpha opportunities."""
@@ -849,6 +1028,558 @@ async def get_alpha_opportunities(min_confidence: float = 0.0):
         
     except Exception as e:
         return {"status": "error", "message": str(e)}
+
+# ============================================================================
+# PLAY EXECUTOR ENDPOINTS
+# ============================================================================
+
+@app.post("/api/plays/create")
+async def create_play_from_natural_language(
+    play_description: str,
+    symbol: str,
+    initial_quantity: int,
+    confidence_score: float = 0.7
+):
+    """Create a trading play from natural language description."""
+    try:
+        # Get current market data (simplified for now)
+        market_data = {
+            "price": 100.0,  # This would come from real market data
+            "change_pct": 0.0,
+            "volume": 1000000,
+            "avg_volume": 1000000,
+            "pe": 25.5,
+            "pb": 2.1,
+            "valuation": "fair"
+        }
+        
+        # Get news data (simplified for now)
+        news_data = [
+            "Market sentiment remains neutral",
+            "Trading volume steady"
+        ]
+        
+        # Create the play
+        play = play_executor.create_play_from_natural_language(
+            play_description=play_description,
+            symbol=symbol,
+            initial_quantity=initial_quantity,
+            market_data=market_data,
+            news_data=news_data,
+            confidence_score=confidence_score
+        )
+        
+        # Broadcast play creation
+        await broadcast_ai_thought(
+            "play_created",
+            f"Created play for {symbol}: {play['parsed_play']['title']}",
+            {
+                "play_id": play["play_id"],
+                "symbol": symbol,
+                "side": play["parsed_play"]["side"],
+                "confidence": confidence_score
+            }
+        )
+        
+        return {
+            "status": "success",
+            "data": {
+                "play_id": play["play_id"],
+                "order_id": play["order_id"],
+                "symbol": symbol,
+                "status": play["status"].value,
+                "title": play["parsed_play"]["title"],
+                "side": play["parsed_play"]["side"],
+                "timeframe": play["parsed_play"]["timeframe"],
+                "priority": play["parsed_play"]["priority"],
+                "tags": play["parsed_play"]["tags"],
+                "created_at": play["created_at"].isoformat()
+            }
+        }
+        
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/plays/{play_id}")
+async def get_play_summary(play_id: str):
+    """Get detailed summary of a specific play."""
+    try:
+        summary = play_executor.get_play_summary(play_id)
+        
+        if not summary:
+            return {"status": "error", "message": f"Play {play_id} not found"}
+        
+        return {
+            "status": "success",
+            "data": summary
+        }
+        
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/plays")
+async def get_all_plays():
+    """Get summary of all plays (active and historical)."""
+    try:
+        summary = play_executor.get_all_plays_summary()
+        
+        return {
+            "status": "success",
+            "data": summary
+        }
+        
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.post("/api/plays/{play_id}/monitor")
+async def monitor_play(play_id: str, market_data: Dict[str, Any]):
+    """Monitor and potentially intervene in a play based on current market data."""
+    try:
+        result = play_executor.monitor_and_execute_play(play_id, market_data)
+        
+        if "error" in result:
+            return {"status": "error", "message": result["error"]}
+        
+        # Broadcast intervention if it occurred
+        if result["status"] == "intervention_executed":
+            intervention = result["intervention"]
+            await broadcast_ai_thought(
+                "play_intervention",
+                f"Intervention on {play_id}: {intervention['reason']}",
+                {
+                    "play_id": play_id,
+                    "intervention_type": intervention["type"].value,
+                    "reason": intervention["reason"],
+                    "action": intervention["action"]
+                }
+            )
+        
+        # Broadcast adaptation if it occurred
+        elif result["status"] == "adaptation_executed":
+            adaptation = result["adaptation"]
+            await broadcast_ai_thought(
+                "play_adaptation",
+                f"Adaptation on {play_id}: {adaptation['reason']}",
+                {
+                    "play_id": play_id,
+                    "adaptation_type": adaptation["type"],
+                    "reason": adaptation["reason"],
+                    "action": adaptation["action"]
+                }
+            )
+        
+        return {
+            "status": "success",
+            "data": result
+        }
+        
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/plays/{play_id}/execution-plan")
+async def get_play_execution_plan(play_id: str):
+    """Get the detailed execution plan for a play."""
+    try:
+        if play_id not in play_executor.active_plays:
+            return {"status": "error", "message": f"Play {play_id} not found"}
+        
+        play = play_executor.active_plays[play_id]
+        
+        return {
+            "status": "success",
+            "data": {
+                "play_id": play_id,
+                "execution_plan": play["execution_plan"],
+                "monitoring_conditions": play["monitoring_conditions"],
+                "natural_language_description": play["natural_language_description"],
+                "parsed_play": play["parsed_play"]
+            }
+        }
+        
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/plays/{play_id}/interventions")
+async def get_play_interventions(play_id: str):
+    """Get intervention history for a play."""
+    try:
+        if play_id not in play_executor.active_plays:
+            return {"status": "error", "message": f"Play {play_id} not found"}
+        
+        play = play_executor.active_plays[play_id]
+        
+        return {
+            "status": "success",
+            "data": {
+                "play_id": play_id,
+                "interventions": play["intervention_history"],
+                "adaptations": play["adaptation_history"]
+            }
+        }
+        
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.post("/api/plays/{play_id}/manual-intervention")
+async def manual_intervention(play_id: str, intervention_type: str, reason: str):
+    """Manually trigger an intervention on a play."""
+    try:
+        if play_id not in play_executor.active_plays:
+            return {"status": "error", "message": f"Play {play_id} not found"}
+        
+        play = play_executor.active_plays[play_id]
+        
+        # Create manual intervention
+        intervention = {
+            "type": InterventionType.MARKET_CONDITION_CHANGE,
+            "reason": f"Manual intervention: {reason}",
+            "action": "manual_exit",
+            "timestamp": datetime.now().isoformat(),
+            "manual": True
+        }
+        
+        play["intervention_history"].append(intervention)
+        play["status"] = PlayStatus.INTERVENED
+        play["updated_at"] = datetime.now()
+        
+        # Broadcast manual intervention
+        await broadcast_ai_thought(
+            "manual_intervention",
+            f"Manual intervention on {play_id}: {reason}",
+            {
+                "play_id": play_id,
+                "intervention_type": intervention_type,
+                "reason": reason,
+                "manual": True
+            }
+        )
+        
+        return {
+            "status": "success",
+            "data": {
+                "play_id": play_id,
+                "intervention": intervention,
+                "message": "Manual intervention applied"
+            }
+        }
+        
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/plays/statistics")
+async def get_play_statistics():
+    """Get comprehensive statistics about all plays."""
+    try:
+        summary = play_executor.get_all_plays_summary()
+        stats = summary["statistics"]
+        
+        # Calculate additional statistics
+        active_plays = summary["active_plays"]
+        historical_plays = summary["historical_plays"]
+        
+        # Performance breakdown
+        performance_breakdown: Dict[str, Any] = {
+            "profitable_plays": 0,
+            "losing_plays": 0,
+            "break_even_plays": 0,
+            "avg_profit": 0.0,
+            "avg_loss": 0.0
+        }
+        
+        total_profit = 0.0
+        total_loss = 0.0
+        profit_count = 0
+        loss_count = 0
+        
+        for play in historical_plays:
+            if play and "performance" in play:
+                pnl = play["performance"].get("pnl_pct", 0.0)
+                if pnl > 0:
+                    performance_breakdown["profitable_plays"] += 1
+                    total_profit += pnl
+                    profit_count += 1
+                elif pnl < 0:
+                    performance_breakdown["losing_plays"] += 1
+                    total_loss += abs(pnl)
+                    loss_count += 1
+                else:
+                    performance_breakdown["break_even_plays"] += 1
+        
+        if profit_count > 0:
+            performance_breakdown["avg_profit"] = total_profit / profit_count
+        if loss_count > 0:
+            performance_breakdown["avg_loss"] = total_loss / loss_count
+        
+        return {
+            "status": "success",
+            "data": {
+                "overview": stats,
+                "performance_breakdown": performance_breakdown,
+                "active_plays_count": len(active_plays),
+                "historical_plays_count": len(historical_plays),
+                "last_updated": datetime.now().isoformat()
+            }
+        }
+        
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+# ============================================================================
+# PLAY REPORTING ENDPOINTS
+# ============================================================================
+
+@app.get("/api/plays/reporting/history")
+async def get_play_reporting_history(limit: int = 100):
+    """Get play history from the central reporting system."""
+    try:
+        history = play_reporting.get_play_history(limit)
+        
+        return {
+            "status": "success",
+            "data": {
+                "plays": history,
+                "total_returned": len(history),
+                "limit_requested": limit
+            }
+        }
+        
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/plays/reporting/{play_id}/details")
+async def get_play_reporting_details(play_id: str):
+    """Get detailed play information from the central reporting system."""
+    try:
+        details = play_reporting.get_play_details(play_id)
+        
+        if not details:
+            return {"status": "error", "message": f"Play {play_id} not found in reporting system"}
+        
+        return {
+            "status": "success",
+            "data": details
+        }
+        
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/plays/reporting/statistics")
+async def get_play_reporting_statistics():
+    """Get comprehensive play statistics from the central reporting system."""
+    try:
+        stats = play_reporting.get_play_statistics()
+        
+        return {
+            "status": "success",
+            "data": stats
+        }
+        
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+# ============================================================================
+# STRUCTURED ORDER ENDPOINTS
+# ============================================================================
+
+@app.get("/api/structured-orders")
+async def get_structured_orders():
+    """Get all structured orders"""
+    try:
+        orders = trade_executor.get_all_orders_summary()
+        return {"status": "success", "orders": orders}
+    except Exception as e:
+        return {"status": "error", "error": str(e)}
+
+@app.get("/api/structured-orders/{order_id}")
+async def get_structured_order(order_id: str):
+    """Get specific structured order details"""
+    try:
+        order = trade_executor.get_order_summary(order_id)
+        if order:
+            return {"status": "success", "order": order}
+        else:
+            return {"status": "error", "error": "Order not found"}
+    except Exception as e:
+        return {"status": "error", "error": str(e)}
+
+@app.get("/api/structured-orders/approval/required")
+async def get_orders_requiring_approval():
+    """Get orders that require manual approval"""
+    try:
+        orders = trade_executor.get_orders_requiring_approval()
+        return {"status": "success", "orders": orders}
+    except Exception as e:
+        return {"status": "error", "error": str(e)}
+
+@app.post("/api/structured-orders/{order_id}/approve")
+async def approve_structured_order(order_id: str):
+    """Approve a structured order"""
+    try:
+        success = trade_executor.approve_order(order_id)
+        if success:
+            return {"status": "success", "message": f"Order {order_id} approved"}
+        else:
+            return {"status": "error", "error": "Failed to approve order"}
+    except Exception as e:
+        return {"status": "error", "error": str(e)}
+
+@app.post("/api/structured-orders/{order_id}/reject")
+async def reject_structured_order(order_id: str, reason: str = ""):
+    """Reject a structured order"""
+    try:
+        success = trade_executor.reject_order(order_id, reason)
+        if success:
+            return {"status": "success", "message": f"Order {order_id} rejected"}
+        else:
+            return {"status": "error", "error": "Failed to reject order"}
+    except Exception as e:
+        return {"status": "error", "error": str(e)}
+
+
+# ============================================================================
+# CENTRAL EVENT BUS ENDPOINTS
+# ============================================================================
+
+@app.get("/api/events")
+async def get_central_events(
+    limit: int = 100,
+    event_types: Optional[str] = None,
+    sources: Optional[str] = None,
+    since: Optional[str] = None,
+    until: Optional[str] = None
+):
+    """Get events from the central event bus with filtering"""
+    try:
+        # Parse optional parameters
+        event_types_list = event_types.split(",") if event_types else None
+        sources_list = sources.split(",") if sources else None
+        
+        since_dt = datetime.fromisoformat(since) if since else None
+        until_dt = datetime.fromisoformat(until) if until else None
+        
+        events = central_event_bus.get_events_from_db(
+            limit=limit,
+            event_types=event_types_list,
+            sources=sources_list,
+            since=since_dt,
+            until=until_dt
+        )
+        
+        return {
+            "status": "success",
+            "data": events,
+            "count": len(events)
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/events/recent")
+async def get_recent_events(limit: int = 100):
+    """Get recent events from memory cache"""
+    try:
+        events = central_event_bus.get_recent_events(limit=limit)
+        return {
+            "status": "success",
+            "data": events,
+            "count": len(events)
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/events/statistics")
+async def get_event_statistics():
+    """Get event statistics"""
+    try:
+        stats = central_event_bus.get_event_statistics()
+        return {
+            "status": "success",
+            "data": stats
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/events/types")
+async def get_event_types():
+    """Get available event types"""
+    try:
+        event_types = [event_type.value for event_type in EventType]
+        return {
+            "status": "success",
+            "data": event_types
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/events/sources")
+async def get_event_sources():
+    """Get available event sources"""
+    try:
+        with sqlite3.connect(central_event_bus.db_path) as conn:
+            cursor = conn.execute("SELECT DISTINCT source FROM events ORDER BY source")
+            sources = [row[0] for row in cursor.fetchall()]
+        
+        return {
+            "status": "success",
+            "data": sources
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+# Websocket endpoint for real-time central events
+@app.websocket("/ws/central-events")
+async def websocket_central_events(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        # Send initial events
+        recent_events = central_event_bus.get_recent_events(limit=50)
+        await websocket.send_text(json.dumps({
+            "type": "initial_events",
+            "events": recent_events
+        }))
+        
+        # Keep connection alive
+        while True:
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+
+
+# Function to broadcast central events
+async def broadcast_central_event(event_data: Dict[str, Any]):
+    """Broadcast central event to all connected clients"""
+    message = {
+        "type": "central_event",
+        "event": event_data,
+        "timestamp": datetime.now().isoformat()
+    }
+    await manager.broadcast(message)
+
+
+# Subscribe to central event bus for real-time broadcasting
+def on_central_event(event):
+    """Callback for central event bus to broadcast events"""
+    asyncio.create_task(broadcast_central_event(event.to_dict()))
+
+
+# Register the callback with the central event bus
+central_event_bus.subscribe(on_central_event)
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000) 

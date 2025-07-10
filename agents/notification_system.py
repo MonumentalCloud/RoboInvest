@@ -20,6 +20,9 @@ class NotificationSystem:
     """
     Real notification system for the meta-agent.
     
+    WARNING: All emergency alerting should now go through the NotificationAggregatorAgent
+    (see core/notification_aggregator.py) to avoid alert spam. Do not call send_emergency_alert directly.
+    
     Features:
     - SMS alerts for critical emergencies
     - Daily email reports
@@ -95,8 +98,11 @@ class NotificationSystem:
         logger.info(f"📝 Created default notification config: {config_path}")
         return default_config
     
-    async def send_emergency_alert(self, alert_type: str, message: str, context: Dict[str, Any] = None):
-        """Send emergency alert via SMS and other channels."""
+    async def send_emergency_alert(self, alert_type: str, message: str, context: Optional[Dict[str, Any]] = None):
+        """
+        Send emergency alert via SMS and other channels.
+        WARNING: Use NotificationAggregatorAgent for all emergency alerting to avoid alert spam.
+        """
         logger.critical(f"🚨 EMERGENCY ALERT: {alert_type} - {message}")
         
         # Format emergency message
@@ -545,3 +551,14 @@ Real-time data from {system_perf.get('total_agents', 0)} AI agents
 
 # Global notification system instance
 notification_system = NotificationSystem() 
+
+def send_email_notification(subject: str, body: str) -> bool:
+    """Synchronous wrapper for sending email notifications."""
+    import asyncio
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    try:
+        result = loop.run_until_complete(notification_system._send_email(subject, body))
+        return result
+    finally:
+        loop.close() 

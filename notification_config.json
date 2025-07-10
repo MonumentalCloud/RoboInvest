@@ -1,0 +1,35 @@
+{
+  "sms": {
+    "enabled": false,
+    "provider": "twilio",
+    "account_sid": "YOUR_TWILIO_ACCOUNT_SID",
+    "auth_token": "YOUR_TWILIO_AUTH_TOKEN",
+    "from_number": "YOUR_TWILIO_PHONE_NUMBER",
+    "to_number": "YOUR_PHONE_NUMBER"
+  },
+  "email": {
+    "enabled": true,
+    "smtp_server": "smtp.gmail.com",
+    "smtp_port": 587,
+    "username": "marvinisawesome@gmail.com",
+    "password": "yrpm tdcu nxgx jrae",
+    "from_email": "marvinisawesome@gmail.com",
+    "to_email": "marvinisawesome@gmail.com"
+  },
+  "slack": {
+    "enabled": false,
+    "webhook_url": "YOUR_SLACK_WEBHOOK_URL"
+  },
+  "notification_levels": {
+    "critical": ["sms", "email", "slack"],
+    "high": ["email", "slack"],
+    "medium": ["email"],
+    "low": ["email"]
+  },
+  "daily_report_time": "18:00",
+  "emergency_thresholds": {
+    "critical_errors": 5,
+    "offline_agents": 2,
+    "system_health_below": 70
+  }
+} 

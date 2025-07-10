@@ -1,0 +1,46 @@
+{
+  "active_orders": [
+    {
+      "order_id": "d28f5b17-044e-42fd-87df-4eea95ebb9a3",
+      "symbol": "NVDA",
+      "side": "buy",
+      "order_type": "market",
+      "quantity": 5,
+      "price": null,
+      "status": "pending_analysis",
+      "created_at": "2025-07-10T13:55:56.056369",
+      "updated_at": "2025-07-10T13:55:56.056369",
+      "submitted_at": null,
+      "filled_at": null,
+      "cancelled_at": null,
+      "play": {
+        "play_id": "play_20250710_135556",
+        "title": "NVDA AI Momentum Play",
+        "description": "Capitalizing on AI chip demand surge",
+        "thesis": "SWOT Score: 0.60, Risk Level: medium",
+        "catalyst": "Market analysis and technical indicators",
+        "timeframe": "1-5 days",
+        "entry_strategy": "Market order at current price $500.00",
+        "exit_strategy": "Stop loss at 4.0%, Take profit at 10.0%",
+        "key_risks": [
+          "medium"
+        ],
+        "key_metrics": {
+          "swot_score": 0.6,
+          "risk_score": 0.4592045262299834,
+          "volatility": 0.000818104919933379,
+          "var_95": 3.364456483226021
+        },
+        "research_sources": [
+          "Market data",
+          "News sentiment",
+          "Technical analysis"
+        ],
+        "analyst_notes": "Strong technical breakout with positive news flow",
+        "market_context": "Standard market conditions",
+        "sector_analysis": "Sector analysis not available",
+        "technical_analysis": "Technical analysis not available",
+        "fundamental_analysis": "Fundamental analysis not available",
+        "sentiment_analysis": "News sentiment: 4 headlines analyzed",
+        "created_by": "EnhancedTradeExecutorAgent",
+        "created_at": 

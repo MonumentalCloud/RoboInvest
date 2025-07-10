@@ -32,6 +32,7 @@ from agents.specialized_meta_agents import CodeEditorAgent, PromptEngineerAgent,
 from agents.agent_monitoring_system import agent_monitor
 from agents.notification_system import notification_system
 from agents.investor_report_generator import investor_report_generator
+from core.notification_aggregator import notification_aggregator
 
 class AgentHealth(Enum):
     HEALTHY = "healthy"
@@ -151,7 +152,7 @@ class MetaAgent:
         # Check for emergency conditions
         emergencies = notification_system.check_emergency_conditions(system_health)
         for emergency in emergencies:
-            await notification_system.send_emergency_alert(
+            notification_aggregator.add_alert(
                 emergency["type"],
                 emergency["message"],
                 emergency["context"]
@@ -176,7 +177,7 @@ class MetaAgent:
                     )
                     
                     # Send emergency alert for failing agents
-                    await notification_system.send_emergency_alert(
+                    notification_aggregator.add_alert(
                         "agent_failure",
                         f"Agent {agent_name} is failing with {status.error_count} errors",
                         {
@@ -211,7 +212,7 @@ class MetaAgent:
                 )
                 
                 # Send emergency alert for health check failures
-                await notification_system.send_emergency_alert(
+                notification_aggregator.add_alert(
                     "health_check_failure",
                     f"Health check failed for {agent_name}: {e}",
                     {
