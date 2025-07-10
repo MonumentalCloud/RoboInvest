@@ -13,39 +13,31 @@ import random
 from utils.logger import logger  # type: ignore
 from core.config import config
 
-# Try to import Polygon, fallback to yfinance if not available
+# Import Polygon for professional market data
 try:
     from polygon import RESTClient
     POLYGON_AVAILABLE = True
 except ImportError:
     POLYGON_AVAILABLE = False
-    logger.warning("Polygon not available, falling back to yfinance")
-
-# Import yfinance as fallback
-try:
-    import yfinance as yf
-    YFINANCE_AVAILABLE = True
-except ImportError:
-    YFINANCE_AVAILABLE = False
-    logger.error("Neither Polygon nor yfinance available!")
+    logger.error("Polygon not available - please install: pip install polygon-api-client")
 
 
 class DataFetcher:
-    """Enhanced market data fetcher with Polygon.io integration - Free Tier Optimized."""
+    """Enhanced market data fetcher with Polygon.io integration - Upgraded Plan Optimized."""
     
     def __init__(self):
         self.cache = {}
-        self.cache_duration = timedelta(minutes=15)  # Longer cache for free tier
+        self.cache_duration = timedelta(minutes=5)  # Shorter cache for upgraded plan
         self.demo_mode = False  # Disable demo mode - use real data with Polygon API
         self.last_request_time = 0  # Track last API request for rate limiting
-        self.free_tier_delay = 15  # 15 seconds between requests for free tier (5 req/min = 12s + buffer)
+        self.upgraded_delay = 0.1  # 0.1 seconds between requests for upgraded plan (much faster)
         
         # Initialize Polygon client if available and configured
         self.polygon_client = None
         if POLYGON_AVAILABLE and config.polygon_api_key and not self.demo_mode:
             try:
                 self.polygon_client = RESTClient(api_key=config.polygon_api_key)
-                logger.info("🚀 DataFetcher | Polygon.io FREE TIER initialized - using historical data only")
+                logger.info("🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled")
             except Exception as e:
                 logger.error(f"Polygon client initialization failed: {e}")
         
@@ -54,29 +46,26 @@ class DataFetcher:
             self.data_source = "demo_data"
             logger.info("🎭 DataFetcher | Demo mode enabled - using realistic mock data")
         elif self.polygon_client:
-            self.data_source = "polygon_free"
-            logger.info("📊 DataFetcher | Primary data source: Polygon.io FREE TIER (5 req/min, historical only)")
-        elif YFINANCE_AVAILABLE:
-            self.data_source = "yfinance"
-            logger.info("📊 DataFetcher | Primary data source: yfinance (Free)")
+            self.data_source = "polygon_upgraded"
+            logger.info("📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)")
         else:
-            logger.error("❌ No market data source available!")
+            logger.error("❌ Polygon.io not available - please check API key configuration")
     
     def _wait_for_rate_limit(self):
-        """Implement rate limiting for Polygon free tier (5 requests per minute)."""
+        """Implement minimal rate limiting for Polygon upgraded plan."""
         current_time = time.time()
         time_since_last_request = current_time - self.last_request_time
         
-        if time_since_last_request < self.free_tier_delay:
-            wait_time = self.free_tier_delay - time_since_last_request
-            logger.info(f"⏳ Polygon free tier rate limiting: waiting {wait_time:.1f}s")
+        if time_since_last_request < self.upgraded_delay:
+            wait_time = self.upgraded_delay - time_since_last_request
+            logger.debug(f"⏳ Polygon upgraded plan rate limiting: waiting {wait_time:.3f}s")
             time.sleep(wait_time)
         
         self.last_request_time = time.time()
     
     def is_premium_data_available(self) -> bool:
         """Check if premium Polygon data is available."""
-        return False  # We're using free tier only
+        return True  # We're using upgraded plan
     
     def get_historical_data(self, symbol: str, period: str = "1y", interval: str = "1d") -> Dict[str, Any]:
         """
@@ -110,24 +99,19 @@ class DataFetcher:
                     self.cache[cache_key] = (data, datetime.now())
                     return data
             
-            # Try Polygon first if available
-            elif self.polygon_client:
+            # Use Polygon for all data
+            if self.polygon_client:
                 self._wait_for_rate_limit() # Apply rate limiting
                 data = self._get_polygon_historical_data(symbol, period, interval)
                 if data and not data.get("error"):
                     self.cache[cache_key] = (data, datetime.now())
                     return data
                 else:
-                    logger.warning(f"Polygon data failed for {symbol}, falling back to yfinance")
-            
-            # Fallback to yfinance
-            elif YFINANCE_AVAILABLE:
-                data = self._get_yfinance_historical_data(symbol, period, interval)
-                if data:
-                    self.cache[cache_key] = (data, datetime.now())
-                    return data
-            
-            return {"error": f"No data source available for {symbol}", "data": None}
+                    logger.error(f"Polygon data failed for {symbol}: {data.get('error', 'Unknown error')}")
+                    return {"error": f"Polygon data failed for {symbol}", "data": None}
+            else:
+                logger.error("Polygon client not available")
+                return {"error": "Polygon client not available", "data": None}
             
         except Exception as e:
             logger.error(f"DataFetcher error for {symbol}: {e}")
@@ -136,6 +120,9 @@ class DataFetcher:
     def _get_polygon_historical_data(self, symbol: str, period: str, interval: str) -> Dict[str, Any]:
         """Get historical data from Polygon.io."""
         try:
+            if not self.polygon_client:
+                return {"error": "Polygon client not available", "data": None}
+                
             # Calculate date range
             end_date = date.today()
             
@@ -214,120 +201,7 @@ class DataFetcher:
             logger.error(f"Polygon historical data error for {symbol}: {e}")
             return {"error": str(e), "data": None}
     
-    def _get_yfinance_historical_data(self, symbol: str, period: str, interval: str) -> Dict[str, Any]:
-        """Get historical data using direct Yahoo Finance API (bypasses yfinance rate limits)."""
-        try:
-            # Use direct Yahoo Finance API instead of yfinance library
-            logger.info(f"🚀 Fetching {symbol} via direct Yahoo Finance API")
-            
-            # Convert period to range parameter
-            period_map = {
-                '1d': '1d', '5d': '5d', '1mo': '1mo', '3mo': '3mo', 
-                '6mo': '6mo', '1y': '1y', '2y': '2y', '5y': '5y', '10y': '10y'
-            }
-            range_param = period_map.get(period, '1y')
-            
-            # Convert interval
-            interval_map = {
-                '1m': '1m', '5m': '5m', '15m': '15m', '30m': '30m',
-                '1h': '1h', '1d': '1d', '5d': '5d', '1wk': '1wk', '1mo': '1mo'
-            }
-            interval_param = interval_map.get(interval, '1d')
-            
-            # Direct Yahoo Finance API call
-            url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
-            params = {
-                'interval': interval_param,
-                'range': range_param,
-                'includePrePost': 'false'
-            }
-            
-            headers = {
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-                'Accept': 'application/json',
-                'Accept-Language': 'en-US,en;q=0.9',
-                'Cache-Control': 'no-cache'
-            }
-            
-            # Add small delay to be respectful
-            time.sleep(random.uniform(0.5, 1.5))
-            
-            response = requests.get(url, params=params, headers=headers, timeout=15)
-            response.raise_for_status()
-            
-            data = response.json()
-            
-            # Parse Yahoo Finance response
-            if 'chart' not in data or not data['chart']['result']:
-                return {"error": f"No data found for {symbol}", "data": None}
-            
-            result = data['chart']['result'][0]
-            timestamps = result['timestamp']
-            quotes = result['indicators']['quote'][0]
-            
-            # Convert timestamps to dates
-            dates = []
-            opens = []
-            highs = []
-            lows = []
-            closes = []
-            volumes = []
-            
-            for i, ts in enumerate(timestamps):
-                if quotes['open'][i] is not None:  # Skip null values
-                    dates.append(datetime.fromtimestamp(ts).strftime('%Y-%m-%d'))
-                    opens.append(round(quotes['open'][i], 2))
-                    highs.append(round(quotes['high'][i], 2))
-                    lows.append(round(quotes['low'][i], 2))
-                    closes.append(round(quotes['close'][i], 2))
-                    volumes.append(int(quotes['volume'][i]) if quotes['volume'][i] else 0)
-            
-            if not closes:
-                return {"error": f"No valid price data for {symbol}", "data": None}
-            
-            # Calculate statistics
-            start_price = closes[0]
-            end_price = closes[-1]
-            total_return = ((end_price / start_price - 1) * 100) if start_price != 0 else 0
-            
-            result_data = {
-                "symbol": symbol,
-                "period": period,
-                "interval": interval,
-                "data": {
-                    "dates": dates,
-                    "prices": {
-                        "open": opens,
-                        "high": highs,
-                        "low": lows,
-                        "close": closes,
-                        "volume": volumes
-                    }
-                },
-                "stats": {
-                    "total_days": len(closes),
-                    "start_date": dates[0] if dates else None,
-                    "end_date": dates[-1] if dates else None,
-                    "start_price": start_price,
-                    "end_price": end_price,
-                    "total_return": round(total_return, 2),
-                    "avg_volume": int(np.mean(volumes)) if volumes else 0
-                },
-                "data_source": "Yahoo Finance Direct API"
-            }
-            
-            logger.info(f"✅ Successfully fetched {symbol} data ({len(closes)} points) via direct API")
-            return result_data
-            
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Yahoo Finance API request error for {symbol}: {e}")
-            return {"error": f"API request failed: {str(e)}", "data": None}
-        except KeyError as e:
-            logger.error(f"Yahoo Finance API data parsing error for {symbol}: {e}")
-            return {"error": f"Data parsing failed: {str(e)}", "data": None}
-        except Exception as e:
-            logger.error(f"Yahoo Finance API error for {symbol}: {e}")
-            return {"error": str(e), "data": None}
+
     
     def _get_demo_historical_data(self, symbol: str, period: str, interval: str) -> Dict[str, Any]:
         """Generate realistic demo data for testing purposes."""
@@ -662,9 +536,8 @@ class DataFetcher:
                 hist = pd.DataFrame(df_data).set_index('Date')
                 
             else:
-                # Fallback to yfinance
-                ticker = yf.Ticker(symbol)
-                hist = ticker.history(start=start_date, end=end_date)
+                # No data source available
+                return {"error": f"No data source available for {symbol}", "data": None}
             
             if hist.empty:
                 return {"error": f"No backtest data for {symbol}", "data": None}

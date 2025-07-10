@@ -62,14 +62,14 @@ echo "🚀 Starting services..."
 # Start backend
 echo "📡 Starting backend API server..."
 cd "$PROJECT_ROOT"
-nohup python -m uvicorn backend.api.fastapi_app:app --reload --port 8081 > backend.log 2>&1 &
+nohup /usr/bin/python3 -m uvicorn backend.api.fastapi_app:app --reload --port 8081 > backend.log 2>&1 &
 BACKEND_PID=$!
 echo "   Backend PID: $BACKEND_PID"
 
 # Start continuous research service
 echo "🔍 Starting continuous research service..."
 cd "$PROJECT_ROOT"
-nohup python background_research_service.py > research.log 2>&1 &
+nohup /usr/bin/python3 background_research_service.py > research.log 2>&1 &
 RESEARCH_PID=$!
 echo "   Research Service PID: $RESEARCH_PID"
 

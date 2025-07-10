@@ -364,16 +364,22 @@ class EnhancedAutonomousAgent:
         if tool_name == "calculator":
             tasks.extend([
                 {
-                    "description": "Statistical analysis of hypothesis variables",
-                    "type": "statistical_analysis",
+                    "description": "Volatility analysis of market data",
+                    "type": "volatility_analysis",
                     "executor": self._execute_calculator_analysis,
-                    "parameters": {"analysis_type": "statistical", "hypothesis": hypothesis, "context": context}
+                    "parameters": {"analysis_type": "volatility", "hypothesis": hypothesis, "context": context}
                 },
                 {
                     "description": "Technical indicator calculations",
                     "type": "technical_indicators",
                     "executor": self._execute_calculator_analysis,
                     "parameters": {"analysis_type": "technical", "hypothesis": hypothesis, "context": context}
+                },
+                {
+                    "description": "Correlation analysis between assets",
+                    "type": "correlation_analysis",
+                    "executor": self._execute_calculator_analysis,
+                    "parameters": {"analysis_type": "correlation", "hypothesis": hypothesis, "context": context}
                 }
             ])
         
@@ -436,12 +442,18 @@ class EnhancedAutonomousAgent:
         return tasks
     
     # Tool Execution Methods
-    async def _execute_calculator_analysis(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
+    async def _execute_calculator_analysis(self, task_data: Dict[str, Any]) -> Dict[str, Any]:
         """Execute calculator-based analysis."""
         try:
+            # Extract parameters from task data
+            parameters = task_data.get("parameters", task_data)
             analysis_type = parameters.get("analysis_type", "statistical")
             hypothesis = parameters.get("hypothesis", "")
             context = parameters.get("context", {})
+            
+            print(f"  🧮 Calculator Analysis: {analysis_type}")
+            print(f"    Hypothesis: {hypothesis}")
+            print(f"    Context symbols: {context.get('symbols', [])}")
             
             # Get relevant data for analysis
             symbols = context.get("symbols", ["SPY"])
@@ -450,21 +462,60 @@ class EnhancedAutonomousAgent:
             # Fetch data for calculations
             historical_data = data_fetcher.get_historical_data(symbol, period="6mo")
             if not historical_data.get("data"):
+                print(f"    ❌ No data available for {symbol}")
                 return {"error": "No data available for analysis", "confidence": 0.1}
             
             prices = historical_data["data"]["prices"]["close"]
+            print(f"    ✅ Got {len(prices)} price points for {symbol}")
             
             results = {}
             
-            if analysis_type == "statistical":
-                results["volatility"] = calculator.calculate("volatility analysis", {"prices": prices})
-                results["correlation"] = calculator.calculate("correlation analysis", {"prices": prices})
-                results["distribution"] = calculator.calculate("distribution analysis", {"prices": prices})
+            if analysis_type == "volatility":
+                print(f"    📊 Calculating volatility...")
+                volatility_result = calculator.calculate("volatility analysis", {"prices": prices})
+                results["volatility"] = volatility_result
+                print(f"    ✅ Volatility result: {bool(volatility_result.get('result'))}")
+                if volatility_result.get('result'):
+                    print(f"    📊 Volatility metrics: {list(volatility_result['result'].keys())}")
             
             elif analysis_type == "technical":
-                results["momentum"] = calculator.calculate("momentum analysis", {"prices": prices})
-                results["trend"] = calculator.calculate("trend analysis", {"prices": prices})
-                results["oscillators"] = calculator.calculate("oscillator analysis", {"prices": prices})
+                print(f"    📈 Calculating technical indicators...")
+                technical_result = calculator.calculate("technical indicators", {"prices": prices})
+                results["technical"] = technical_result
+                print(f"    ✅ Technical result: {bool(technical_result.get('result'))}")
+                if technical_result.get('result'):
+                    print(f"    📈 Technical metrics: {list(technical_result['result'].keys())}")
+            
+            elif analysis_type == "correlation":
+                print(f"    🔗 Calculating correlation with QQQ...")
+                # For correlation, we need two series - use SPY vs QQQ
+                try:
+                    qqq_data = data_fetcher.get_historical_data("QQQ", period="6mo")
+                    if qqq_data.get("data"):
+                        qqq_prices = qqq_data["data"]["prices"]["close"]
+                        # Align the series lengths
+                        min_len = min(len(prices), len(qqq_prices))
+                        correlation_result = calculator.calculate("correlation analysis", {
+                            "series1": prices[-min_len:],
+                            "series2": qqq_prices[-min_len:]
+                        })
+                        results["correlation"] = correlation_result
+                        print(f"    ✅ Correlation result: {bool(correlation_result.get('result'))}")
+                        if correlation_result.get('result'):
+                            print(f"    🔗 Correlation value: {correlation_result['result'].get('correlation', 'N/A')}")
+                    else:
+                        results["correlation"] = {"error": "No QQQ data available", "result": None}
+                        print(f"    ❌ No QQQ data available")
+                except Exception as e:
+                    results["correlation"] = {"error": f"Correlation calculation failed: {e}", "result": None}
+                    print(f"    ❌ Correlation calculation failed: {e}")
+            
+            else:
+                print(f"    ⚠️ Unknown analysis type: {analysis_type}")
+                # Fallback to volatility analysis
+                volatility_result = calculator.calculate("volatility analysis", {"prices": prices})
+                results["volatility"] = volatility_result
+                print(f"    ✅ Fallback volatility result: {bool(volatility_result.get('result'))}")
             
             # Track tool usage
             self.tool_usage_stats["calculator"] = self.tool_usage_stats.get("calculator", 0) + 1
@@ -479,11 +530,14 @@ class EnhancedAutonomousAgent:
             
         except Exception as e:
             logger.error(f"Calculator analysis error: {e}")
+            print(f"    ❌ Calculator analysis error: {e}")
             return {"error": str(e), "confidence": 0.1}
     
-    async def _execute_market_data_analysis(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
+    async def _execute_market_data_analysis(self, task_data: Dict[str, Any]) -> Dict[str, Any]:
         """Execute market data analysis."""
         try:
+            # Extract parameters from task data
+            parameters = task_data.get("parameters", task_data)
             data_type = parameters.get("data_type", "real_time")
             hypothesis = parameters.get("hypothesis", "")
             context = parameters.get("context", {})
@@ -515,9 +569,11 @@ class EnhancedAutonomousAgent:
             logger.error(f"Market data analysis error: {e}")
             return {"error": str(e), "confidence": 0.1}
     
-    async def _execute_web_research(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
+    async def _execute_web_research(self, task_data: Dict[str, Any]) -> Dict[str, Any]:
         """Execute comprehensive web research."""
         try:
+            # Extract parameters from task data
+            parameters = task_data.get("parameters", task_data)
             research_type = parameters.get("research_type", "comprehensive")
             hypothesis = parameters.get("hypothesis", "")
             context = parameters.get("context", {})
@@ -545,9 +601,11 @@ class EnhancedAutonomousAgent:
             logger.error(f"Web research error: {e}")
             return {"error": str(e), "confidence": 0.1}
     
-    async def _execute_web_search(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
+    async def _execute_web_search(self, task_data: Dict[str, Any]) -> Dict[str, Any]:
         """Execute targeted web search."""
         try:
+            # Extract parameters from task data
+            parameters = task_data.get("parameters", task_data)
             search_type = parameters.get("search_type", "targeted")
             hypothesis = parameters.get("hypothesis", "")
             
@@ -578,9 +636,11 @@ class EnhancedAutonomousAgent:
             logger.error(f"Web search error: {e}")
             return {"error": str(e), "confidence": 0.1}
     
-    async def _execute_backtesting(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
+    async def _execute_backtesting(self, task_data: Dict[str, Any]) -> Dict[str, Any]:
         """Execute backtesting analysis."""
         try:
+            # Extract parameters from task data
+            parameters = task_data.get("parameters", task_data)
             test_type = parameters.get("test_type", "strategy")
             hypothesis = parameters.get("hypothesis", "")
             context = parameters.get("context", {})
@@ -609,9 +669,11 @@ class EnhancedAutonomousAgent:
             logger.error(f"Backtesting error: {e}")
             return {"error": str(e), "confidence": 0.1}
     
-    async def _execute_memory_lookup(self, parameters: Dict[str, Any]) -> Dict[str, Any]:
+    async def _execute_memory_lookup(self, task_data: Dict[str, Any]) -> Dict[str, Any]:
         """Execute memory and pattern lookup."""
         try:
+            # Extract parameters from task data
+            parameters = task_data.get("parameters", task_data)
             lookup_type = parameters.get("lookup_type", "patterns")
             hypothesis = parameters.get("hypothesis", "")
             
@@ -651,13 +713,26 @@ class EnhancedAutonomousAgent:
         try:
             successful_results = [r for r in research_results if not r.get("error") and r.get("confidence", 0) > 0.3]
             
+            print(f"🔍 Pattern Analysis Debug:")
+            print(f"  Total research results: {len(research_results)}")
+            print(f"  Successful results: {len(successful_results)}")
+            print(f"  Failed results: {len(research_results) - len(successful_results)}")
+            
             if not successful_results:
+                print("  ❌ No successful results to analyze!")
                 return {"patterns": [], "correlations": [], "insights": []}
             
-            # Use LLM to identify patterns across results
-            pattern_prompt = f"""Analyze these research results to identify patterns and correlations.
+            # First, summarize the research results to reduce token count
+            summarized_results = await self._summarize_research_results(successful_results)
             
-            Research Results: {json.dumps(successful_results, indent=2)}
+            print(f"  📊 Summarized results: {len(summarized_results)}")
+            for i, summary in enumerate(summarized_results, 1):
+                print(f"    {i}. Tool: {summary.get('tool', 'unknown')}, Confidence: {summary.get('confidence', 0):.2f}")
+            
+            # Use LLM to identify patterns across summarized results
+            pattern_prompt = f"""Analyze these summarized research results to identify patterns and correlations.
+            
+            Summarized Research Results: {json.dumps(summarized_results, indent=2)}
             
             Look for:
             1. Consistent themes across different tools/analyses
@@ -682,25 +757,134 @@ class EnhancedAutonomousAgent:
                 ]
             }}"""
             
+            print(f"  🤖 Sending pattern analysis prompt to LLM...")
             response = openai_manager.chat_completion([
                 {"role": "user", "content": pattern_prompt}
             ], temperature=0.3)
             
             pattern_analysis = json.loads(response.get("content", "{}"))
             
+            print(f"  ✅ Pattern analysis completed:")
+            print(f"    Patterns found: {len(pattern_analysis.get('patterns', []))}")
+            print(f"    Correlations found: {len(pattern_analysis.get('correlations', []))}")
+            print(f"    Unique insights found: {len(pattern_analysis.get('unique_insights', []))}")
+            
             return pattern_analysis
             
         except Exception as e:
             logger.error(f"Pattern analysis error: {e}")
+            print(f"  ❌ Pattern analysis failed: {e}")
             # If it's a rate limit error, wait and return empty results
             if "rate_limit" in str(e).lower() or "429" in str(e):
                 logger.warning("OpenAI rate limit hit, skipping pattern analysis for this cycle")
                 await asyncio.sleep(30)  # Wait 30 seconds
             return {"patterns": [], "correlations": [], "insights": []}
     
+    async def _summarize_research_results(self, research_results: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Summarize research results to reduce token count for pattern analysis."""
+        try:
+            summarized = []
+            
+            for result in research_results:
+                # Skip results with errors
+                if result.get("error"):
+                    continue
+                
+                tool = result.get("tool", "unknown")
+                confidence = result.get("confidence", 0)
+                
+                # Create a concise summary based on tool type
+                if tool == "data_fetcher":
+                    results_data = result.get("results", {})
+                    summary = {
+                        "tool": "data_fetcher",
+                        "data_type": result.get("data_type", "unknown"),
+                        "symbols_analyzed": list(results_data.keys())[:3],  # Limit to 3 symbols
+                        "confidence": confidence,
+                        "has_market_data": bool(results_data.get("market_overview")),
+                        "has_historical_data": any("historical" in str(v) for v in results_data.values())
+                    }
+                elif tool == "calculator":
+                    results_data = result.get("results", {})
+                    summary = {
+                        "tool": "calculator",
+                        "analysis_type": result.get("analysis_type", "unknown"),
+                        "calculations_performed": list(results_data.keys()),
+                        "confidence": confidence,
+                        "has_volatility_data": "volatility" in results_data,
+                        "has_technical_data": "technical" in results_data,
+                        "has_correlation_data": "correlation" in results_data
+                    }
+                elif tool == "web_researcher":
+                    results_data = result.get("results", {})
+                    summary = {
+                        "tool": "web_researcher",
+                        "research_type": result.get("research_type", "unknown"),
+                        "confidence": confidence,
+                        "has_report": bool(results_data.get("report")),
+                        "insights_count": len(result.get("insights", []))
+                    }
+                elif tool == "web_search":
+                    results_data = result.get("results", [])
+                    summary = {
+                        "tool": "web_search",
+                        "search_type": result.get("search_type", "unknown"),
+                        "confidence": confidence,
+                        "search_results_count": len(results_data),
+                        "insights_count": len(result.get("insights", []))
+                    }
+                elif tool == "backtester":
+                    results_data = result.get("results", {})
+                    summary = {
+                        "tool": "backtester",
+                        "test_type": result.get("test_type", "unknown"),
+                        "confidence": confidence,
+                        "has_performance_data": bool(results_data.get("performance")),
+                        "has_error": bool(results_data.get("error"))
+                    }
+                elif tool == "rag_agent":
+                    results_data = result.get("results", {})
+                    summary = {
+                        "tool": "rag_agent",
+                        "lookup_type": result.get("lookup_type", "unknown"),
+                        "confidence": confidence,
+                        "has_similar_trades": bool(results_data.get("similar_trades")),
+                        "insights_count": len(result.get("insights", []))
+                    }
+                else:
+                    # Generic summary for other tools
+                    summary = {
+                        "tool": tool,
+                        "confidence": confidence,
+                        "result_keys": list(result.keys())[:5],  # Just list the top 5 keys
+                        "has_error": bool(result.get("error"))
+                    }
+                
+                summarized.append(summary)
+            
+            return summarized
+            
+        except Exception as e:
+            logger.error(f"Research results summarization error: {e}")
+            # Return minimal summary if summarization fails
+            return [{"tool": "error", "key_points": ["summarization_failed"], "confidence": 0.1}]
+    
     async def _generate_competitive_insights(self, pattern_analysis: Dict[str, Any], objective: str) -> List[Dict[str, Any]]:
         """Generate actionable competitive insights from pattern analysis."""
         try:
+            print(f"  💡 Competitive Insights Generation Debug:")
+            print(f"    Original Objective: {objective}")
+            print(f"    Pattern Analysis Keys: {list(pattern_analysis.keys())}")
+            
+            # Show what's in the pattern analysis
+            for key, value in pattern_analysis.items():
+                if isinstance(value, list):
+                    print(f"    {key}: {len(value)} items")
+                    for i, item in enumerate(value[:2], 1):  # Show first 2 items
+                        print(f"      {i}. {str(item)[:100]}...")
+                else:
+                    print(f"    {key}: {str(value)[:100]}...")
+            
             insight_prompt = f"""Generate actionable competitive insights from this research analysis.
             
             Original Objective: {objective}
@@ -729,6 +913,7 @@ class EnhancedAutonomousAgent:
             ]
             """
             
+            print(f"    🤖 Sending insight generation prompt to LLM...")
             response = openai_manager.chat_completion([
                 {"role": "user", "content": insight_prompt}
             ], temperature=0.4)
@@ -737,6 +922,10 @@ class EnhancedAutonomousAgent:
             
             if not isinstance(insights, list):
                 insights = []
+            
+            print(f"    ✅ Generated {len(insights)} insights")
+            for i, insight in enumerate(insights, 1):
+                print(f"      {i}. {insight.get('insight', 'No insight text')[:50]}...")
             
             return insights
             

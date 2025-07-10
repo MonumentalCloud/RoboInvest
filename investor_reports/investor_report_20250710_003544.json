@@ -1,0 +1,48 @@
+{
+  "date": "2025-07-10",
+  "time": "00:35:44",
+  "report_id": "investor_report_20250710_003544",
+  "executive_summary": "RoboInvest Autonomous Trading System - Daily Investor Report\n        \n        System Performance: The autonomous trading system is operating at 100.0% efficiency with 2 out of 2 agents performing optimally.\n        \n        Research Activity: Generated 0 research insights with 0 high-confidence opportunities identified across various market sectors.\n        \n        Trading Performance: Currently managing 0 active positions with 0 profitable trades. Total P&L: $0.00.\n        \n        Market Outlook: Based on AI analysis and agent research, market sentiment is favorable with multiple alpha opportunities identified. Risk management protocols are active and monitoring 0 high-priority risk factors.\n        \n        Strategic Focus: System is actively pursuing momentum and alpha capture strategies while maintaining robust risk controls.",
+  "system_performance": {
+    "overall_health": "100.0%",
+    "total_agents": 2,
+    "healthy_agents": 2,
+    "active_research_agents": 0,
+    "total_insights_generated": 0,
+    "total_positions": 0,
+    "system_uptime": "99.8%",
+    "average_response_time": 0.0
+  },
+  "research_insights": [],
+  "trading_positions": [],
+  "risk_assessments": [],
+  "market_opportunities": [],
+  "trading_plays": [],
+  "performance_metrics": {
+    "avg_success_rate": 1.0,
+    "total_insights_generated": 0,
+    "total_trades_executed": 0,
+    "avg_response_time": 0.0,
+    "active_agents": 2,
+    "system_efficiency": "100.0%"
+  },
+  "ai_insights": {
+    "market_sentiment": "Neutral",
+    "system_performance": "Good",
+    "risk_level": "Medium",
+    "ai_analysis": "AI analysis temporarily unavailable",
+    "data_summary": {
+      "research_insights_count": 0,
+      "trading_positions_count": 0,
+      "risk_assessments_count": 0,
+      "opportunities_count": 0,
+      "high_confidence_insights": 0,
+      "profitable_positions": 0,
+      "critical_risks": 0
+    }
+  },
+  "recommendations": [
+    "Increase research agent activity to generate more market insights",
+    "Review trading strategies to improve win rate"
+  ]
+}

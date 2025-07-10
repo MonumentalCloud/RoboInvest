@@ -11,7 +11,11 @@ import {
   PlayArrow,
   CheckCircle,
   Schedule,
-  Error
+  Error,
+  Lightbulb,
+  Target,
+  Analytics,
+  DataUsage
 } from '@mui/icons-material';
 
 export interface TreeNode {
@@ -45,18 +49,30 @@ const ResearchTree: React.FC<ResearchTreeProps> = ({
   const getNodeIcon = (type: string) => {
     switch (type) {
       case 'root': return <Psychology />;
-      case 'decision': return <PlayArrow />;
-      case 'analysis': return <Assessment />;
+      case 'decision': return <Target />;
+      case 'analysis': return <Analytics />;
       case 'websearch': return <Web />;
       case 'fundamental': return <TrendingUp />;
-      case 'pandas': return <BarChart />;
-      case 'strategy': return <Search />;
+      case 'pandas': return <DataUsage />;
+      case 'strategy': return <Lightbulb />;
       case 'execution': return <CheckCircle />;
       default: return <Psychology />;
     }
   };
 
   const getNodeColor = (type: string, status: string) => {
+    // Status-based colors (priority over type)
+    if (status === 'active') {
+      return { bg: '#2e7d32', border: '#4caf50', opacity: 1 }; // Green for active
+    } else if (status === 'failed') {
+      return { bg: '#d32f2f', border: '#f44336', opacity: 0.8 }; // Red for failed
+    } else if (status === 'completed') {
+      return { bg: '#424242', border: '#9e9e9e', opacity: 0.9 }; // White/gray for completed
+    } else if (status === 'pending') {
+      return { bg: '#1976d2', border: '#2196f3', opacity: 0.7 }; // Blue for pending
+    }
+
+    // Type-based colors (fallback)
     const colors = {
       root: { bg: '#1a332a', border: '#4caf50' },
       decision: { bg: '#2a1a32', border: '#9c27b0' },
@@ -68,20 +84,11 @@ const ResearchTree: React.FC<ResearchTreeProps> = ({
       execution: { bg: '#1a3232', border: '#00bcd4' }
     };
 
-    const statusColors = {
-      pending: 0.5,
-      active: 1,
-      completed: 0.8,
-      failed: 0.3
-    };
-
     const baseColor = colors[type as keyof typeof colors] || colors.root;
-    const opacity = statusColors[status as keyof typeof statusColors] || 0.5;
-
     return {
       bg: baseColor.bg,
       border: baseColor.border,
-      opacity
+      opacity: 0.8
     };
   };
 
@@ -93,6 +100,47 @@ const ResearchTree: React.FC<ResearchTreeProps> = ({
       case 'failed': return <Error sx={{ fontSize: 16 }} />;
       default: return <Schedule sx={{ fontSize: 16 }} />;
     }
+  };
+
+  const getDetailedContent = (node: TreeNode): string => {
+    // Try to extract detailed content from metadata
+    const metadata = node.metadata || {};
+    
+    // Check for specific research content
+    if (metadata.opportunity) {
+      return `Researching: ${metadata.opportunity}`;
+    }
+    
+    if (metadata.research_type) {
+      return `${node.content} - Type: ${metadata.research_type}`;
+    }
+    
+    if (metadata.confidence) {
+      return `${node.content} - Confidence: ${(metadata.confidence * 100).toFixed(0)}%`;
+    }
+    
+    if (metadata.primary_ticker) {
+      return `${node.content} - Ticker: ${metadata.primary_ticker}`;
+    }
+    
+    if (metadata.decision_type) {
+      return `${node.content} - Decision: ${metadata.decision_type}`;
+    }
+    
+    if (metadata.strategy_type) {
+      return `${node.content} - Strategy: ${metadata.strategy_type}`;
+    }
+    
+    if (metadata.synthesis_type) {
+      return `${node.content} - Synthesis: ${metadata.synthesis_type}`;
+    }
+    
+    if (metadata.phase) {
+      return `${node.content} - Phase: ${metadata.phase}`;
+    }
+    
+    // Fallback to original content
+    return node.content;
   };
 
   // Convert flat array to hierarchical structure
@@ -155,7 +203,7 @@ const ResearchTree: React.FC<ResearchTreeProps> = ({
     const hierarchy = d3.hierarchy(root);
     const treeData_d3 = treeLayout(hierarchy);
 
-    // Create links
+    // Create links with status-based colors
     g.selectAll('.link')
       .data(treeData_d3.links())
       .enter().append('path')
@@ -165,9 +213,16 @@ const ResearchTree: React.FC<ResearchTreeProps> = ({
         .y((d: any) => d.x)
       )
       .style('fill', 'none')
-      .style('stroke', '#555')
+      .style('stroke', (d: any) => {
+        // Color links based on child node status
+        const childStatus = d.target.data.status;
+        if (childStatus === 'active') return '#4caf50';
+        if (childStatus === 'failed') return '#f44336';
+        if (childStatus === 'completed') return '#9e9e9e';
+        return '#555';
+      })
       .style('stroke-width', 2)
-      .style('stroke-opacity', 0.6);
+      .style('stroke-opacity', 0.8);
 
     // Create nodes
     const node = g.selectAll('.node')
@@ -180,9 +235,9 @@ const ResearchTree: React.FC<ResearchTreeProps> = ({
         setSelectedNode(d.data);
       });
 
-    // Add circles for nodes
+    // Add circles for nodes with improved styling
     node.append('circle')
-      .attr('r', (d: any) => d.data.type === 'root' ? 8 : 6)
+      .attr('r', (d: any) => d.data.type === 'root' ? 10 : 8)
       .style('fill', (d: any) => {
         const color = getNodeColor(d.data.type, d.data.status);
         return color.bg;
@@ -191,31 +246,52 @@ const ResearchTree: React.FC<ResearchTreeProps> = ({
         const color = getNodeColor(d.data.type, d.data.status);
         return color.border;
       })
-      .style('stroke-width', 2)
+      .style('stroke-width', 3)
       .style('opacity', (d: any) => {
         const color = getNodeColor(d.data.type, d.data.status);
         return color.opacity;
+      })
+      .style('filter', (d: any) => {
+        // Add glow effect for active nodes
+        if (d.data.status === 'active') {
+          return 'drop-shadow(0 0 8px #4caf50)';
+        }
+        return 'none';
       });
 
-    // Add labels
+    // Add labels with better positioning and content
     node.append('text')
       .attr('dy', '.35em')
-      .attr('x', (d: any) => d.children ? -13 : 13)
+      .attr('x', (d: any) => d.children ? -15 : 15)
       .style('text-anchor', (d: any) => d.children ? 'end' : 'start')
       .style('fill', '#ffffff')
-      .style('font-size', '12px')
+      .style('font-size', '11px')
       .style('font-weight', (d: any) => d.data.type === 'root' ? 'bold' : 'normal')
-      .text((d: any) => d.data.title);
+      .text((d: any) => {
+        // Show detailed content for better understanding
+        return getDetailedContent(d.data);
+      });
 
     // Add progress indicators for active nodes
     node.filter((d: any) => d.data.status === 'active' && d.data.progress !== undefined)
       .append('circle')
-      .attr('r', 10)
+      .attr('r', 12)
       .style('fill', 'none')
-      .style('stroke', '#2196f3')
+      .style('stroke', '#4caf50')
       .style('stroke-width', 2)
       .style('stroke-dasharray', '20')
-      .style('stroke-dashoffset', (d: any) => 20 - (d.data.progress || 0) * 0.2);
+      .style('stroke-dashoffset', (d: any) => 20 - (d.data.progress || 0) * 0.2)
+      .style('opacity', 0.8);
+
+    // Add status indicators
+    node.filter((d: any) => d.data.status === 'failed')
+      .append('text')
+      .attr('dy', '-1.5em')
+      .attr('x', 0)
+      .style('text-anchor', 'middle')
+      .style('fill', '#f44336')
+      .style('font-size', '14px')
+      .text('✗');
 
   }, [treeData, width, height]);
 
@@ -237,7 +313,7 @@ const ResearchTree: React.FC<ResearchTreeProps> = ({
 
       {/* Node details panel */}
       {selectedNode && (
-        <Box sx={{ width: 300, ml: 2 }}>
+        <Box sx={{ width: 350, ml: 2 }}>
           <Paper sx={{ 
             p: 2, 
             bgcolor: '#1a1a1a', 
@@ -270,7 +346,7 @@ const ResearchTree: React.FC<ResearchTreeProps> = ({
             </Box>
 
             <Typography variant="body2" sx={{ color: '#aaa', mb: 2 }}>
-              {selectedNode.content}
+              {getDetailedContent(selectedNode)}
             </Typography>
 
             {selectedNode.confidence !== undefined && (
@@ -293,10 +369,10 @@ const ResearchTree: React.FC<ResearchTreeProps> = ({
               {new Date(selectedNode.timestamp).toLocaleString()}
             </Typography>
 
-            {selectedNode.metadata && (
+            {selectedNode.metadata && Object.keys(selectedNode.metadata).length > 0 && (
               <Box sx={{ mt: 2 }}>
                 <Typography variant="caption" sx={{ color: '#888', display: 'block', mb: 1 }}>
-                  Metadata:
+                  Research Details:
                 </Typography>
                 <pre style={{ 
                   fontSize: '10px', 
