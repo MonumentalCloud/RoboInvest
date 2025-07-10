@@ -1,0 +1,485 @@
+{
+  "session_id": "8d40383c-b04a-4c12-a90a-6d58ca49f1f0",
+  "agent_id": "alpha_discovery_agent",
+  "objective": "Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation",
+  "hypotheses_explored": 1,
+  "research_plans_executed": 5,
+  "patterns_identified": 0,
+  "insights_generated": 0,
+  "decision_tree": {
+    "id": "9b4ed8f4-d3f5-460a-aad1-f5c130a3af48",
+    "agent_name": "enhanced_alpha_discovery_agent",
+    "root_id": "f76c75e1-5646-45ca-9937-248d98a9916f",
+    "nodes": {
+      "f76c75e1-5646-45ca-9937-248d98a9916f": {
+        "id": "f76c75e1-5646-45ca-9937-248d98a9916f",
+        "type": "root",
+        "content": "Research Objective: Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation",
+        "data": {
+          "objective": "Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation",
+          "context": {
+            "market_data": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-09T17:36:12.738902",
+              "data_source": "polygon_free_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": false
+            },
+            "timestamp": "2025-07-09T17:36:12.738972",
+            "market_session": "after_hours",
+            "symbols": [
+              "SPY",
+              "QQQ",
+              "IWM",
+              "TLT",
+              "GLD",
+              "VIX"
+            ],
+            "focus_timeframe": "short_to_medium_term"
+          }
+        },
+        "parent_id": null,
+        "children": [
+          "43dc3421-4a15-43c9-ae06-3d8cc45093f0"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T17:36:12.739610",
+        "updated_at": "2025-07-09T17:36:14.095267",
+        "result": {}
+      },
+      "43dc3421-4a15-43c9-ae06-3d8cc45093f0": {
+        "id": "43dc3421-4a15-43c9-ae06-3d8cc45093f0",
+        "type": "hypothesis",
+        "content": "Comprehensive analysis of Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation",
+        "data": {
+          "exploration_priority": 1
+        },
+        "parent_id": "f76c75e1-5646-45ca-9937-248d98a9916f",
+        "children": [
+          "3debd7e6-b4b9-4954-8fed-7760c435a58c",
+          "5c2261ac-84c9-4ebb-bd57-1496ca4bc2f0",
+          "ed68adba-9301-4cb0-9c86-faeb373a18ea",
+          "29cd77c9-43d7-4d34-9933-15add0202f6d",
+          "f1f46faa-963e-4661-95fe-675ad89042ac"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T17:36:14.095262",
+        "updated_at": "2025-07-09T17:36:14.096068",
+        "result": {}
+      },
+      "3debd7e6-b4b9-4954-8fed-7760c435a58c": {
+        "id": "3debd7e6-b4b9-4954-8fed-7760c435a58c",
+        "type": "research",
+        "content": "calculator: Statistical analysis of hypothesis variables",
+        "data": {
+          "description": "Statistical analysis of hypothesis variables",
+          "type": "statistical_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12924ec90>>",
+          "parameters": {
+            "analysis_type": "statistical",
+            "hypothesis": "Comprehensive analysis of Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T17:36:12.738902",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T17:36:12.738972",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "3debd7e6-b4b9-4954-8fed-7760c435a58c",
+          "tool_name": "calculator"
+        },
+        "parent_id": "43dc3421-4a15-43c9-ae06-3d8cc45093f0",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-09T17:36:14.095533",
+        "updated_at": "2025-07-09T17:36:44.755517",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "5c2261ac-84c9-4ebb-bd57-1496ca4bc2f0": {
+        "id": "5c2261ac-84c9-4ebb-bd57-1496ca4bc2f0",
+        "type": "research",
+        "content": "calculator: Technical indicator calculations",
+        "data": {
+          "description": "Technical indicator calculations",
+          "type": "technical_indicators",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12924ec90>>",
+          "parameters": {
+            "analysis_type": "technical",
+            "hypothesis": "Comprehensive analysis of Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T17:36:12.738902",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T17:36:12.738972",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "5c2261ac-84c9-4ebb-bd57-1496ca4bc2f0",
+          "tool_name": "calculator"
+        },
+        "parent_id": "43dc3421-4a15-43c9-ae06-3d8cc45093f0",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-09T17:36:14.095702",
+        "updated_at": "2025-07-09T17:36:59.768680",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "ed68adba-9301-4cb0-9c86-faeb373a18ea": {
+        "id": "ed68adba-9301-4cb0-9c86-faeb373a18ea",
+        "type": "research",
+        "content": "data_fetcher: Real-time market data analysis",
+        "data": {
+          "description": "Real-time market data analysis",
+          "type": "market_data",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_market_data_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12924ec90>>",
+          "parameters": {
+            "data_type": "real_time",
+            "hypothesis": "Comprehensive analysis of Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T17:36:12.738902",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T17:36:12.738972",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "ed68adba-9301-4cb0-9c86-faeb373a18ea",
+          "tool_name": "data_fetcher"
+        },
+        "parent_id": "43dc3421-4a15-43c9-ae06-3d8cc45093f0",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.8,
+        "created_at": "2025-07-09T17:36:14.095823",
+        "updated_at": "2025-07-09T18:04:29.141813",
+        "result": {
+          "tool": "data_fetcher",
+          "data_type": "real_time",
+          "results": {
+            "market_overview": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-09T17:52:57.336932",
+              "data_source": "polygon_free_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": false
+            },
+            "sector_data": {
+              "Technology": {
+                "error": "No data source available for XLK",
+                "data": null
+              },
+              "Healthcare": {
+                "error": "No data source available for XLV",
+                "data": null
+              },
+              "Financial": {
+                "error": "No data source available for XLF",
+                "data": null
+              },
+              "Consumer Discretionary": {
+                "error": "No data source available for XLY",
+                "data": null
+              },
+              "Communication Services": {
+                "error": "No data source available for XLC",
+                "data": null
+              },
+              "Industrials": {
+                "error": "No data source available for XLI",
+                "data": null
+              },
+              "Consumer Staples": {
+                "error": "No data source available for XLP",
+                "data": null
+              },
+              "Energy": {
+                "error": "No data source available for XLE",
+                "data": null
+              },
+              "Utilities": {
+                "error": "No data source available for XLU",
+                "data": null
+              },
+              "Real Estate": {
+                "error": "No data source available for XLRE",
+                "data": null
+              },
+              "Materials": {
+                "error": "No data source available for XLB",
+                "data": null
+              }
+            }
+          },
+          "confidence": 0.8,
+          "insights": [
+            "Market data analysis for "
+          ]
+        }
+      },
+      "29cd77c9-43d7-4d34-9933-15add0202f6d": {
+        "id": "29cd77c9-43d7-4d34-9933-15add0202f6d",
+        "type": "research",
+        "content": "data_fetcher: Historical data pattern analysis",
+        "data": {
+          "description": "Historical data pattern analysis",
+          "type": "historical_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_market_data_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12924ec90>>",
+          "parameters": {
+            "data_type": "historical",
+            "hypothesis": "Comprehensive analysis of Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T17:36:12.738902",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T17:36:12.738972",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "29cd77c9-43d7-4d34-9933-15add0202f6d",
+          "tool_name": "data_fetcher"
+        },
+        "parent_id": "43dc3421-4a15-43c9-ae06-3d8cc45093f0",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.8,
+        "created_at": "2025-07-09T17:36:14.095943",
+        "updated_at": "2025-07-09T18:07:29.234064",
+        "result": {
+          "tool": "data_fetcher",
+          "data_type": "real_time",
+          "results": {
+            "market_overview": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-09T18:04:44.145550",
+              "data_source": "polygon_free_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": false
+            },
+            "sector_data": {
+              "Technology": {
+                "error": "No data source available for XLK",
+                "data": null
+              },
+              "Healthcare": {
+                "error": "No data source available for XLV",
+                "data": null
+              },
+              "Financial": {
+                "error": "No data source available for XLF",
+                "data": null
+              },
+              "Consumer Discretionary": {
+                "error": "No data source available for XLY",
+                "data": null
+              },
+              "Communication Services": {
+                "error": "No data source available for XLC",
+                "data": null
+              },
+              "Industrials": {
+                "error": "No data source available for XLI",
+                "data": null
+              },
+              "Consumer Staples": {
+                "error": "No data source available for XLP",
+                "data": null
+              },
+              "Energy": {
+                "error": "No data source available for XLE",
+                "data": null
+              },
+              "Utilities": {
+                "error": "No data source available for XLU",
+                "data": null
+              },
+              "Real Estate": {
+                "error": "No data source available for XLRE",
+                "data": null
+              },
+              "Materials": {
+                "error": "No data source available for XLB",
+                "data": null
+              }
+            }
+          },
+          "confidence": 0.8,
+          "insights": [
+            "Market data analysis for "
+          ]
+        }
+      },
+      "f1f46faa-963e-4661-95fe-675ad89042ac": {
+        "id": "f1f46faa-963e-4661-95fe-675ad89042ac",
+        "type": "research",
+        "content": "rag_agent: Retrieve similar research patterns",
+        "data": {
+          "description": "Retrieve similar research patterns",
+          "type": "pattern_retrieval",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_memory_lookup of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12924ec90>>",
+          "parameters": {
+            "lookup_type": "patterns",
+            "hypothesis": "Comprehensive analysis of Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T17:36:12.738902",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T17:36:12.738972",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "f1f46faa-963e-4661-95fe-675ad89042ac",
+          "tool_name": "rag_agent"
+        },
+        "parent_id": "43dc3421-4a15-43c9-ae06-3d8cc45093f0",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-09T17:36:14.096065",
+        "updated_at": "2025-07-09T18:07:30.647058",
+        "result": {
+          "error": "Connection error. in query.",
+          "confidence": 0.1
+        }
+      }
+    },
+    "best_path": null,
+    "best_confidence": 0.0,
+    "summary": {
+      "tree_id": "9b4ed8f4-d3f5-460a-aad1-f5c130a3af48",
+      "agent_name": "enhanced_alpha_discovery_agent",
+      "total_nodes": 7,
+      "by_status": {
+        "pending": 2,
+        "completed": 5
+      },
+      "by_type": {
+        "root": 1,
+        "hypothesis": 1,
+        "research": 5
+      },
+      "best_confidence": 0.0,
+      "active_leaves": 0
+    }
+  },
+  "insights": [],
+  "competitive_edges": [],
+  "timestamp": "2025-07-09T18:31:02.445499",
+  "session_duration": "research_complete",
+  "research_track": "alpha_discovery",
+  "specialization": "alpha_hunting",
+  "market_context": {
+    "market_data": {
+      "indices": {},
+      "market_sentiment": "neutral",
+      "spy_daily_change": 0,
+      "timestamp": "2025-07-09T17:36:12.738902",
+      "data_source": "polygon_free_free_tier",
+      "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+      "premium_data": false
+    },
+    "timestamp": "2025-07-09T17:36:12.738972",
+    "market_session": "after_hours",
+    "symbols": [
+      "SPY",
+      "QQQ",
+      "IWM",
+      "TLT",
+      "GLD",
+      "VIX"
+    ],
+    "focus_timeframe": "short_to_medium_term"
+  },
+  "completed_at": "2025-07-09T18:31:02.445581"
+}

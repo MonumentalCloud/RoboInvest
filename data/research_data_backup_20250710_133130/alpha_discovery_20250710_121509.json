@@ -1,0 +1,442 @@
+{
+  "session_id": "5b8d21d7-80cd-44cd-a26b-deeaa9f5e8e3",
+  "agent_id": "alpha_discovery_agent",
+  "objective": "Identify undervalued securities with catalyst potential, focusing on live market action and intraday opportunities",
+  "hypotheses_explored": 1,
+  "research_plans_executed": 6,
+  "patterns_identified": 0,
+  "insights_generated": 0,
+  "decision_tree": {
+    "id": "e01d12ac-332f-4251-af8b-62f343d99aa7",
+    "agent_name": "enhanced_alpha_discovery_agent",
+    "root_id": "79ae9751-057d-4aa4-af94-4464685db480",
+    "nodes": {
+      "79ae9751-057d-4aa4-af94-4464685db480": {
+        "id": "79ae9751-057d-4aa4-af94-4464685db480",
+        "type": "root",
+        "content": "Research Objective: Identify undervalued securities with catalyst potential, focusing on live market action and intraday opportunities",
+        "data": {
+          "objective": "Identify undervalued securities with catalyst potential, focusing on live market action and intraday opportunities",
+          "context": {
+            "market_data": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-10T12:13:51.149227",
+              "data_source": "polygon_upgraded_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": true
+            },
+            "timestamp": "2025-07-10T12:13:51.149281",
+            "market_session": "regular_hours",
+            "symbols": [
+              "SPY",
+              "QQQ",
+              "IWM",
+              "TLT",
+              "GLD",
+              "VIX"
+            ],
+            "focus_timeframe": "short_to_medium_term"
+          }
+        },
+        "parent_id": null,
+        "children": [
+          "07cac735-2650-4314-a538-8b39a7f1a186"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-10T12:13:51.150886",
+        "updated_at": "2025-07-10T12:13:52.439635",
+        "result": {}
+      },
+      "07cac735-2650-4314-a538-8b39a7f1a186": {
+        "id": "07cac735-2650-4314-a538-8b39a7f1a186",
+        "type": "hypothesis",
+        "content": "Comprehensive analysis of Identify undervalued securities with catalyst potential, focusing on live market action and intraday opportunities",
+        "data": {
+          "exploration_priority": 1
+        },
+        "parent_id": "79ae9751-057d-4aa4-af94-4464685db480",
+        "children": [
+          "93d4c69f-8065-41c9-8847-c639b92a0bf8",
+          "2b1dce75-e68c-4bcb-aa25-6e3da8ab88bc",
+          "234f8e96-7f95-442c-90c1-fda7b23ba770",
+          "ce2eae76-d828-47ee-bb48-ecb1ab286d88",
+          "2c901e94-b456-4415-86b0-03623ef46129"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-10T12:13:52.439629",
+        "updated_at": "2025-07-10T12:13:52.440460",
+        "result": {}
+      },
+      "93d4c69f-8065-41c9-8847-c639b92a0bf8": {
+        "id": "93d4c69f-8065-41c9-8847-c639b92a0bf8",
+        "type": "research",
+        "content": "calculator: Volatility analysis of market data",
+        "data": {
+          "description": "Volatility analysis of market data",
+          "type": "volatility_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x17e7cd940>>",
+          "parameters": {
+            "analysis_type": "volatility",
+            "hypothesis": "Comprehensive analysis of Identify undervalued securities with catalyst potential, focusing on live market action and intraday opportunities",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-10T12:13:51.149227",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-10T12:13:51.149281",
+              "market_session": "regular_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "93d4c69f-8065-41c9-8847-c639b92a0bf8",
+          "tool_name": "calculator"
+        },
+        "parent_id": "07cac735-2650-4314-a538-8b39a7f1a186",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-10T12:13:52.439918",
+        "updated_at": "2025-07-10T12:14:00.653810",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "2b1dce75-e68c-4bcb-aa25-6e3da8ab88bc": {
+        "id": "2b1dce75-e68c-4bcb-aa25-6e3da8ab88bc",
+        "type": "research",
+        "content": "calculator: Technical indicator calculations",
+        "data": {
+          "description": "Technical indicator calculations",
+          "type": "technical_indicators",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x17e7cd940>>",
+          "parameters": {
+            "analysis_type": "technical",
+            "hypothesis": "Comprehensive analysis of Identify undervalued securities with catalyst potential, focusing on live market action and intraday opportunities",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-10T12:13:51.149227",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-10T12:13:51.149281",
+              "market_session": "regular_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "2b1dce75-e68c-4bcb-aa25-6e3da8ab88bc",
+          "tool_name": "calculator"
+        },
+        "parent_id": "07cac735-2650-4314-a538-8b39a7f1a186",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-10T12:13:52.440071",
+        "updated_at": "2025-07-10T12:14:01.269392",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "234f8e96-7f95-442c-90c1-fda7b23ba770": {
+        "id": "234f8e96-7f95-442c-90c1-fda7b23ba770",
+        "type": "research",
+        "content": "calculator: Correlation analysis between assets",
+        "data": {
+          "description": "Correlation analysis between assets",
+          "type": "correlation_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x17e7cd940>>",
+          "parameters": {
+            "analysis_type": "correlation",
+            "hypothesis": "Comprehensive analysis of Identify undervalued securities with catalyst potential, focusing on live market action and intraday opportunities",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-10T12:13:51.149227",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-10T12:13:51.149281",
+              "market_session": "regular_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "234f8e96-7f95-442c-90c1-fda7b23ba770",
+          "tool_name": "calculator"
+        },
+        "parent_id": "07cac735-2650-4314-a538-8b39a7f1a186",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-10T12:13:52.440208",
+        "updated_at": "2025-07-10T12:14:01.896976",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "ce2eae76-d828-47ee-bb48-ecb1ab286d88": {
+        "id": "ce2eae76-d828-47ee-bb48-ecb1ab286d88",
+        "type": "research",
+        "content": "data_fetcher: Real-time market data analysis",
+        "data": {
+          "description": "Real-time market data analysis",
+          "type": "market_data",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_market_data_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x17e7cd940>>",
+          "parameters": {
+            "data_type": "real_time",
+            "hypothesis": "Comprehensive analysis of Identify undervalued securities with catalyst potential, focusing on live market action and intraday opportunities",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-10T12:13:51.149227",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-10T12:13:51.149281",
+              "market_session": "regular_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "ce2eae76-d828-47ee-bb48-ecb1ab286d88",
+          "tool_name": "data_fetcher"
+        },
+        "parent_id": "07cac735-2650-4314-a538-8b39a7f1a186",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.8,
+        "created_at": "2025-07-10T12:13:52.440339",
+        "updated_at": "2025-07-10T12:14:09.365478",
+        "result": {
+          "tool": "data_fetcher",
+          "data_type": "real_time",
+          "results": {
+            "market_overview": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-10T12:14:02.522740",
+              "data_source": "polygon_upgraded_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": true
+            },
+            "sector_data": {
+              "Technology": {
+                "error": "Polygon data failed for XLK",
+                "data": null
+              },
+              "Healthcare": {
+                "error": "Polygon data failed for XLV",
+                "data": null
+              },
+              "Financial": {
+                "error": "Polygon data failed for XLF",
+                "data": null
+              },
+              "Consumer Discretionary": {
+                "error": "Polygon data failed for XLY",
+                "data": null
+              },
+              "Communication Services": {
+                "error": "Polygon data failed for XLC",
+                "data": null
+              },
+              "Industrials": {
+                "error": "Polygon data failed for XLI",
+                "data": null
+              },
+              "Consumer Staples": {
+                "error": "Polygon data failed for XLP",
+                "data": null
+              },
+              "Energy": {
+                "error": "Polygon data failed for XLE",
+                "data": null
+              },
+              "Utilities": {
+                "error": "Polygon data failed for XLU",
+                "data": null
+              },
+              "Real Estate": {
+                "error": "Polygon data failed for XLRE",
+                "data": null
+              },
+              "Materials": {
+                "error": "Polygon data failed for XLB",
+                "data": null
+              }
+            }
+          },
+          "confidence": 0.8,
+          "insights": [
+            "Market data analysis for Comprehensive analysis of Identify undervalued securities with catalyst potential, focusing on live market action and intraday opportunities"
+          ]
+        }
+      },
+      "2c901e94-b456-4415-86b0-03623ef46129": {
+        "id": "2c901e94-b456-4415-86b0-03623ef46129",
+        "type": "research",
+        "content": "data_fetcher: Historical data pattern analysis",
+        "data": {
+          "description": "Historical data pattern analysis",
+          "type": "historical_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_market_data_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x17e7cd940>>",
+          "parameters": {
+            "data_type": "historical",
+            "hypothesis": "Comprehensive analysis of Identify undervalued securities with catalyst potential, focusing on live market action and intraday opportunities",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-10T12:13:51.149227",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-10T12:13:51.149281",
+              "market_session": "regular_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "2c901e94-b456-4415-86b0-03623ef46129",
+          "tool_name": "data_fetcher"
+        },
+        "parent_id": "07cac735-2650-4314-a538-8b39a7f1a186",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.8,
+        "created_at": "2025-07-10T12:13:52.440457",
+        "updated_at": "2025-07-10T12:14:11.234991",
+        "result": {
+          "tool": "data_fetcher",
+          "data_type": "historical",
+          "results": {
+            "SPY": {
+              "error": "Polygon data failed for SPY",
+              "data": null
+            },
+            "QQQ": {
+              "error": "Polygon data failed for QQQ",
+              "data": null
+            },
+            "IWM": {
+              "error": "Polygon data failed for IWM",
+              "data": null
+            }
+          },
+          "confidence": 0.8,
+          "insights": [
+            "Market data analysis for Comprehensive analysis of Identify undervalued securities with catalyst potential, focusing on live market action and intraday opportunities"
+          ]
+        }
+      }
+    },
+    "best_path": null,
+    "best_confidence": 0.0,
+    "summary": {
+      "tree_id": "e01d12ac-332f-4251-af8b-62f343d99aa7",
+      "agent_name": "enhanced_alpha_discovery_agent",
+      "total_nodes": 7,
+      "by_status": {
+        "pending": 2,
+        "completed": 5
+      },
+      "by_type": {
+        "root": 1,
+        "hypothesis": 1,
+        "research": 5
+      },
+      "best_confidence": 0.0,
+      "active_leaves": 0
+    }
+  },
+  "insights": [],
+  "competitive_edges": [],
+  "timestamp": "2025-07-10T12:14:58.685178",
+  "session_duration": "research_complete",
+  "research_track": "alpha_discovery",
+  "specialization": "alpha_hunting",
+  "market_context": {
+    "market_data": {
+      "indices": {},
+      "market_sentiment": "neutral",
+      "spy_daily_change": 0,
+      "timestamp": "2025-07-10T12:13:51.149227",
+      "data_source": "polygon_upgraded_free_tier",
+      "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+      "premium_data": true
+    },
+    "timestamp": "2025-07-10T12:13:51.149281",
+    "market_session": "regular_hours",
+    "symbols": [
+      "SPY",
+      "QQQ",
+      "IWM",
+      "TLT",
+      "GLD",
+      "VIX"
+    ],
+    "focus_timeframe": "short_to_medium_term"
+  },
+  "completed_at": "2025-07-10T12:14:58.685458"
+}

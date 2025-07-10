@@ -14,6 +14,8 @@ from core.pnl_tracker import pnl_tracker
 from core.performance_tracker import performance_tracker
 from agents.rag_playbook import rag_agent
 from autonomous_trading_system import autonomous_trading_system
+from agents.trade_executor import TradeExecutorAgent
+trade_executor = TradeExecutorAgent()
 
 app = FastAPI(title="RoboInvest API", version="1.0.0")
 
@@ -541,17 +543,21 @@ async def run_real_autonomous_agents():
                 
                 # Execute paper trades
                 try:
-                    # Simulate paper trade execution
-                    paper_trade = {
-                        "symbol": "SPY",
+                    # Example for a BUY trade on SPY (replace with dynamic logic as needed)
+                    trade_decision = {
                         "action": "BUY",
-                        "quantity": 100,
-                        "price": 450.00,
-                        "type": "paper_trade",
-                        "timestamp": datetime.now().isoformat()
+                        "symbol": "SPY",
+                        "qty": 100,  # You can make this dynamic
+                        "timestamp": datetime.now().isoformat(),
                     }
-                    
-                    await broadcast_ai_thought("paper_execution", f"📝 Paper trade executed: BUY 100 SPY @ $450.00", {"phase": "paper_execution", "status": "active"})
+                    trade_result = trade_executor(trade_decision)
+
+                    # Broadcast the real trade result
+                    await broadcast_ai_thought(
+                        "trade_execution",
+                        f"Real trade executed: {trade_result}",
+                        {"phase": "trade_execution", "status": "active", "trade_result": trade_result}
+                    )
                     
                 except Exception as e:
                     await broadcast_ai_thought("paper_execution", f"⚠️ Paper trade error: {str(e)}", {"phase": "paper_execution", "status": "active"})

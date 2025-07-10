@@ -1,0 +1,442 @@
+{
+  "session_id": "fb3ff880-e18e-4a28-a7ea-ec06829246ea",
+  "agent_id": "sentiment_tracking_agent",
+  "objective": "Analyze current market sentiment and narrative shifts, focusing on live market action and intraday opportunities",
+  "hypotheses_explored": 1,
+  "research_plans_executed": 8,
+  "patterns_identified": 0,
+  "insights_generated": 0,
+  "decision_tree": {
+    "id": "778543fb-917e-4ed7-9e36-e61d208b7385",
+    "agent_name": "enhanced_sentiment_tracking_agent",
+    "root_id": "14c463af-6f2e-4e12-892f-80c9541a519d",
+    "nodes": {
+      "14c463af-6f2e-4e12-892f-80c9541a519d": {
+        "id": "14c463af-6f2e-4e12-892f-80c9541a519d",
+        "type": "root",
+        "content": "Research Objective: Analyze current market sentiment and narrative shifts, focusing on live market action and intraday opportunities",
+        "data": {
+          "objective": "Analyze current market sentiment and narrative shifts, focusing on live market action and intraday opportunities",
+          "context": {
+            "market_data": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-10T12:15:10.339549",
+              "data_source": "polygon_upgraded_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": true
+            },
+            "timestamp": "2025-07-10T12:15:10.339556",
+            "market_session": "regular_hours",
+            "symbols": [
+              "SPY",
+              "QQQ",
+              "IWM",
+              "TLT",
+              "GLD",
+              "VIX"
+            ],
+            "focus_timeframe": "short_to_medium_term"
+          }
+        },
+        "parent_id": null,
+        "children": [
+          "d4ac5c9a-6621-4425-960e-f6b5b16daab1"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-10T12:15:10.339703",
+        "updated_at": "2025-07-10T12:15:11.770182",
+        "result": {}
+      },
+      "d4ac5c9a-6621-4425-960e-f6b5b16daab1": {
+        "id": "d4ac5c9a-6621-4425-960e-f6b5b16daab1",
+        "type": "hypothesis",
+        "content": "Comprehensive analysis of Analyze current market sentiment and narrative shifts, focusing on live market action and intraday opportunities",
+        "data": {
+          "exploration_priority": 1
+        },
+        "parent_id": "14c463af-6f2e-4e12-892f-80c9541a519d",
+        "children": [
+          "491e3ea6-cedf-40c7-95e4-15809fad4940",
+          "9430285b-b998-4661-965e-8c50cd8ca735",
+          "4f85141a-a9e9-4262-8c07-e56753e74dae",
+          "9721bd84-a821-4cbd-8015-b5e7f1aeffe9",
+          "72e74f09-7975-4f43-b8de-f1b63f9d44de"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-10T12:15:11.770177",
+        "updated_at": "2025-07-10T12:15:11.770662",
+        "result": {}
+      },
+      "491e3ea6-cedf-40c7-95e4-15809fad4940": {
+        "id": "491e3ea6-cedf-40c7-95e4-15809fad4940",
+        "type": "research",
+        "content": "calculator: Volatility analysis of market data",
+        "data": {
+          "description": "Volatility analysis of market data",
+          "type": "volatility_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x17e8bc1f0>>",
+          "parameters": {
+            "analysis_type": "volatility",
+            "hypothesis": "Comprehensive analysis of Analyze current market sentiment and narrative shifts, focusing on live market action and intraday opportunities",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-10T12:15:10.339549",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-10T12:15:10.339556",
+              "market_session": "regular_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "491e3ea6-cedf-40c7-95e4-15809fad4940",
+          "tool_name": "calculator"
+        },
+        "parent_id": "d4ac5c9a-6621-4425-960e-f6b5b16daab1",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-10T12:15:11.770350",
+        "updated_at": "2025-07-10T12:15:38.681644",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "9430285b-b998-4661-965e-8c50cd8ca735": {
+        "id": "9430285b-b998-4661-965e-8c50cd8ca735",
+        "type": "research",
+        "content": "calculator: Technical indicator calculations",
+        "data": {
+          "description": "Technical indicator calculations",
+          "type": "technical_indicators",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x17e8bc1f0>>",
+          "parameters": {
+            "analysis_type": "technical",
+            "hypothesis": "Comprehensive analysis of Analyze current market sentiment and narrative shifts, focusing on live market action and intraday opportunities",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-10T12:15:10.339549",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-10T12:15:10.339556",
+              "market_session": "regular_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "9430285b-b998-4661-965e-8c50cd8ca735",
+          "tool_name": "calculator"
+        },
+        "parent_id": "d4ac5c9a-6621-4425-960e-f6b5b16daab1",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-10T12:15:11.770435",
+        "updated_at": "2025-07-10T12:15:39.306157",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "4f85141a-a9e9-4262-8c07-e56753e74dae": {
+        "id": "4f85141a-a9e9-4262-8c07-e56753e74dae",
+        "type": "research",
+        "content": "calculator: Correlation analysis between assets",
+        "data": {
+          "description": "Correlation analysis between assets",
+          "type": "correlation_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x17e8bc1f0>>",
+          "parameters": {
+            "analysis_type": "correlation",
+            "hypothesis": "Comprehensive analysis of Analyze current market sentiment and narrative shifts, focusing on live market action and intraday opportunities",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-10T12:15:10.339549",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-10T12:15:10.339556",
+              "market_session": "regular_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "4f85141a-a9e9-4262-8c07-e56753e74dae",
+          "tool_name": "calculator"
+        },
+        "parent_id": "d4ac5c9a-6621-4425-960e-f6b5b16daab1",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-10T12:15:11.770511",
+        "updated_at": "2025-07-10T12:15:39.932562",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "9721bd84-a821-4cbd-8015-b5e7f1aeffe9": {
+        "id": "9721bd84-a821-4cbd-8015-b5e7f1aeffe9",
+        "type": "research",
+        "content": "data_fetcher: Real-time market data analysis",
+        "data": {
+          "description": "Real-time market data analysis",
+          "type": "market_data",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_market_data_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x17e8bc1f0>>",
+          "parameters": {
+            "data_type": "real_time",
+            "hypothesis": "Comprehensive analysis of Analyze current market sentiment and narrative shifts, focusing on live market action and intraday opportunities",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-10T12:15:10.339549",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-10T12:15:10.339556",
+              "market_session": "regular_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "9721bd84-a821-4cbd-8015-b5e7f1aeffe9",
+          "tool_name": "data_fetcher"
+        },
+        "parent_id": "d4ac5c9a-6621-4425-960e-f6b5b16daab1",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.8,
+        "created_at": "2025-07-10T12:15:11.770588",
+        "updated_at": "2025-07-10T12:15:47.369539",
+        "result": {
+          "tool": "data_fetcher",
+          "data_type": "real_time",
+          "results": {
+            "market_overview": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-10T12:15:40.551118",
+              "data_source": "polygon_upgraded_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": true
+            },
+            "sector_data": {
+              "Technology": {
+                "error": "Polygon data failed for XLK",
+                "data": null
+              },
+              "Healthcare": {
+                "error": "Polygon data failed for XLV",
+                "data": null
+              },
+              "Financial": {
+                "error": "Polygon data failed for XLF",
+                "data": null
+              },
+              "Consumer Discretionary": {
+                "error": "Polygon data failed for XLY",
+                "data": null
+              },
+              "Communication Services": {
+                "error": "Polygon data failed for XLC",
+                "data": null
+              },
+              "Industrials": {
+                "error": "Polygon data failed for XLI",
+                "data": null
+              },
+              "Consumer Staples": {
+                "error": "Polygon data failed for XLP",
+                "data": null
+              },
+              "Energy": {
+                "error": "Polygon data failed for XLE",
+                "data": null
+              },
+              "Utilities": {
+                "error": "Polygon data failed for XLU",
+                "data": null
+              },
+              "Real Estate": {
+                "error": "Polygon data failed for XLRE",
+                "data": null
+              },
+              "Materials": {
+                "error": "Polygon data failed for XLB",
+                "data": null
+              }
+            }
+          },
+          "confidence": 0.8,
+          "insights": [
+            "Market data analysis for Comprehensive analysis of Analyze current market sentiment and narrative shifts, focusing on live market action and intraday opportunities"
+          ]
+        }
+      },
+      "72e74f09-7975-4f43-b8de-f1b63f9d44de": {
+        "id": "72e74f09-7975-4f43-b8de-f1b63f9d44de",
+        "type": "research",
+        "content": "data_fetcher: Historical data pattern analysis",
+        "data": {
+          "description": "Historical data pattern analysis",
+          "type": "historical_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_market_data_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x17e8bc1f0>>",
+          "parameters": {
+            "data_type": "historical",
+            "hypothesis": "Comprehensive analysis of Analyze current market sentiment and narrative shifts, focusing on live market action and intraday opportunities",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-10T12:15:10.339549",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-10T12:15:10.339556",
+              "market_session": "regular_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "72e74f09-7975-4f43-b8de-f1b63f9d44de",
+          "tool_name": "data_fetcher"
+        },
+        "parent_id": "d4ac5c9a-6621-4425-960e-f6b5b16daab1",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.8,
+        "created_at": "2025-07-10T12:15:11.770660",
+        "updated_at": "2025-07-10T12:15:49.234939",
+        "result": {
+          "tool": "data_fetcher",
+          "data_type": "historical",
+          "results": {
+            "SPY": {
+              "error": "Polygon data failed for SPY",
+              "data": null
+            },
+            "QQQ": {
+              "error": "Polygon data failed for QQQ",
+              "data": null
+            },
+            "IWM": {
+              "error": "Polygon data failed for IWM",
+              "data": null
+            }
+          },
+          "confidence": 0.8,
+          "insights": [
+            "Market data analysis for Comprehensive analysis of Analyze current market sentiment and narrative shifts, focusing on live market action and intraday opportunities"
+          ]
+        }
+      }
+    },
+    "best_path": null,
+    "best_confidence": 0.0,
+    "summary": {
+      "tree_id": "778543fb-917e-4ed7-9e36-e61d208b7385",
+      "agent_name": "enhanced_sentiment_tracking_agent",
+      "total_nodes": 7,
+      "by_status": {
+        "pending": 2,
+        "completed": 5
+      },
+      "by_type": {
+        "root": 1,
+        "hypothesis": 1,
+        "research": 5
+      },
+      "best_confidence": 0.0,
+      "active_leaves": 0
+    }
+  },
+  "insights": [],
+  "competitive_edges": [],
+  "timestamp": "2025-07-10T12:16:19.452179",
+  "session_duration": "research_complete",
+  "research_track": "sentiment_tracking",
+  "specialization": "sentiment_analysis",
+  "market_context": {
+    "market_data": {
+      "indices": {},
+      "market_sentiment": "neutral",
+      "spy_daily_change": 0,
+      "timestamp": "2025-07-10T12:15:10.339549",
+      "data_source": "polygon_upgraded_free_tier",
+      "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+      "premium_data": true
+    },
+    "timestamp": "2025-07-10T12:15:10.339556",
+    "market_session": "regular_hours",
+    "symbols": [
+      "SPY",
+      "QQQ",
+      "IWM",
+      "TLT",
+      "GLD",
+      "VIX"
+    ],
+    "focus_timeframe": "short_to_medium_term"
+  },
+  "completed_at": "2025-07-10T12:16:19.452237"
+}

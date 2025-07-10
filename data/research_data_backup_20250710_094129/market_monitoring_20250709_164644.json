@@ -1,0 +1,356 @@
+{
+  "session_id": "b207e222-6d14-4947-b711-ce4b9feabf95",
+  "agent_id": "market_monitoring_agent",
+  "objective": "Identify breakout patterns and momentum shifts, focusing on after-hours developments and next-day preparation",
+  "hypotheses_explored": 1,
+  "research_plans_executed": 3,
+  "patterns_identified": 1,
+  "insights_generated": 0,
+  "decision_tree": {
+    "id": "af008ba1-fd54-405c-b8e4-088a6741e89d",
+    "agent_name": "enhanced_market_monitoring_agent",
+    "root_id": "dc903833-e4eb-431c-92a1-87d363d7fa6a",
+    "nodes": {
+      "dc903833-e4eb-431c-92a1-87d363d7fa6a": {
+        "id": "dc903833-e4eb-431c-92a1-87d363d7fa6a",
+        "type": "root",
+        "content": "Research Objective: Identify breakout patterns and momentum shifts, focusing on after-hours developments and next-day preparation",
+        "data": {
+          "objective": "Identify breakout patterns and momentum shifts, focusing on after-hours developments and next-day preparation",
+          "context": {
+            "market_data": {
+              "indices": {
+                "SPY": {
+                  "current_price": 620.34,
+                  "daily_change_pct": -0.0547786298897851,
+                  "week_change_pct": -0.0547786298897851,
+                  "data_source": "polygon_free_free_tier",
+                  "data_date": "2025-07-08"
+                }
+              },
+              "market_sentiment": "neutral",
+              "spy_daily_change": -0.0547786298897851,
+              "timestamp": "2025-07-09T16:46:22.651784",
+              "data_source": "polygon_free_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": false
+            },
+            "timestamp": "2025-07-09T16:46:22.651809",
+            "market_session": "after_hours",
+            "symbols": [
+              "SPY",
+              "QQQ",
+              "IWM",
+              "TLT",
+              "GLD",
+              "VIX"
+            ],
+            "focus_timeframe": "short_to_medium_term"
+          }
+        },
+        "parent_id": null,
+        "children": [
+          "c0cca8cf-30eb-43ae-adf8-96464a5aeb56"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T16:46:22.652520",
+        "updated_at": "2025-07-09T16:46:29.003255",
+        "result": {}
+      },
+      "c0cca8cf-30eb-43ae-adf8-96464a5aeb56": {
+        "id": "c0cca8cf-30eb-43ae-adf8-96464a5aeb56",
+        "type": "hypothesis",
+        "content": "Investigate Identify breakout patterns and momentum shifts, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+        "data": {
+          "exploration_priority": 1
+        },
+        "parent_id": "dc903833-e4eb-431c-92a1-87d363d7fa6a",
+        "children": [
+          "6477f2ec-209b-4e00-8338-1e0373bc9eaa",
+          "ab25554c-97a9-4e6e-9cad-edf2b4d1ee37",
+          "f566c829-4a6c-4dcb-87b0-83c781e79a5f"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T16:46:29.003247",
+        "updated_at": "2025-07-09T16:46:29.003859",
+        "result": {}
+      },
+      "6477f2ec-209b-4e00-8338-1e0373bc9eaa": {
+        "id": "6477f2ec-209b-4e00-8338-1e0373bc9eaa",
+        "type": "research",
+        "content": "calculator: Statistical analysis of hypothesis variables",
+        "data": {
+          "description": "Statistical analysis of hypothesis variables",
+          "type": "statistical_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x13cf8ba70>>",
+          "parameters": {
+            "analysis_type": "statistical",
+            "hypothesis": "Investigate Identify breakout patterns and momentum shifts, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 620.34,
+                    "daily_change_pct": -0.0547786298897851,
+                    "week_change_pct": -0.0547786298897851,
+                    "data_source": "polygon_free_free_tier",
+                    "data_date": "2025-07-08"
+                  }
+                },
+                "market_sentiment": "neutral",
+                "spy_daily_change": -0.0547786298897851,
+                "timestamp": "2025-07-09T16:46:22.651784",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T16:46:22.651809",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "6477f2ec-209b-4e00-8338-1e0373bc9eaa",
+          "tool_name": "calculator"
+        },
+        "parent_id": "c0cca8cf-30eb-43ae-adf8-96464a5aeb56",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.7,
+        "created_at": "2025-07-09T16:46:29.003544",
+        "updated_at": "2025-07-09T16:46:29.011511",
+        "result": {
+          "tool": "calculator",
+          "analysis_type": "statistical",
+          "results": {
+            "volatility": {
+              "result": {
+                "realized_volatility": 0.25606961370163317,
+                "current_rolling_vol": 0.1115473839967927,
+                "ewm_volatility": 0.13729096998252577,
+                "vol_of_vol": 0.13422006833822173
+              }
+            },
+            "correlation": {
+              "error": "Empty series provided",
+              "result": null
+            },
+            "distribution": {
+              "error": "Unknown operation: distribution analysis",
+              "result": null
+            }
+          },
+          "confidence": 0.7,
+          "insights": [
+            "Calculator analysis for  on SPY"
+          ]
+        }
+      },
+      "ab25554c-97a9-4e6e-9cad-edf2b4d1ee37": {
+        "id": "ab25554c-97a9-4e6e-9cad-edf2b4d1ee37",
+        "type": "research",
+        "content": "calculator: Technical indicator calculations",
+        "data": {
+          "description": "Technical indicator calculations",
+          "type": "technical_indicators",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x13cf8ba70>>",
+          "parameters": {
+            "analysis_type": "technical",
+            "hypothesis": "Investigate Identify breakout patterns and momentum shifts, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 620.34,
+                    "daily_change_pct": -0.0547786298897851,
+                    "week_change_pct": -0.0547786298897851,
+                    "data_source": "polygon_free_free_tier",
+                    "data_date": "2025-07-08"
+                  }
+                },
+                "market_sentiment": "neutral",
+                "spy_daily_change": -0.0547786298897851,
+                "timestamp": "2025-07-09T16:46:22.651784",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T16:46:22.651809",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "ab25554c-97a9-4e6e-9cad-edf2b4d1ee37",
+          "tool_name": "calculator"
+        },
+        "parent_id": "c0cca8cf-30eb-43ae-adf8-96464a5aeb56",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.7,
+        "created_at": "2025-07-09T16:46:29.003715",
+        "updated_at": "2025-07-09T16:46:29.013192",
+        "result": {
+          "tool": "calculator",
+          "analysis_type": "statistical",
+          "results": {
+            "volatility": {
+              "result": {
+                "realized_volatility": 0.25606961370163317,
+                "current_rolling_vol": 0.1115473839967927,
+                "ewm_volatility": 0.13729096998252577,
+                "vol_of_vol": 0.13422006833822173
+              }
+            },
+            "correlation": {
+              "error": "Empty series provided",
+              "result": null
+            },
+            "distribution": {
+              "error": "Unknown operation: distribution analysis",
+              "result": null
+            }
+          },
+          "confidence": 0.7,
+          "insights": [
+            "Calculator analysis for  on SPY"
+          ]
+        }
+      },
+      "f566c829-4a6c-4dcb-87b0-83c781e79a5f": {
+        "id": "f566c829-4a6c-4dcb-87b0-83c781e79a5f",
+        "type": "research",
+        "content": "rag_agent: Retrieve similar research patterns",
+        "data": {
+          "description": "Retrieve similar research patterns",
+          "type": "pattern_retrieval",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_memory_lookup of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x13cf8ba70>>",
+          "parameters": {
+            "lookup_type": "patterns",
+            "hypothesis": "Investigate Identify breakout patterns and momentum shifts, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 620.34,
+                    "daily_change_pct": -0.0547786298897851,
+                    "week_change_pct": -0.0547786298897851,
+                    "data_source": "polygon_free_free_tier",
+                    "data_date": "2025-07-08"
+                  }
+                },
+                "market_sentiment": "neutral",
+                "spy_daily_change": -0.0547786298897851,
+                "timestamp": "2025-07-09T16:46:22.651784",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T16:46:22.651809",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "f566c829-4a6c-4dcb-87b0-83c781e79a5f",
+          "tool_name": "rag_agent"
+        },
+        "parent_id": "c0cca8cf-30eb-43ae-adf8-96464a5aeb56",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T16:46:29.003857",
+        "updated_at": "2025-07-09T16:46:29.460793",
+        "result": {
+          "tool": "rag_agent",
+          "lookup_type": "patterns",
+          "results": {
+            "similar_trades": []
+          },
+          "confidence": 0.5,
+          "insights": [
+            "Memory lookup for  patterns"
+          ]
+        }
+      }
+    },
+    "best_path": null,
+    "best_confidence": 0.0,
+    "summary": {
+      "tree_id": "af008ba1-fd54-405c-b8e4-088a6741e89d",
+      "agent_name": "enhanced_market_monitoring_agent",
+      "total_nodes": 5,
+      "by_status": {
+        "pending": 2,
+        "completed": 3
+      },
+      "by_type": {
+        "root": 1,
+        "hypothesis": 1,
+        "research": 3
+      },
+      "best_confidence": 0.0,
+      "active_leaves": 0
+    }
+  },
+  "insights": [],
+  "competitive_edges": [],
+  "timestamp": "2025-07-09T16:46:44.799742",
+  "session_duration": "research_complete",
+  "research_track": "market_monitoring",
+  "specialization": "market_analysis",
+  "market_context": {
+    "market_data": {
+      "indices": {
+        "SPY": {
+          "current_price": 620.34,
+          "daily_change_pct": -0.0547786298897851,
+          "week_change_pct": -0.0547786298897851,
+          "data_source": "polygon_free_free_tier",
+          "data_date": "2025-07-08"
+        }
+      },
+      "market_sentiment": "neutral",
+      "spy_daily_change": -0.0547786298897851,
+      "timestamp": "2025-07-09T16:46:22.651784",
+      "data_source": "polygon_free_free_tier",
+      "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+      "premium_data": false
+    },
+    "timestamp": "2025-07-09T16:46:22.651809",
+    "market_session": "after_hours",
+    "symbols": [
+      "SPY",
+      "QQQ",
+      "IWM",
+      "TLT",
+      "GLD",
+      "VIX"
+    ],
+    "focus_timeframe": "short_to_medium_term"
+  },
+  "completed_at": "2025-07-09T16:46:44.803807"
+}

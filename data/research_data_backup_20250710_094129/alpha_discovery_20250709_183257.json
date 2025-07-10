@@ -1,0 +1,265 @@
+{
+  "session_id": "dc3f9e6f-ec30-45d3-a579-9e6b4140241f",
+  "agent_id": "alpha_discovery_agent",
+  "objective": "Identify undervalued securities with catalyst potential, focusing on after-hours developments and next-day preparation",
+  "hypotheses_explored": 1,
+  "research_plans_executed": 3,
+  "patterns_identified": 0,
+  "insights_generated": 0,
+  "decision_tree": {
+    "id": "fb3c165f-b040-4910-901f-fc2ac976ccc6",
+    "agent_name": "enhanced_alpha_discovery_agent",
+    "root_id": "339a7989-14d7-4da7-bd14-183d97998abb",
+    "nodes": {
+      "339a7989-14d7-4da7-bd14-183d97998abb": {
+        "id": "339a7989-14d7-4da7-bd14-183d97998abb",
+        "type": "root",
+        "content": "Research Objective: Identify undervalued securities with catalyst potential, focusing on after-hours developments and next-day preparation",
+        "data": {
+          "objective": "Identify undervalued securities with catalyst potential, focusing on after-hours developments and next-day preparation",
+          "context": {
+            "market_data": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-09T17:53:33.662908",
+              "data_source": "polygon_free_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": false
+            },
+            "timestamp": "2025-07-09T17:53:33.662950",
+            "market_session": "after_hours",
+            "symbols": [
+              "SPY",
+              "QQQ",
+              "IWM",
+              "TLT",
+              "GLD",
+              "VIX"
+            ],
+            "focus_timeframe": "short_to_medium_term"
+          }
+        },
+        "parent_id": null,
+        "children": [
+          "f88950c7-dbb4-413b-9082-b1e33711a02b"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T17:53:33.663342",
+        "updated_at": "2025-07-09T17:53:34.880492",
+        "result": {}
+      },
+      "f88950c7-dbb4-413b-9082-b1e33711a02b": {
+        "id": "f88950c7-dbb4-413b-9082-b1e33711a02b",
+        "type": "hypothesis",
+        "content": "Comprehensive analysis of Identify undervalued securities with catalyst potential, focusing on after-hours developments and next-day preparation",
+        "data": {
+          "exploration_priority": 1
+        },
+        "parent_id": "339a7989-14d7-4da7-bd14-183d97998abb",
+        "children": [
+          "53bb7693-c071-42c7-8fa0-d6e282dc2365",
+          "a17069db-1cdf-4d35-a47e-1487d3c590b0",
+          "d242bffb-1cfa-4125-bf9e-199232c05f73"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T17:53:34.880488",
+        "updated_at": "2025-07-09T17:53:34.880806",
+        "result": {}
+      },
+      "53bb7693-c071-42c7-8fa0-d6e282dc2365": {
+        "id": "53bb7693-c071-42c7-8fa0-d6e282dc2365",
+        "type": "research",
+        "content": "calculator: Statistical analysis of hypothesis variables",
+        "data": {
+          "description": "Statistical analysis of hypothesis variables",
+          "type": "statistical_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12059b050>>",
+          "parameters": {
+            "analysis_type": "statistical",
+            "hypothesis": "Comprehensive analysis of Identify undervalued securities with catalyst potential, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T17:53:33.662908",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T17:53:33.662950",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "53bb7693-c071-42c7-8fa0-d6e282dc2365",
+          "tool_name": "calculator"
+        },
+        "parent_id": "f88950c7-dbb4-413b-9082-b1e33711a02b",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-09T17:53:34.880641",
+        "updated_at": "2025-07-09T18:03:35.433499",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "a17069db-1cdf-4d35-a47e-1487d3c590b0": {
+        "id": "a17069db-1cdf-4d35-a47e-1487d3c590b0",
+        "type": "research",
+        "content": "calculator: Technical indicator calculations",
+        "data": {
+          "description": "Technical indicator calculations",
+          "type": "technical_indicators",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12059b050>>",
+          "parameters": {
+            "analysis_type": "technical",
+            "hypothesis": "Comprehensive analysis of Identify undervalued securities with catalyst potential, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T17:53:33.662908",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T17:53:33.662950",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "a17069db-1cdf-4d35-a47e-1487d3c590b0",
+          "tool_name": "calculator"
+        },
+        "parent_id": "f88950c7-dbb4-413b-9082-b1e33711a02b",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-09T17:53:34.880728",
+        "updated_at": "2025-07-09T18:03:50.436813",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "d242bffb-1cfa-4125-bf9e-199232c05f73": {
+        "id": "d242bffb-1cfa-4125-bf9e-199232c05f73",
+        "type": "research",
+        "content": "rag_agent: Retrieve similar research patterns",
+        "data": {
+          "description": "Retrieve similar research patterns",
+          "type": "pattern_retrieval",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_memory_lookup of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12059b050>>",
+          "parameters": {
+            "lookup_type": "patterns",
+            "hypothesis": "Comprehensive analysis of Identify undervalued securities with catalyst potential, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T17:53:33.662908",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T17:53:33.662950",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "d242bffb-1cfa-4125-bf9e-199232c05f73",
+          "tool_name": "rag_agent"
+        },
+        "parent_id": "f88950c7-dbb4-413b-9082-b1e33711a02b",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-09T17:53:34.880803",
+        "updated_at": "2025-07-09T18:03:51.877766",
+        "result": {
+          "error": "Connection error. in query.",
+          "confidence": 0.1
+        }
+      }
+    },
+    "best_path": null,
+    "best_confidence": 0.0,
+    "summary": {
+      "tree_id": "fb3c165f-b040-4910-901f-fc2ac976ccc6",
+      "agent_name": "enhanced_alpha_discovery_agent",
+      "total_nodes": 5,
+      "by_status": {
+        "pending": 2,
+        "completed": 3
+      },
+      "by_type": {
+        "root": 1,
+        "hypothesis": 1,
+        "research": 3
+      },
+      "best_confidence": 0.0,
+      "active_leaves": 0
+    }
+  },
+  "insights": [],
+  "competitive_edges": [],
+  "timestamp": "2025-07-09T18:32:49.813182",
+  "session_duration": "research_complete",
+  "research_track": "alpha_discovery",
+  "specialization": "alpha_hunting",
+  "market_context": {
+    "market_data": {
+      "indices": {},
+      "market_sentiment": "neutral",
+      "spy_daily_change": 0,
+      "timestamp": "2025-07-09T17:53:33.662908",
+      "data_source": "polygon_free_free_tier",
+      "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+      "premium_data": false
+    },
+    "timestamp": "2025-07-09T17:53:33.662950",
+    "market_session": "after_hours",
+    "symbols": [
+      "SPY",
+      "QQQ",
+      "IWM",
+      "TLT",
+      "GLD",
+      "VIX"
+    ],
+    "focus_timeframe": "short_to_medium_term"
+  },
+  "completed_at": "2025-07-09T18:32:49.813487"
+}

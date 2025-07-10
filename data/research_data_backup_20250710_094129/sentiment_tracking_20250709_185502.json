@@ -1,0 +1,533 @@
+{
+  "session_id": "6b00b0aa-5142-4852-bec1-18c2db45d291",
+  "agent_id": "sentiment_tracking_agent",
+  "objective": "Analyze current market sentiment and narrative shifts, focusing on after-hours developments and next-day preparation",
+  "hypotheses_explored": 1,
+  "research_plans_executed": 7,
+  "patterns_identified": 0,
+  "insights_generated": 0,
+  "decision_tree": {
+    "id": "960debe9-0bf6-4c82-9ffe-4462cbf12ae3",
+    "agent_name": "enhanced_sentiment_tracking_agent",
+    "root_id": "39e7399a-cdbc-46a3-b202-a0b83c5b1c6e",
+    "nodes": {
+      "39e7399a-cdbc-46a3-b202-a0b83c5b1c6e": {
+        "id": "39e7399a-cdbc-46a3-b202-a0b83c5b1c6e",
+        "type": "root",
+        "content": "Research Objective: Analyze current market sentiment and narrative shifts, focusing on after-hours developments and next-day preparation",
+        "data": {
+          "objective": "Analyze current market sentiment and narrative shifts, focusing on after-hours developments and next-day preparation",
+          "context": {
+            "market_data": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-09T18:06:28.071092",
+              "data_source": "polygon_free_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": false
+            },
+            "timestamp": "2025-07-09T18:06:28.071136",
+            "market_session": "after_hours",
+            "symbols": [
+              "SPY",
+              "QQQ",
+              "IWM",
+              "TLT",
+              "GLD",
+              "VIX"
+            ],
+            "focus_timeframe": "short_to_medium_term"
+          }
+        },
+        "parent_id": null,
+        "children": [
+          "e0ef81c2-8b07-4377-aa32-c201490f2e85"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T18:06:28.071865",
+        "updated_at": "2025-07-09T18:06:29.578941",
+        "result": {}
+      },
+      "e0ef81c2-8b07-4377-aa32-c201490f2e85": {
+        "id": "e0ef81c2-8b07-4377-aa32-c201490f2e85",
+        "type": "hypothesis",
+        "content": "Comprehensive analysis of Analyze current market sentiment and narrative shifts, focusing on after-hours developments and next-day preparation",
+        "data": {
+          "exploration_priority": 1
+        },
+        "parent_id": "39e7399a-cdbc-46a3-b202-a0b83c5b1c6e",
+        "children": [
+          "8b0fb5a2-e69e-444f-9288-1c759a5f534c",
+          "5692a289-a433-4aeb-9115-da09ffd50cea",
+          "2e2d9f6f-0d69-4c5f-aaf2-4a874710d779",
+          "7f194f93-a063-4a74-801a-56e8fe4c818c",
+          "52dd5398-33b7-4970-9ca8-3947bd272a5a"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T18:06:29.578934",
+        "updated_at": "2025-07-09T18:06:29.579967",
+        "result": {}
+      },
+      "8b0fb5a2-e69e-444f-9288-1c759a5f534c": {
+        "id": "8b0fb5a2-e69e-444f-9288-1c759a5f534c",
+        "type": "research",
+        "content": "calculator: Statistical analysis of hypothesis variables",
+        "data": {
+          "description": "Statistical analysis of hypothesis variables",
+          "type": "statistical_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x133df7020>>",
+          "parameters": {
+            "analysis_type": "statistical",
+            "hypothesis": "Comprehensive analysis of Analyze current market sentiment and narrative shifts, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T18:06:28.071092",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T18:06:28.071136",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "8b0fb5a2-e69e-444f-9288-1c759a5f534c",
+          "tool_name": "calculator"
+        },
+        "parent_id": "e0ef81c2-8b07-4377-aa32-c201490f2e85",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-09T18:06:29.579237",
+        "updated_at": "2025-07-09T18:35:32.197853",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "5692a289-a433-4aeb-9115-da09ffd50cea": {
+        "id": "5692a289-a433-4aeb-9115-da09ffd50cea",
+        "type": "research",
+        "content": "calculator: Technical indicator calculations",
+        "data": {
+          "description": "Technical indicator calculations",
+          "type": "technical_indicators",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x133df7020>>",
+          "parameters": {
+            "analysis_type": "technical",
+            "hypothesis": "Comprehensive analysis of Analyze current market sentiment and narrative shifts, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T18:06:28.071092",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T18:06:28.071136",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "5692a289-a433-4aeb-9115-da09ffd50cea",
+          "tool_name": "calculator"
+        },
+        "parent_id": "e0ef81c2-8b07-4377-aa32-c201490f2e85",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-09T18:06:29.579424",
+        "updated_at": "2025-07-09T18:35:47.193113",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "2e2d9f6f-0d69-4c5f-aaf2-4a874710d779": {
+        "id": "2e2d9f6f-0d69-4c5f-aaf2-4a874710d779",
+        "type": "research",
+        "content": "data_fetcher: Real-time market data analysis",
+        "data": {
+          "description": "Real-time market data analysis",
+          "type": "market_data",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_market_data_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x133df7020>>",
+          "parameters": {
+            "data_type": "real_time",
+            "hypothesis": "Comprehensive analysis of Analyze current market sentiment and narrative shifts, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T18:06:28.071092",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T18:06:28.071136",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "2e2d9f6f-0d69-4c5f-aaf2-4a874710d779",
+          "tool_name": "data_fetcher"
+        },
+        "parent_id": "e0ef81c2-8b07-4377-aa32-c201490f2e85",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.8,
+        "created_at": "2025-07-09T18:06:29.579607",
+        "updated_at": "2025-07-09T18:38:47.279952",
+        "result": {
+          "tool": "data_fetcher",
+          "data_type": "real_time",
+          "results": {
+            "market_overview": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-09T18:36:02.208044",
+              "data_source": "polygon_free_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": false
+            },
+            "sector_data": {
+              "Technology": {
+                "error": "No data source available for XLK",
+                "data": null
+              },
+              "Healthcare": {
+                "error": "No data source available for XLV",
+                "data": null
+              },
+              "Financial": {
+                "error": "No data source available for XLF",
+                "data": null
+              },
+              "Consumer Discretionary": {
+                "error": "No data source available for XLY",
+                "data": null
+              },
+              "Communication Services": {
+                "error": "No data source available for XLC",
+                "data": null
+              },
+              "Industrials": {
+                "error": "No data source available for XLI",
+                "data": null
+              },
+              "Consumer Staples": {
+                "error": "No data source available for XLP",
+                "data": null
+              },
+              "Energy": {
+                "error": "No data source available for XLE",
+                "data": null
+              },
+              "Utilities": {
+                "error": "No data source available for XLU",
+                "data": null
+              },
+              "Real Estate": {
+                "error": "No data source available for XLRE",
+                "data": null
+              },
+              "Materials": {
+                "error": "No data source available for XLB",
+                "data": null
+              }
+            }
+          },
+          "confidence": 0.8,
+          "insights": [
+            "Market data analysis for "
+          ]
+        }
+      },
+      "7f194f93-a063-4a74-801a-56e8fe4c818c": {
+        "id": "7f194f93-a063-4a74-801a-56e8fe4c818c",
+        "type": "research",
+        "content": "data_fetcher: Historical data pattern analysis",
+        "data": {
+          "description": "Historical data pattern analysis",
+          "type": "historical_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_market_data_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x133df7020>>",
+          "parameters": {
+            "data_type": "historical",
+            "hypothesis": "Comprehensive analysis of Analyze current market sentiment and narrative shifts, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T18:06:28.071092",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T18:06:28.071136",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "7f194f93-a063-4a74-801a-56e8fe4c818c",
+          "tool_name": "data_fetcher"
+        },
+        "parent_id": "e0ef81c2-8b07-4377-aa32-c201490f2e85",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.8,
+        "created_at": "2025-07-09T18:06:29.579803",
+        "updated_at": "2025-07-09T18:41:47.399622",
+        "result": {
+          "tool": "data_fetcher",
+          "data_type": "real_time",
+          "results": {
+            "market_overview": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-09T18:39:02.305466",
+              "data_source": "polygon_free_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": false
+            },
+            "sector_data": {
+              "Technology": {
+                "error": "No data source available for XLK",
+                "data": null
+              },
+              "Healthcare": {
+                "error": "No data source available for XLV",
+                "data": null
+              },
+              "Financial": {
+                "error": "No data source available for XLF",
+                "data": null
+              },
+              "Consumer Discretionary": {
+                "error": "No data source available for XLY",
+                "data": null
+              },
+              "Communication Services": {
+                "error": "No data source available for XLC",
+                "data": null
+              },
+              "Industrials": {
+                "error": "No data source available for XLI",
+                "data": null
+              },
+              "Consumer Staples": {
+                "error": "No data source available for XLP",
+                "data": null
+              },
+              "Energy": {
+                "error": "No data source available for XLE",
+                "data": null
+              },
+              "Utilities": {
+                "error": "No data source available for XLU",
+                "data": null
+              },
+              "Real Estate": {
+                "error": "No data source available for XLRE",
+                "data": null
+              },
+              "Materials": {
+                "error": "No data source available for XLB",
+                "data": null
+              }
+            }
+          },
+          "confidence": 0.8,
+          "insights": [
+            "Market data analysis for "
+          ]
+        }
+      },
+      "52dd5398-33b7-4970-9ca8-3947bd272a5a": {
+        "id": "52dd5398-33b7-4970-9ca8-3947bd272a5a",
+        "type": "research",
+        "content": "web_researcher: Comprehensive web research on hypothesis",
+        "data": {
+          "description": "Comprehensive web research on hypothesis",
+          "type": "comprehensive_research",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_web_research of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x133df7020>>",
+          "parameters": {
+            "research_type": "comprehensive",
+            "hypothesis": "Comprehensive analysis of Analyze current market sentiment and narrative shifts, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T18:06:28.071092",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T18:06:28.071136",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "52dd5398-33b7-4970-9ca8-3947bd272a5a",
+          "tool_name": "web_researcher"
+        },
+        "parent_id": "e0ef81c2-8b07-4377-aa32-c201490f2e85",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T18:06:29.579962",
+        "updated_at": "2025-07-09T18:41:52.750303",
+        "result": {
+          "tool": "web_researcher",
+          "research_type": "comprehensive",
+          "results": {
+            "opportunity": {
+              "theme": ""
+            },
+            "tickers": [
+              "SPY"
+            ],
+            "sentiment_analysis": {
+              "sentiment": "neutral",
+              "confidence": 0.3
+            },
+            "fundamental_analysis": {
+              "analysis": "error",
+              "confidence": 0.2
+            },
+            "news_analysis": {
+              "news_impact": "error",
+              "confidence": 0.2
+            },
+            "market_context": {
+              "sector_context": "market context analysis",
+              "peer_comparison": "peer analysis",
+              "market_conditions": "current market environment",
+              "data_sources": 6,
+              "confidence": 0.6
+            },
+            "risk_assessment": {
+              "identified_risks": [],
+              "market_risks": [
+                "market volatility",
+                "sector rotation"
+              ],
+              "specific_risks": [
+                "company-specific risks"
+              ],
+              "risk_level": "moderate",
+              "mitigation_strategies": [
+                "diversification",
+                "position sizing"
+              ],
+              "confidence": 0.5
+            },
+            "timestamp": "2025-07-09T18:41:51.522765"
+          },
+          "confidence": 0.5,
+          "insights": [
+            ""
+          ]
+        }
+      }
+    },
+    "best_path": null,
+    "best_confidence": 0.0,
+    "summary": {
+      "tree_id": "960debe9-0bf6-4c82-9ffe-4462cbf12ae3",
+      "agent_name": "enhanced_sentiment_tracking_agent",
+      "total_nodes": 7,
+      "by_status": {
+        "pending": 2,
+        "completed": 5
+      },
+      "by_type": {
+        "root": 1,
+        "hypothesis": 1,
+        "research": 5
+      },
+      "best_confidence": 0.0,
+      "active_leaves": 0
+    }
+  },
+  "insights": [],
+  "competitive_edges": [],
+  "timestamp": "2025-07-09T18:54:56.979168",
+  "session_duration": "research_complete",
+  "research_track": "sentiment_tracking",
+  "specialization": "sentiment_analysis",
+  "market_context": {
+    "market_data": {
+      "indices": {},
+      "market_sentiment": "neutral",
+      "spy_daily_change": 0,
+      "timestamp": "2025-07-09T18:06:28.071092",
+      "data_source": "polygon_free_free_tier",
+      "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+      "premium_data": false
+    },
+    "timestamp": "2025-07-09T18:06:28.071136",
+    "market_session": "after_hours",
+    "symbols": [
+      "SPY",
+      "QQQ",
+      "IWM",
+      "TLT",
+      "GLD",
+      "VIX"
+    ],
+    "focus_timeframe": "short_to_medium_term"
+  },
+  "completed_at": "2025-07-09T18:54:56.979360"
+}

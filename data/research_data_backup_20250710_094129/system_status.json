@@ -1,0 +1,49 @@
+{
+  "service_started": "2025-07-09T16:23:08.804354",
+  "total_research_cycles": 19,
+  "successful_cycles": 19,
+  "failed_cycles": 0,
+  "last_cycle_time": "2025-07-09T18:55:02.020886",
+  "active_research_tracks": 5,
+  "insights_generated": 0,
+  "research_tracks": {
+    "alpha_discovery": {
+      "enabled": true,
+      "interval_minutes": 15.0,
+      "last_run": "2025-07-09T18:05:57.426243",
+      "next_run_estimate": "2025-07-09T18:20:57.426243"
+    },
+    "market_monitoring": {
+      "enabled": true,
+      "interval_minutes": 10.0,
+      "last_run": "2025-07-09T18:05:57.426243",
+      "next_run_estimate": "2025-07-09T18:15:57.426243"
+    },
+    "sentiment_tracking": {
+      "enabled": true,
+      "interval_minutes": 20.0,
+      "last_run": "2025-07-09T18:05:57.426243",
+      "next_run_estimate": "2025-07-09T18:25:57.426243"
+    },
+    "technical_analysis": {
+      "enabled": true,
+      "interval_minutes": 30.0,
+      "last_run": "2025-07-09T18:05:57.426243",
+      "next_run_estimate": "2025-07-09T18:35:57.426243"
+    },
+    "risk_assessment": {
+      "enabled": true,
+      "interval_minutes": 60.0,
+      "last_run": "2025-07-09T18:05:57.426243",
+      "next_run_estimate": "2025-07-09T19:05:57.426243"
+    },
+    "deep_research": {
+      "enabled": true,
+      "interval_minutes": 120.0,
+      "last_run": "2025-07-09T16:23:08.804697",
+      "next_run_estimate": "2025-07-09T18:23:08.804697"
+    }
+  },
+  "uptime_minutes": 151.88694283333334,
+  "status_updated": "2025-07-09T18:55:02.020928"
+}

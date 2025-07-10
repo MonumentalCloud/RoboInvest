@@ -1,0 +1,537 @@
+{
+  "session_id": "a11d6e0c-7670-4088-b42b-53b6cb0492a4",
+  "agent_id": "alpha_discovery_agent",
+  "objective": "Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation",
+  "hypotheses_explored": 1,
+  "research_plans_executed": 5,
+  "patterns_identified": 2,
+  "insights_generated": 0,
+  "decision_tree": {
+    "id": "7b7ecf6d-e412-45f8-9a49-1e61f1f75922",
+    "agent_name": "enhanced_alpha_discovery_agent",
+    "root_id": "b0b6523c-bab7-4c7c-8987-2ec991e909e8",
+    "nodes": {
+      "b0b6523c-bab7-4c7c-8987-2ec991e909e8": {
+        "id": "b0b6523c-bab7-4c7c-8987-2ec991e909e8",
+        "type": "root",
+        "content": "Research Objective: Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation",
+        "data": {
+          "objective": "Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation",
+          "context": {
+            "market_data": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-09T20:34:02.500041",
+              "data_source": "yfinance_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": false
+            },
+            "timestamp": "2025-07-09T20:34:02.500047",
+            "market_session": "overnight",
+            "symbols": [
+              "SPY",
+              "QQQ",
+              "IWM",
+              "TLT",
+              "GLD",
+              "VIX"
+            ],
+            "focus_timeframe": "short_to_medium_term"
+          }
+        },
+        "parent_id": null,
+        "children": [
+          "0ae7502b-e2f1-44ff-976d-6b4fe06f0f34"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T20:34:02.500176",
+        "updated_at": "2025-07-09T20:34:07.497539",
+        "result": {}
+      },
+      "0ae7502b-e2f1-44ff-976d-6b4fe06f0f34": {
+        "id": "0ae7502b-e2f1-44ff-976d-6b4fe06f0f34",
+        "type": "hypothesis",
+        "content": "Investigate Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+        "data": {
+          "exploration_priority": 1
+        },
+        "parent_id": "b0b6523c-bab7-4c7c-8987-2ec991e909e8",
+        "children": [
+          "feb30813-288d-4cf1-8b44-285334331923",
+          "12e0b60d-0016-44c8-a8e5-965422ce6927",
+          "0e71c8d5-2a49-49e3-935c-beef5a19e1af",
+          "0c400207-305e-4227-a660-e4676e3f9018",
+          "1c73a466-10be-4f2d-9333-77a657cecdfd"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T20:34:07.497534",
+        "updated_at": "2025-07-09T20:34:07.498010",
+        "result": {}
+      },
+      "feb30813-288d-4cf1-8b44-285334331923": {
+        "id": "feb30813-288d-4cf1-8b44-285334331923",
+        "type": "research",
+        "content": "calculator: Statistical analysis of hypothesis variables",
+        "data": {
+          "description": "Statistical analysis of hypothesis variables",
+          "type": "statistical_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x300f1c8b0>>",
+          "parameters": {
+            "analysis_type": "statistical",
+            "hypothesis": "Investigate Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T20:34:02.500041",
+                "data_source": "yfinance_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T20:34:02.500047",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "feb30813-288d-4cf1-8b44-285334331923",
+          "tool_name": "calculator"
+        },
+        "parent_id": "0ae7502b-e2f1-44ff-976d-6b4fe06f0f34",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-09T20:34:07.497699",
+        "updated_at": "2025-07-09T20:34:27.357092",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "12e0b60d-0016-44c8-a8e5-965422ce6927": {
+        "id": "12e0b60d-0016-44c8-a8e5-965422ce6927",
+        "type": "research",
+        "content": "calculator: Technical indicator calculations",
+        "data": {
+          "description": "Technical indicator calculations",
+          "type": "technical_indicators",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x300f1c8b0>>",
+          "parameters": {
+            "analysis_type": "technical",
+            "hypothesis": "Investigate Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T20:34:02.500041",
+                "data_source": "yfinance_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T20:34:02.500047",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "12e0b60d-0016-44c8-a8e5-965422ce6927",
+          "tool_name": "calculator"
+        },
+        "parent_id": "0ae7502b-e2f1-44ff-976d-6b4fe06f0f34",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-09T20:34:07.497807",
+        "updated_at": "2025-07-09T20:34:27.357251",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "0e71c8d5-2a49-49e3-935c-beef5a19e1af": {
+        "id": "0e71c8d5-2a49-49e3-935c-beef5a19e1af",
+        "type": "research",
+        "content": "data_fetcher: Real-time market data analysis",
+        "data": {
+          "description": "Real-time market data analysis",
+          "type": "market_data",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_market_data_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x300f1c8b0>>",
+          "parameters": {
+            "data_type": "real_time",
+            "hypothesis": "Investigate Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T20:34:02.500041",
+                "data_source": "yfinance_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T20:34:02.500047",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "0e71c8d5-2a49-49e3-935c-beef5a19e1af",
+          "tool_name": "data_fetcher"
+        },
+        "parent_id": "0ae7502b-e2f1-44ff-976d-6b4fe06f0f34",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.8,
+        "created_at": "2025-07-09T20:34:07.497881",
+        "updated_at": "2025-07-09T20:34:41.435010",
+        "result": {
+          "tool": "data_fetcher",
+          "data_type": "real_time",
+          "results": {
+            "market_overview": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-09T20:34:27.357382",
+              "data_source": "yfinance_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": false
+            },
+            "sector_data": {
+              "Technology": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLK?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Healthcare": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLV?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Financial": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLF?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Consumer Discretionary": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLY?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Communication Services": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLC?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Industrials": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLI?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Consumer Staples": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLP?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Energy": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLE?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Utilities": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLU?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Real Estate": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLRE?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Materials": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLB?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              }
+            }
+          },
+          "confidence": 0.8,
+          "insights": [
+            "Market data analysis for "
+          ]
+        }
+      },
+      "0c400207-305e-4227-a660-e4676e3f9018": {
+        "id": "0c400207-305e-4227-a660-e4676e3f9018",
+        "type": "research",
+        "content": "data_fetcher: Historical data pattern analysis",
+        "data": {
+          "description": "Historical data pattern analysis",
+          "type": "historical_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_market_data_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x300f1c8b0>>",
+          "parameters": {
+            "data_type": "historical",
+            "hypothesis": "Investigate Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T20:34:02.500041",
+                "data_source": "yfinance_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T20:34:02.500047",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "0c400207-305e-4227-a660-e4676e3f9018",
+          "tool_name": "data_fetcher"
+        },
+        "parent_id": "0ae7502b-e2f1-44ff-976d-6b4fe06f0f34",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.8,
+        "created_at": "2025-07-09T20:34:07.497944",
+        "updated_at": "2025-07-09T20:34:41.436528",
+        "result": {
+          "tool": "data_fetcher",
+          "data_type": "real_time",
+          "results": {
+            "market_overview": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-09T20:34:41.435374",
+              "data_source": "yfinance_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": false
+            },
+            "sector_data": {
+              "Technology": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLK?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Healthcare": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLV?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Financial": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLF?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Consumer Discretionary": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLY?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Communication Services": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLC?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Industrials": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLI?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Consumer Staples": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLP?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Energy": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLE?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Utilities": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLU?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Real Estate": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLRE?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              },
+              "Materials": {
+                "error": "API request failed: 429 Client Error: Too Many Requests for url: https://query1.finance.yahoo.com/v8/finance/chart/XLB?interval=1d&range=1y&includePrePost=false",
+                "data": null
+              }
+            }
+          },
+          "confidence": 0.8,
+          "insights": [
+            "Market data analysis for "
+          ]
+        }
+      },
+      "1c73a466-10be-4f2d-9333-77a657cecdfd": {
+        "id": "1c73a466-10be-4f2d-9333-77a657cecdfd",
+        "type": "research",
+        "content": "rag_agent: Retrieve similar research patterns",
+        "data": {
+          "description": "Retrieve similar research patterns",
+          "type": "pattern_retrieval",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_memory_lookup of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x300f1c8b0>>",
+          "parameters": {
+            "lookup_type": "patterns",
+            "hypothesis": "Investigate Hunt for unique alpha opportunities in current market conditions, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T20:34:02.500041",
+                "data_source": "yfinance_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T20:34:02.500047",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "1c73a466-10be-4f2d-9333-77a657cecdfd",
+          "tool_name": "rag_agent"
+        },
+        "parent_id": "0ae7502b-e2f1-44ff-976d-6b4fe06f0f34",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T20:34:07.498008",
+        "updated_at": "2025-07-09T20:34:42.212333",
+        "result": {
+          "tool": "rag_agent",
+          "lookup_type": "patterns",
+          "results": {
+            "similar_trades": [
+              {
+                "action": "HOLD",
+                "budget": 0.1,
+                "confidence": 0.7,
+                "executed": false,
+                "id": "trade_4",
+                "reasoning": "The market is experiencing a downward trend across major indices, with significant negative percentage changes. The sentiment is neutral, indicating uncertainty. Given the current market conditions and the lack of strong positive news, it may be prudent to hold positions rather than make new trades.",
+                "symbol": "TLT",
+                "timestamp": "2025-07-07T14:17:28.029967"
+              },
+              {
+                "action": "HOLD",
+                "confidence": 0.75,
+                "id": "trade_2",
+                "reasoning": "The market is experiencing a downturn across major indices, with all observed assets showing negative change percentages. The neutral sentiment in the news suggests uncertainty, and given the current market conditions, it may be prudent to hold positions rather than make impulsive trades.",
+                "symbol": "TLT",
+                "timestamp": "2025-07-07T13:58:06.315920"
+              },
+              {
+                "action": "HOLD",
+                "budget": 0.1,
+                "confidence": 0.7,
+                "executed": false,
+                "id": "trade_3",
+                "reasoning": "The market sentiment is neutral, and the news surrounding Tesla indicates potential volatility due to Musk's political ambitions. Given the uncertainty and mixed signals, it is prudent to hold off on making any trades until the market direction becomes clearer.",
+                "symbol": "SPY",
+                "timestamp": "2025-07-07T14:10:01.706022"
+              },
+              {
+                "action": "HOLD",
+                "confidence": 0.2,
+                "id": "trade_0",
+                "reasoning": "LLM error fallback",
+                "symbol": "GLD",
+                "timestamp": "2025-07-07T13:54:44.829652"
+              },
+              {
+                "action": "HOLD",
+                "confidence": 0.2,
+                "id": "trade_1",
+                "reasoning": "LLM error fallback",
+                "symbol": "TLT",
+                "timestamp": "2025-07-07T13:56:28.517999"
+              }
+            ]
+          },
+          "confidence": 0.5,
+          "insights": [
+            "Memory lookup for  patterns"
+          ]
+        }
+      }
+    },
+    "best_path": null,
+    "best_confidence": 0.0,
+    "summary": {
+      "tree_id": "7b7ecf6d-e412-45f8-9a49-1e61f1f75922",
+      "agent_name": "enhanced_alpha_discovery_agent",
+      "total_nodes": 7,
+      "by_status": {
+        "pending": 2,
+        "completed": 5
+      },
+      "by_type": {
+        "root": 1,
+        "hypothesis": 1,
+        "research": 5
+      },
+      "best_confidence": 0.0,
+      "active_leaves": 0
+    }
+  },
+  "insights": [],
+  "competitive_edges": [],
+  "timestamp": "2025-07-09T20:36:20.113666",
+  "session_duration": "research_complete",
+  "research_track": "alpha_discovery",
+  "specialization": "alpha_hunting",
+  "market_context": {
+    "market_data": {
+      "indices": {},
+      "market_sentiment": "neutral",
+      "spy_daily_change": 0,
+      "timestamp": "2025-07-09T20:34:02.500041",
+      "data_source": "yfinance_free_tier",
+      "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+      "premium_data": false
+    },
+    "timestamp": "2025-07-09T20:34:02.500047",
+    "market_session": "overnight",
+    "symbols": [
+      "SPY",
+      "QQQ",
+      "IWM",
+      "TLT",
+      "GLD",
+      "VIX"
+    ],
+    "focus_timeframe": "short_to_medium_term"
+  },
+  "completed_at": "2025-07-09T20:36:20.113842"
+}

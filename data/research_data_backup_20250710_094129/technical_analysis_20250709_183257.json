@@ -1,0 +1,265 @@
+{
+  "session_id": "6c7c6a88-9c24-4e19-91e3-52d59965e607",
+  "agent_id": "technical_analysis_agent",
+  "objective": "Analyze support/resistance levels and breakout potential, focusing on after-hours developments and next-day preparation",
+  "hypotheses_explored": 1,
+  "research_plans_executed": 3,
+  "patterns_identified": 0,
+  "insights_generated": 0,
+  "decision_tree": {
+    "id": "0dbc0479-8a7b-4af1-b95a-a6abb4ce7547",
+    "agent_name": "enhanced_technical_analysis_agent",
+    "root_id": "fa06118b-9e12-492b-bd67-20ee85de737d",
+    "nodes": {
+      "fa06118b-9e12-492b-bd67-20ee85de737d": {
+        "id": "fa06118b-9e12-492b-bd67-20ee85de737d",
+        "type": "root",
+        "content": "Research Objective: Analyze support/resistance levels and breakout potential, focusing on after-hours developments and next-day preparation",
+        "data": {
+          "objective": "Analyze support/resistance levels and breakout potential, focusing on after-hours developments and next-day preparation",
+          "context": {
+            "market_data": {
+              "indices": {},
+              "market_sentiment": "neutral",
+              "spy_daily_change": 0,
+              "timestamp": "2025-07-09T18:03:05.412657",
+              "data_source": "polygon_free_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": false
+            },
+            "timestamp": "2025-07-09T18:03:05.412672",
+            "market_session": "after_hours",
+            "symbols": [
+              "SPY",
+              "QQQ",
+              "IWM",
+              "TLT",
+              "GLD",
+              "VIX"
+            ],
+            "focus_timeframe": "short_to_medium_term"
+          }
+        },
+        "parent_id": null,
+        "children": [
+          "31fba665-9d4d-4502-872d-a727cca0222d"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T18:03:05.413126",
+        "updated_at": "2025-07-09T18:03:06.680932",
+        "result": {}
+      },
+      "31fba665-9d4d-4502-872d-a727cca0222d": {
+        "id": "31fba665-9d4d-4502-872d-a727cca0222d",
+        "type": "hypothesis",
+        "content": "Comprehensive analysis of Analyze support/resistance levels and breakout potential, focusing on after-hours developments and next-day preparation",
+        "data": {
+          "exploration_priority": 1
+        },
+        "parent_id": "fa06118b-9e12-492b-bd67-20ee85de737d",
+        "children": [
+          "dbbdf96e-bc42-4a5d-8602-c596bdebba76",
+          "d6ec9875-5e48-45fc-9567-fe0230774688",
+          "e4df10a3-da18-466a-863f-3143a7e7c2fe"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T18:03:06.680926",
+        "updated_at": "2025-07-09T18:03:06.681705",
+        "result": {}
+      },
+      "dbbdf96e-bc42-4a5d-8602-c596bdebba76": {
+        "id": "dbbdf96e-bc42-4a5d-8602-c596bdebba76",
+        "type": "research",
+        "content": "calculator: Statistical analysis of hypothesis variables",
+        "data": {
+          "description": "Statistical analysis of hypothesis variables",
+          "type": "statistical_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12059b5f0>>",
+          "parameters": {
+            "analysis_type": "statistical",
+            "hypothesis": "Comprehensive analysis of Analyze support/resistance levels and breakout potential, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T18:03:05.412657",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T18:03:05.412672",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "dbbdf96e-bc42-4a5d-8602-c596bdebba76",
+          "tool_name": "calculator"
+        },
+        "parent_id": "31fba665-9d4d-4502-872d-a727cca0222d",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-09T18:03:06.681237",
+        "updated_at": "2025-07-09T18:32:02.005576",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "d6ec9875-5e48-45fc-9567-fe0230774688": {
+        "id": "d6ec9875-5e48-45fc-9567-fe0230774688",
+        "type": "research",
+        "content": "calculator: Technical indicator calculations",
+        "data": {
+          "description": "Technical indicator calculations",
+          "type": "technical_indicators",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12059b5f0>>",
+          "parameters": {
+            "analysis_type": "technical",
+            "hypothesis": "Comprehensive analysis of Analyze support/resistance levels and breakout potential, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T18:03:05.412657",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T18:03:05.412672",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "d6ec9875-5e48-45fc-9567-fe0230774688",
+          "tool_name": "calculator"
+        },
+        "parent_id": "31fba665-9d4d-4502-872d-a727cca0222d",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-09T18:03:06.681480",
+        "updated_at": "2025-07-09T18:32:17.007001",
+        "result": {
+          "error": "No data available for analysis",
+          "confidence": 0.1
+        }
+      },
+      "e4df10a3-da18-466a-863f-3143a7e7c2fe": {
+        "id": "e4df10a3-da18-466a-863f-3143a7e7c2fe",
+        "type": "research",
+        "content": "rag_agent: Retrieve similar research patterns",
+        "data": {
+          "description": "Retrieve similar research patterns",
+          "type": "pattern_retrieval",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_memory_lookup of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x12059b5f0>>",
+          "parameters": {
+            "lookup_type": "patterns",
+            "hypothesis": "Comprehensive analysis of Analyze support/resistance levels and breakout potential, focusing on after-hours developments and next-day preparation",
+            "context": {
+              "market_data": {
+                "indices": {},
+                "market_sentiment": "neutral",
+                "spy_daily_change": 0,
+                "timestamp": "2025-07-09T18:03:05.412657",
+                "data_source": "polygon_free_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": false
+              },
+              "timestamp": "2025-07-09T18:03:05.412672",
+              "market_session": "after_hours",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "e4df10a3-da18-466a-863f-3143a7e7c2fe",
+          "tool_name": "rag_agent"
+        },
+        "parent_id": "31fba665-9d4d-4502-872d-a727cca0222d",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.1,
+        "created_at": "2025-07-09T18:03:06.681700",
+        "updated_at": "2025-07-09T18:32:18.293790",
+        "result": {
+          "error": "Connection error. in query.",
+          "confidence": 0.1
+        }
+      }
+    },
+    "best_path": null,
+    "best_confidence": 0.0,
+    "summary": {
+      "tree_id": "0dbc0479-8a7b-4af1-b95a-a6abb4ce7547",
+      "agent_name": "enhanced_technical_analysis_agent",
+      "total_nodes": 5,
+      "by_status": {
+        "pending": 2,
+        "completed": 3
+      },
+      "by_type": {
+        "root": 1,
+        "hypothesis": 1,
+        "research": 3
+      },
+      "best_confidence": 0.0,
+      "active_leaves": 0
+    }
+  },
+  "insights": [],
+  "competitive_edges": [],
+  "timestamp": "2025-07-09T18:32:56.298550",
+  "session_duration": "research_complete",
+  "research_track": "technical_analysis",
+  "specialization": "technical_analysis",
+  "market_context": {
+    "market_data": {
+      "indices": {},
+      "market_sentiment": "neutral",
+      "spy_daily_change": 0,
+      "timestamp": "2025-07-09T18:03:05.412657",
+      "data_source": "polygon_free_free_tier",
+      "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+      "premium_data": false
+    },
+    "timestamp": "2025-07-09T18:03:05.412672",
+    "market_session": "after_hours",
+    "symbols": [
+      "SPY",
+      "QQQ",
+      "IWM",
+      "TLT",
+      "GLD",
+      "VIX"
+    ],
+    "focus_timeframe": "short_to_medium_term"
+  },
+  "completed_at": "2025-07-09T18:32:56.298734"
+}

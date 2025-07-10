@@ -1,0 +1,735 @@
+{
+  "session_id": "419e1daa-a953-4baf-bfce-9ccc3d8d88b3",
+  "agent_id": "market_monitoring_agent",
+  "objective": "Track sector performance and rotation signals, focusing on after-hours developments and next-day preparation",
+  "hypotheses_explored": 1,
+  "research_plans_executed": 5,
+  "patterns_identified": 2,
+  "insights_generated": 0,
+  "decision_tree": {
+    "id": "5067014c-9c85-4827-ae4a-9046c1ab142f",
+    "agent_name": "enhanced_market_monitoring_agent",
+    "root_id": "42326f47-70f3-4166-832a-23996475a126",
+    "nodes": {
+      "42326f47-70f3-4166-832a-23996475a126": {
+        "id": "42326f47-70f3-4166-832a-23996475a126",
+        "type": "root",
+        "content": "Research Objective: Track sector performance and rotation signals, focusing on after-hours developments and next-day preparation",
+        "data": {
+          "objective": "Track sector performance and rotation signals, focusing on after-hours developments and next-day preparation",
+          "context": {
+            "market_data": {
+              "indices": {
+                "SPY": {
+                  "current_price": 624.58,
+                  "daily_change_pct": 0.6834961472740769,
+                  "week_change_pct": 0.6283431075594657,
+                  "data_source": "polygon_upgraded_free_tier",
+                  "data_date": "2025-07-09"
+                }
+              },
+              "market_sentiment": "positive",
+              "spy_daily_change": 0.6834961472740769,
+              "timestamp": "2025-07-09T23:06:47.680820",
+              "data_source": "polygon_upgraded_free_tier",
+              "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+              "premium_data": true
+            },
+            "timestamp": "2025-07-09T23:06:47.680836",
+            "market_session": "overnight",
+            "symbols": [
+              "SPY",
+              "QQQ",
+              "IWM",
+              "TLT",
+              "GLD",
+              "VIX"
+            ],
+            "focus_timeframe": "short_to_medium_term"
+          }
+        },
+        "parent_id": null,
+        "children": [
+          "d6d9c639-f2b1-4684-8263-0243f8e9c26b"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T23:06:47.681256",
+        "updated_at": "2025-07-09T23:06:52.341184",
+        "result": {}
+      },
+      "d6d9c639-f2b1-4684-8263-0243f8e9c26b": {
+        "id": "d6d9c639-f2b1-4684-8263-0243f8e9c26b",
+        "type": "hypothesis",
+        "content": "Investigate Track sector performance and rotation signals, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+        "data": {
+          "exploration_priority": 1
+        },
+        "parent_id": "42326f47-70f3-4166-832a-23996475a126",
+        "children": [
+          "1cfdaf3e-9d27-47c7-9e7c-344e3103d347",
+          "a3b70577-264e-4010-aafd-a8be1c8b5655",
+          "21f8fb49-ad4d-4f6b-87b4-820931b34b0c",
+          "c81b9159-b84b-4c0b-ab05-0c40454be76b",
+          "744272be-a445-4587-bd32-f3dd7eeb2819"
+        ],
+        "status": "pending",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T23:06:52.341176",
+        "updated_at": "2025-07-09T23:06:52.341697",
+        "result": {}
+      },
+      "1cfdaf3e-9d27-47c7-9e7c-344e3103d347": {
+        "id": "1cfdaf3e-9d27-47c7-9e7c-344e3103d347",
+        "type": "research",
+        "content": "calculator: Volatility analysis of market data",
+        "data": {
+          "description": "Volatility analysis of market data",
+          "type": "volatility_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x1474b3fd0>>",
+          "parameters": {
+            "analysis_type": "volatility",
+            "hypothesis": "Investigate Track sector performance and rotation signals, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 624.58,
+                    "daily_change_pct": 0.6834961472740769,
+                    "week_change_pct": 0.6283431075594657,
+                    "data_source": "polygon_upgraded_free_tier",
+                    "data_date": "2025-07-09"
+                  }
+                },
+                "market_sentiment": "positive",
+                "spy_daily_change": 0.6834961472740769,
+                "timestamp": "2025-07-09T23:06:47.680820",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-09T23:06:47.680836",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "1cfdaf3e-9d27-47c7-9e7c-344e3103d347",
+          "tool_name": "calculator"
+        },
+        "parent_id": "d6d9c639-f2b1-4684-8263-0243f8e9c26b",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.7,
+        "created_at": "2025-07-09T23:06:52.341396",
+        "updated_at": "2025-07-09T23:06:52.342170",
+        "result": {
+          "tool": "calculator",
+          "analysis_type": "statistical",
+          "results": {},
+          "confidence": 0.7,
+          "insights": [
+            "Calculator analysis for  on SPY"
+          ]
+        }
+      },
+      "a3b70577-264e-4010-aafd-a8be1c8b5655": {
+        "id": "a3b70577-264e-4010-aafd-a8be1c8b5655",
+        "type": "research",
+        "content": "calculator: Technical indicator calculations",
+        "data": {
+          "description": "Technical indicator calculations",
+          "type": "technical_indicators",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x1474b3fd0>>",
+          "parameters": {
+            "analysis_type": "technical",
+            "hypothesis": "Investigate Track sector performance and rotation signals, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 624.58,
+                    "daily_change_pct": 0.6834961472740769,
+                    "week_change_pct": 0.6283431075594657,
+                    "data_source": "polygon_upgraded_free_tier",
+                    "data_date": "2025-07-09"
+                  }
+                },
+                "market_sentiment": "positive",
+                "spy_daily_change": 0.6834961472740769,
+                "timestamp": "2025-07-09T23:06:47.680820",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-09T23:06:47.680836",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "a3b70577-264e-4010-aafd-a8be1c8b5655",
+          "tool_name": "calculator"
+        },
+        "parent_id": "d6d9c639-f2b1-4684-8263-0243f8e9c26b",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.7,
+        "created_at": "2025-07-09T23:06:52.341481",
+        "updated_at": "2025-07-09T23:06:52.342294",
+        "result": {
+          "tool": "calculator",
+          "analysis_type": "statistical",
+          "results": {},
+          "confidence": 0.7,
+          "insights": [
+            "Calculator analysis for  on SPY"
+          ]
+        }
+      },
+      "21f8fb49-ad4d-4f6b-87b4-820931b34b0c": {
+        "id": "21f8fb49-ad4d-4f6b-87b4-820931b34b0c",
+        "type": "research",
+        "content": "calculator: Correlation analysis between assets",
+        "data": {
+          "description": "Correlation analysis between assets",
+          "type": "correlation_analysis",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_calculator_analysis of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x1474b3fd0>>",
+          "parameters": {
+            "analysis_type": "correlation",
+            "hypothesis": "Investigate Track sector performance and rotation signals, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 624.58,
+                    "daily_change_pct": 0.6834961472740769,
+                    "week_change_pct": 0.6283431075594657,
+                    "data_source": "polygon_upgraded_free_tier",
+                    "data_date": "2025-07-09"
+                  }
+                },
+                "market_sentiment": "positive",
+                "spy_daily_change": 0.6834961472740769,
+                "timestamp": "2025-07-09T23:06:47.680820",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-09T23:06:47.680836",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "21f8fb49-ad4d-4f6b-87b4-820931b34b0c",
+          "tool_name": "calculator"
+        },
+        "parent_id": "d6d9c639-f2b1-4684-8263-0243f8e9c26b",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.7,
+        "created_at": "2025-07-09T23:06:52.341552",
+        "updated_at": "2025-07-09T23:06:52.342422",
+        "result": {
+          "tool": "calculator",
+          "analysis_type": "statistical",
+          "results": {},
+          "confidence": 0.7,
+          "insights": [
+            "Calculator analysis for  on SPY"
+          ]
+        }
+      },
+      "c81b9159-b84b-4c0b-ab05-0c40454be76b": {
+        "id": "c81b9159-b84b-4c0b-ab05-0c40454be76b",
+        "type": "research",
+        "content": "backtester: Strategy backtesting based on hypothesis",
+        "data": {
+          "description": "Strategy backtesting based on hypothesis",
+          "type": "strategy_backtest",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_backtesting of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x1474b3fd0>>",
+          "parameters": {
+            "test_type": "strategy",
+            "hypothesis": "Investigate Track sector performance and rotation signals, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 624.58,
+                    "daily_change_pct": 0.6834961472740769,
+                    "week_change_pct": 0.6283431075594657,
+                    "data_source": "polygon_upgraded_free_tier",
+                    "data_date": "2025-07-09"
+                  }
+                },
+                "market_sentiment": "positive",
+                "spy_daily_change": 0.6834961472740769,
+                "timestamp": "2025-07-09T23:06:47.680820",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-09T23:06:47.680836",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "c81b9159-b84b-4c0b-ab05-0c40454be76b",
+          "tool_name": "backtester"
+        },
+        "parent_id": "d6d9c639-f2b1-4684-8263-0243f8e9c26b",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.6,
+        "created_at": "2025-07-09T23:06:52.341625",
+        "updated_at": "2025-07-09T23:07:41.743891",
+        "result": {
+          "tool": "backtester",
+          "test_type": "strategy",
+          "results": {
+            "backtest_info": {
+              "symbol": "SPY",
+              "start_date": "2025-04-10",
+              "end_date": "2025-07-09",
+              "trading_days": 12,
+              "initial_capital": 10000.0
+            },
+            "simulation_results": {
+              "total_signals": 11,
+              "executed_trades": 8,
+              "execution_rate": 0.7272727272727273,
+              "final_capital": 6505.212737373182
+            },
+            "performance_metrics": {
+              "total_return": -30.77,
+              "benchmark_return": 19.08,
+              "excess_return": -49.84,
+              "sharpe_ratio": -19.694735517397,
+              "max_drawdown": -23.725386022525132,
+              "volatility": 0.40442464856743127,
+              "final_portfolio_value": 6923.032737373182,
+              "trade_statistics": {
+                "total_trades": 2,
+                "total_pnl": 48.98,
+                "win_rate": 50.0,
+                "avg_win": 150.0,
+                "avg_loss": -101.02,
+                "profit_factor": 1.48,
+                "open_positions": 1
+              },
+              "total_trades": 8,
+              "days_traded": 11
+            },
+            "trade_history": [
+              {
+                "symbol": "SPY",
+                "action": "BUY",
+                "quantity": 0.8624013326804187,
+                "price": 606.78,
+                "confidence": 0.6977171741917658,
+                "reasoning": "The market conditions are currently favorable with a positive sentiment and a strong upward trend indicated by the SPY's daily and weekly changes. The technical indicators show that the current price is significantly above both the 20-day and 50-day simple moving averages (SMA), suggesting a strong bullish momentum. The RSI is at 80.8, indicating that the asset is overbought, but given the overall positive market sentiment and the lack of negative news, this can be interpreted as a continuation of the upward trend rather than an immediate reversal. The MACD is also showing a bullish crossover, further supporting a buying decision. Overall, the combination of strong technical indicators and positive market sentiment leads to a confident buy recommendation.",
+                "timestamp": "2025-07-09T23:07:00.979801",
+                "pnl": 0,
+                "pnl_pct": 0,
+                "position_status": "added",
+                "new_avg_price": 601.3461582426877,
+                "executed": true,
+                "position_value": 523.2878806438245
+              },
+              {
+                "symbol": "SPY",
+                "action": "BUY",
+                "quantity": 0.8168152260524344,
+                "price": 607.12,
+                "confidence": 0.6977171741917658,
+                "reasoning": "The current market conditions indicate a positive sentiment with a favorable overall assessment. The SPY has shown a strong daily change of 0.68% and a weekly change of 0.63%, suggesting upward momentum. The technical indicators further support this decision, with the current price significantly above both the 20-day and 50-day simple moving averages (SMA), indicating a strong bullish trend. The RSI is at 80.8, which is high but not necessarily a sell signal in a strong uptrend, especially given the positive market sentiment. The MACD is also showing a bullish crossover, reinforcing the potential for further price increases. Overall, the combination of positive sentiment, strong technical indicators, and favorable market conditions leads to a high confidence in a buy decision.",
+                "timestamp": "2025-07-09T23:07:05.890842",
+                "pnl": 0,
+                "pnl_pct": 0,
+                "position_status": "added",
+                "new_avg_price": 601.6174702455569,
+                "executed": true,
+                "position_value": 495.90486004095396
+              },
+              {
+                "symbol": "SPY",
+                "action": "BUY",
+                "quantity": 0.7680630848379127,
+                "price": 611.87,
+                "confidence": 0.6977171741917658,
+                "reasoning": "The overall market conditions are favorable, with a positive sentiment and a strong upward trend indicated by the daily and weekly percentage changes. The technical indicators show that SPY is trading significantly above its 20-day and 50-day simple moving averages (SMA), suggesting strong momentum. The RSI is high at 80.8, indicating that the asset is overbought, but this can persist in a strong bullish trend. The MACD is also bullish, with the MACD line above the signal line, indicating continued upward momentum. Given the current price is near the upper Bollinger Band, a pullback could occur, but the overall trend remains strong. Therefore, a buy decision is warranted with a high confidence level.",
+                "timestamp": "2025-07-09T23:07:10.112125",
+                "pnl": 0,
+                "pnl_pct": 0,
+                "position_status": "added",
+                "new_avg_price": 602.0513113400898,
+                "executed": true,
+                "position_value": 469.9547597197737
+              },
+              {
+                "symbol": "SPY",
+                "action": "BUY",
+                "quantity": 0.7178057808019176,
+                "price": 620.45,
+                "confidence": 0.6977171741917658,
+                "reasoning": "The overall market conditions are favorable, with a positive sentiment and a bullish trend. The SPY is currently trading above both its 20-day and 50-day simple moving averages (SMA), indicating strong upward momentum. The RSI is at 80.8, suggesting that the asset is overbought, but in a strong bullish market, this can persist for a while. The MACD is also showing a positive divergence, reinforcing the bullish outlook. Additionally, the price is significantly above the lower Bollinger Band, indicating that the current price levels are sustainable in the short term. Given the current market sentiment and the technical indicators, a buying position is warranted.",
+                "timestamp": "2025-07-09T23:07:25.455361",
+                "pnl": 0,
+                "pnl_pct": 0,
+                "position_status": "added",
+                "new_avg_price": 602.7512380951398,
+                "executed": true,
+                "position_value": 445.3625966985498
+              },
+              {
+                "symbol": "SPY",
+                "action": "BUY",
+                "quantity": 0.6749245398728824,
+                "price": 625.34,
+                "confidence": 0.6977171741917658,
+                "reasoning": "The current market conditions indicate a positive sentiment and a favorable overall assessment. The SPY has shown a significant daily change of approximately 0.68% and a weekly change of about 0.63%, suggesting strong upward momentum. The technical indicators further support this bullish outlook, with the RSI at 80.8 indicating that the asset is overbought but also reflecting strong buying pressure. The price is well above both the 20-day and 50-day simple moving averages (SMA), which are at 609.25 and 591.85 respectively, indicating a strong upward trend. The MACD is also positive, showing that the momentum is in favor of buyers. Although the asset is approaching the upper Bollinger Band, which could suggest a potential pullback, the overall trend strength remains robust. Thus, entering a long position is warranted given the prevailing bullish sentiment and favorable technical indicators.",
+                "timestamp": "2025-07-09T23:07:29.341499",
+                "pnl": 0,
+                "pnl_pct": 0,
+                "position_status": "added",
+                "new_avg_price": 603.5313254944037,
+                "executed": true,
+                "position_value": 422.0573117641083
+              },
+              {
+                "symbol": "SPY",
+                "action": "BUY",
+                "quantity": 0.6444086552583962,
+                "price": 620.68,
+                "confidence": 0.6977171741917658,
+                "reasoning": "The SPY is currently experiencing a positive market sentiment with a bullish outlook. The price has shown a significant increase of approximately 0.68% for the day and 0.63% for the week, indicating strong momentum. The technical indicators support this bullish trend, with the current price significantly above both the 20-day and 50-day simple moving averages (SMA), suggesting that the stock is in an uptrend. The RSI is at 80.8, indicating that the stock is overbought but could continue to rise in the short term given the overall favorable market conditions. The MACD is also showing a positive divergence, further reinforcing the bullish sentiment. Given these factors, a buy decision is warranted to capitalize on the current upward momentum.",
+                "timestamp": "2025-07-09T23:07:33.313853",
+                "pnl": 0,
+                "pnl_pct": 0,
+                "position_status": "added",
+                "new_avg_price": 604.0787177077766,
+                "executed": true,
+                "position_value": 399.9715641457813
+              },
+              {
+                "symbol": "SPY",
+                "action": "BUY",
+                "quantity": 0.6110222409224252,
+                "price": 620.34,
+                "confidence": 0.6977171741917658,
+                "reasoning": "The market conditions are currently favorable with a positive sentiment and a bullish outlook. The SPY has shown a strong daily change of approximately 0.68% and a weekly change of about 0.63%, indicating upward momentum. The technical indicators support this bullish trend, with the current price significantly above both the 20-day and 50-day simple moving averages (SMA), suggesting strong upward momentum. The RSI is at 80.8, indicating that the asset is overbought but also reflects strong buying pressure. The MACD shows a positive divergence, reinforcing the bullish trend. Although the price is nearing the upper Bollinger Band, the overall assessment remains favorable, suggesting that there is still potential for further gains. Given these factors, a buy decision is warranted.",
+                "timestamp": "2025-07-09T23:07:37.516985",
+                "pnl": 0,
+                "pnl_pct": 0,
+                "position_status": "added",
+                "new_avg_price": 604.5564327076556,
+                "executed": true,
+                "position_value": 379.04153693381727
+              },
+              {
+                "symbol": "SPY",
+                "action": "BUY",
+                "quantity": 0.5750574369121817,
+                "price": 624.645,
+                "confidence": 0.6977171741917658,
+                "reasoning": "The overall market conditions are favorable, with a positive sentiment and a strong upward trend indicated by the daily and weekly percentage changes. The SPY is currently trading above both its 20-day and 50-day simple moving averages (SMA), suggesting a bullish momentum. The RSI is quite high at 80.80, indicating that the asset may be overbought, but this can also reflect strong buying interest. The MACD is positive and above its signal line, which further supports the bullish outlook. While the price is approaching the upper Bollinger Band, indicating potential resistance, the overall trend strength and market sentiment suggest that there is still room for upward movement before a significant pullback occurs.",
+                "timestamp": "2025-07-09T23:07:41.742803",
+                "pnl": 0,
+                "pnl_pct": 0,
+                "position_status": "added",
+                "new_avg_price": 605.0969041535337,
+                "executed": true,
+                "position_value": 359.20675268000974
+              }
+            ],
+            "portfolio_history": [
+              {
+                "date": "2025-07-09T23:07:05.891821",
+                "portfolio_value": 9076.457259315222,
+                "cash": 8980.807259315223,
+                "unrealized_pnl": 95.65,
+                "total_return_pct": -9.235427406847775,
+                "open_positions": 1
+              },
+              {
+                "date": "2025-07-09T23:07:10.113436",
+                "portfolio_value": 8689.072499595448,
+                "cash": 8510.852499595449,
+                "unrealized_pnl": 178.22,
+                "total_return_pct": -13.10927500404552,
+                "open_positions": 1
+              },
+              {
+                "date": "2025-07-09T23:07:14.109427",
+                "portfolio_value": 8744.252499595448,
+                "cash": 8510.852499595449,
+                "unrealized_pnl": 233.4,
+                "total_return_pct": -12.557475004045518,
+                "open_positions": 1
+              },
+              {
+                "date": "2025-07-09T23:07:18.380940",
+                "portfolio_value": 8797.612499595449,
+                "cash": 8510.852499595449,
+                "unrealized_pnl": 286.76,
+                "total_return_pct": -12.023875004045513,
+                "open_positions": 1
+              },
+              {
+                "date": "2025-07-09T23:07:22.063006",
+                "portfolio_value": 8793.982499595448,
+                "cash": 8510.852499595449,
+                "unrealized_pnl": 283.13,
+                "total_return_pct": -12.060175004045522,
+                "open_positions": 1
+              },
+              {
+                "date": "2025-07-09T23:07:25.456212",
+                "portfolio_value": 8399.439902896898,
+                "cash": 8065.4899028968985,
+                "unrealized_pnl": 333.95,
+                "total_return_pct": -16.00560097103102,
+                "open_positions": 1
+              },
+              {
+                "date": "2025-07-09T23:07:29.342188",
+                "portfolio_value": 8069.652591132791,
+                "cash": 7643.432591132791,
+                "unrealized_pnl": 426.22,
+                "total_return_pct": -19.303474088672093,
+                "open_positions": 1
+              },
+              {
+                "date": "2025-07-09T23:07:33.314451",
+                "portfolio_value": 7578.611026987009,
+                "cash": 7243.461026987009,
+                "unrealized_pnl": 335.15,
+                "total_return_pct": -24.21388973012991,
+                "open_positions": 1
+              },
+              {
+                "date": "2025-07-09T23:07:37.517284",
+                "portfolio_value": 7192.699490053192,
+                "cash": 6864.419490053192,
+                "unrealized_pnl": 328.28,
+                "total_return_pct": -28.073005099468084,
+                "open_positions": 1
+              },
+              {
+                "date": "2025-07-09T23:07:41.743078",
+                "portfolio_value": 6923.032737373182,
+                "cash": 6505.212737373182,
+                "unrealized_pnl": 417.82,
+                "total_return_pct": -30.769672626268186,
+                "open_positions": 1
+              }
+            ],
+            "summary": {
+              "profitable": false,
+              "beat_benchmark": false,
+              "risk_adjusted_return": -19.694735517397,
+              "recommendation": "POOR - Losing strategy, requires significant improvement"
+            }
+          },
+          "confidence": 0.6,
+          "insights": [
+            "Backtesting analysis for  strategy"
+          ]
+        }
+      },
+      "744272be-a445-4587-bd32-f3dd7eeb2819": {
+        "id": "744272be-a445-4587-bd32-f3dd7eeb2819",
+        "type": "research",
+        "content": "rag_agent: Retrieve similar research patterns",
+        "data": {
+          "description": "Retrieve similar research patterns",
+          "type": "pattern_retrieval",
+          "executor": "<bound method EnhancedAutonomousAgent._execute_memory_lookup of <agents.enhanced_autonomous_agent.EnhancedAutonomousAgent object at 0x1474b3fd0>>",
+          "parameters": {
+            "lookup_type": "patterns",
+            "hypothesis": "Investigate Track sector performance and rotation signals, focusing on after-hours developments and next-day preparation using multi-tool analysis",
+            "context": {
+              "market_data": {
+                "indices": {
+                  "SPY": {
+                    "current_price": 624.58,
+                    "daily_change_pct": 0.6834961472740769,
+                    "week_change_pct": 0.6283431075594657,
+                    "data_source": "polygon_upgraded_free_tier",
+                    "data_date": "2025-07-09"
+                  }
+                },
+                "market_sentiment": "positive",
+                "spy_daily_change": 0.6834961472740769,
+                "timestamp": "2025-07-09T23:06:47.680820",
+                "data_source": "polygon_upgraded_free_tier",
+                "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+                "premium_data": true
+              },
+              "timestamp": "2025-07-09T23:06:47.680836",
+              "market_session": "overnight",
+              "symbols": [
+                "SPY",
+                "QQQ",
+                "IWM",
+                "TLT",
+                "GLD",
+                "VIX"
+              ],
+              "focus_timeframe": "short_to_medium_term"
+            }
+          },
+          "node_id": "744272be-a445-4587-bd32-f3dd7eeb2819",
+          "tool_name": "rag_agent"
+        },
+        "parent_id": "d6d9c639-f2b1-4684-8263-0243f8e9c26b",
+        "children": [],
+        "status": "completed",
+        "confidence": 0.5,
+        "created_at": "2025-07-09T23:06:52.341695",
+        "updated_at": "2025-07-09T23:07:42.062675",
+        "result": {
+          "tool": "rag_agent",
+          "lookup_type": "patterns",
+          "results": {
+            "similar_trades": [
+              {
+                "action": "HOLD",
+                "budget": 0.1,
+                "confidence": 0.7,
+                "executed": false,
+                "id": "trade_4",
+                "reasoning": "The market is experiencing a downward trend across major indices, with significant negative percentage changes. The sentiment is neutral, indicating uncertainty. Given the current market conditions and the lack of strong positive news, it may be prudent to hold positions rather than make new trades.",
+                "symbol": "TLT",
+                "timestamp": "2025-07-07T14:17:28.029967"
+              },
+              {
+                "action": "HOLD",
+                "confidence": 0.75,
+                "id": "trade_2",
+                "reasoning": "The market is experiencing a downturn across major indices, with all observed assets showing negative change percentages. The neutral sentiment in the news suggests uncertainty, and given the current market conditions, it may be prudent to hold positions rather than make impulsive trades.",
+                "symbol": "TLT",
+                "timestamp": "2025-07-07T13:58:06.315920"
+              },
+              {
+                "action": "HOLD",
+                "budget": 0.1,
+                "confidence": 0.7,
+                "executed": false,
+                "id": "trade_3",
+                "reasoning": "The market sentiment is neutral, and the news surrounding Tesla indicates potential volatility due to Musk's political ambitions. Given the uncertainty and mixed signals, it is prudent to hold off on making any trades until the market direction becomes clearer.",
+                "symbol": "SPY",
+                "timestamp": "2025-07-07T14:10:01.706022"
+              },
+              {
+                "action": "HOLD",
+                "confidence": 0.2,
+                "id": "trade_0",
+                "reasoning": "LLM error fallback",
+                "symbol": "GLD",
+                "timestamp": "2025-07-07T13:54:44.829652"
+              },
+              {
+                "action": "HOLD",
+                "confidence": 0.2,
+                "id": "trade_1",
+                "reasoning": "LLM error fallback",
+                "symbol": "TLT",
+                "timestamp": "2025-07-07T13:56:28.517999"
+              }
+            ]
+          },
+          "confidence": 0.5,
+          "insights": [
+            "Memory lookup for  patterns"
+          ]
+        }
+      }
+    },
+    "best_path": null,
+    "best_confidence": 0.0,
+    "summary": {
+      "tree_id": "5067014c-9c85-4827-ae4a-9046c1ab142f",
+      "agent_name": "enhanced_market_monitoring_agent",
+      "total_nodes": 7,
+      "by_status": {
+        "pending": 2,
+        "completed": 5
+      },
+      "by_type": {
+        "root": 1,
+        "hypothesis": 1,
+        "research": 5
+      },
+      "best_confidence": 0.0,
+      "active_leaves": 0
+    }
+  },
+  "insights": [],
+  "competitive_edges": [],
+  "timestamp": "2025-07-09T23:07:54.933743",
+  "session_duration": "research_complete",
+  "research_track": "market_monitoring",
+  "specialization": "market_analysis",
+  "market_context": {
+    "market_data": {
+      "indices": {
+        "SPY": {
+          "current_price": 624.58,
+          "daily_change_pct": 0.6834961472740769,
+          "week_change_pct": 0.6283431075594657,
+          "data_source": "polygon_upgraded_free_tier",
+          "data_date": "2025-07-09"
+        }
+      },
+      "market_sentiment": "positive",
+      "spy_daily_change": 0.6834961472740769,
+      "timestamp": "2025-07-09T23:06:47.680820",
+      "data_source": "polygon_upgraded_free_tier",
+      "note": "Free tier: SPY only. Upgrade for full market overview (QQQ, IWM, VIX)",
+      "premium_data": true
+    },
+    "timestamp": "2025-07-09T23:06:47.680836",
+    "market_session": "overnight",
+    "symbols": [
+      "SPY",
+      "QQQ",
+      "IWM",
+      "TLT",
+      "GLD",
+      "VIX"
+    ],
+    "focus_timeframe": "short_to_medium_term"
+  },
+  "completed_at": "2025-07-09T23:07:54.933894"
+}

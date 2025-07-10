@@ -1,2 +1,0 @@
-{"symbol": "SPY", "quantity": 10, "entry_price": 450.0, "exit_price": 465.0, "entry_time": "2025-07-07T23:08:11.585215", "exit_time": "2025-07-07T23:08:11.585606", "side": "BUY", "pnl": 150.0, "pnl_pct": 3.3333333333333335}
-{"symbol": "SPY", "quantity": 10, "entry_price": 475.10184465770664, "exit_price": 465.0, "entry_time": "2025-07-07T23:08:11.741706", "exit_time": "2025-07-07T23:31:45.552291", "side": "BUY", "pnl": -101.01844657706636, "pnl_pct": -2.1262482499904083}
