@@ -1,13 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { 
-  Box, 
-  Typography, 
-  Paper, 
-  Grid, 
-  Chip, 
-  CircularProgress, 
-  Alert
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
+import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
 import {
   TreeView,
   TreeItem,
@@ -63,6 +61,22 @@ interface CentralEvent {
   tags: string[];
 }
 
+function buildTree(flatNodes: ResearchTree[]): ResearchTree[] {
+  const nodeMap: { [id: string]: ResearchTree & { children: ResearchTree[] } } = {};
+  const roots: (ResearchTree & { children: ResearchTree[] })[] = [];
+  flatNodes.forEach(node => {
+    nodeMap[node.id] = { ...node, children: [] };
+  });
+  flatNodes.forEach(node => {
+    if (node.parent && nodeMap[node.parent]) {
+      nodeMap[node.parent].children.push(nodeMap[node.id]);
+    } else {
+      roots.push(nodeMap[node.id]);
+    }
+  });
+  return roots;
+}
+
 const AlphaStream: React.FC = () => {
   const [allResearchTrees, setAllResearchTrees] = useState<ResearchTree[]>([]);
   const [centralEvents, setCentralEvents] = useState<CentralEvent[]>([]);
@@ -113,7 +127,7 @@ const AlphaStream: React.FC = () => {
   // WebSocket connection for real-time central events
   useEffect(() => {
     const connectWebSocket = () => {
-      const ws = new WebSocket(`ws://${window.location.hostname}:8081/ws/central-events`);
+      const ws = new WebSocket(`ws://${window.location.hostname}:${window.location.port}/ws/central-events`);
       
       ws.onopen = () => {
         console.log('Connected to central events WebSocket');
@@ -123,9 +137,20 @@ const AlphaStream: React.FC = () => {
         try {
           const data = JSON.parse(event.data);
           if (data.type === 'central_event') {
-            setCentralEvents(prev => [data.event, ...prev.slice(0, 99)]); // Keep last 100
+            setCentralEvents(prev => {
+              // Check if event already exists to prevent duplicates
+              const eventExists = prev.some(existingEvent => existingEvent.event_id === data.event.event_id);
+              if (eventExists) {
+                return prev; // Don't add duplicate
+              }
+              return [data.event, ...prev.slice(0, 99)]; // Keep last 100
+            });
           } else if (data.type === 'initial_events') {
-            setCentralEvents(data.events || []);
+            // Deduplicate initial events by event_id
+            const uniqueEvents = (data.events || []).filter((event: CentralEvent, index: number, self: CentralEvent[]) => 
+              index === self.findIndex(e => e.event_id === event.event_id)
+            );
+            setCentralEvents(uniqueEvents);
           }
         } catch (err) {
           console.error('Error parsing WebSocket message:', err);
@@ -216,38 +241,39 @@ const AlphaStream: React.FC = () => {
     }
   };
 
-  const renderTreeNodes = (nodes: ResearchTree[], parentId?: string) => {
-    return nodes
-      .filter(node => node.parent === parentId)
-      .map(node => (
-        <TreeItem
-          key={node.id}
-          nodeId={node.id}
-          label={
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              {getNodeIcon(node.type, node.status)}
-              <Typography
-                variant="body2"
-                sx={{
-                  fontWeight: node.status === 'active' ? 'bold' : 'normal',
-                  color: node.status === 'active' ? 'primary.main' : 'text.primary'
-                }}
-              >
-                {node.title}
-              </Typography>
-              <Chip
-                label={node.status}
-                size="small"
-                color={node.status === 'active' ? 'primary' : 'default'}
-                variant={node.status === 'active' ? 'filled' : 'outlined'}
-              />
-            </Box>
-          }
-        >
-          {renderTreeNodes(nodes, node.id)}
-        </TreeItem>
-      ));
-  };
+  function renderTreeNodesRecursive(node: ResearchTree & { children?: ResearchTree[] }) {
+    return (
+      <TreeItem
+        key={node.id}
+        nodeId={node.id}
+        label={
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            {getNodeIcon(node.type, node.status)}
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: node.status === 'active' ? 'bold' : 'normal',
+                color: node.status === 'active' ? 'primary.main' : 'text.primary'
+              }}
+            >
+              {node.title}
+            </Typography>
+            <Chip
+              label={node.status}
+              size="small"
+              color={node.status === 'active' ? 'primary' : 'default'}
+              variant={node.status === 'active' ? 'filled' : 'outlined'}
+            />
+          </Box>
+        }
+      >
+        {node.children && node.children.map(child => renderTreeNodesRecursive(child))}
+      </TreeItem>
+    );
+  }
+
+  // Build the tree structure from the flat array
+  const treeRoots = buildTree(allResearchTrees);
 
   const filteredEvents = centralEvents.filter(event => {
     if (eventFilter === 'all') return true;
@@ -278,7 +304,7 @@ const AlphaStream: React.FC = () => {
       
       <Grid container spacing={2} sx={{ height: 'calc(100vh - 120px)' }}>
         {/* Research Trees Panel */}
-        <Grid xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Paper sx={{ height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
             <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
               <Typography variant="h6">
@@ -298,7 +324,7 @@ const AlphaStream: React.FC = () => {
                   defaultExpandIcon={<ChevronRight />}
                   defaultExpanded={['root']}
                 >
-                  {renderTreeNodes(allResearchTrees)}
+                  {treeRoots.map(root => renderTreeNodesRecursive(root))}
                 </TreeView>
               ) : (
                 <Typography color="text.secondary" align="center">
@@ -310,7 +336,7 @@ const AlphaStream: React.FC = () => {
         </Grid>
 
         {/* Central Event Monitor Panel */}
-        <Grid xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Paper sx={{ height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
             <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
               <Typography variant="h6">

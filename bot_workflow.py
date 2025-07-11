@@ -73,7 +73,16 @@ from utils.logger import logger  # type: ignore
 # Instantiate agents
 planner = ResearchPlannerAgent()
 executor = ActionExecutorAgent()
+world_monitor = WorldMonitorAgent()
 
+async def producer_loop() -> None:
+    """Continuously produce new opportunities from WorldMonitorAgent."""
+    while True:
+        observation = await world_monitor.observe()
+        for opp in observation.get("extracted_opportunities", []):
+            event = {"type": "opportunity", "content": opp, "timestamp": observation["timestamp"]}
+            emit_event(event)
+        await asyncio.sleep(60)  # Adjust frequency as needed
 
 async def consumer_loop() -> None:
     """Continuously process events from the queue."""
@@ -87,23 +96,12 @@ async def consumer_loop() -> None:
         result = executor(task)
         logger.info(f"Task result: {result}")
 
-
-async def run_forever() -> None:
-    """Entry point to launch feeders and consumer."""
-
-    # Initialise the event queue now that the loop is running
+async def main():
     init_queue()
-
-    # Simple ticker to emit a heartbeat event every 5 minutes (placeholder)
-    async def heartbeat() -> None:
-        while True:
-            emit_event({"type": "heartbeat"})
-            await asyncio.sleep(300)
-
-    # Start tasks
-    tasks = [asyncio.create_task(consumer_loop()), asyncio.create_task(heartbeat())]
-    await asyncio.gather(*tasks)
-
+    await asyncio.gather(
+        producer_loop(),
+        consumer_loop(),
+    )
 
 if __name__ == "__main__":
-    asyncio.run(run_forever()) 
+    asyncio.run(main()) 

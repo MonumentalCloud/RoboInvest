@@ -30,6 +30,12 @@ trade_executor = enhanced_trade_executor
 
 app = FastAPI(title="RoboInvest API", version="1.0.0")
 
+# Health check endpoint for startup script
+@app.get("/api/health")
+async def health_check():
+    """Health check endpoint for startup script"""
+    return {"status": "healthy", "timestamp": datetime.now().isoformat()}
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
@@ -152,6 +158,51 @@ class ConnectionManager:
     def clear_tree(self):
         """Clear the research tree"""
         self.research_tree.clear()
+    
+    async def save_research_tree_to_file(self, track_name: str = "autonomous_alpha_hunt"):
+        """Save the current research tree to a file for persistence"""
+        try:
+            if not self.research_tree:
+                return
+            
+            # Create research data directory if it doesn't exist
+            research_data_dir = Path("research_data")
+            research_data_dir.mkdir(exist_ok=True)
+            
+            # Prepare the research data
+            research_data = {
+                "research_track": track_name,
+                "specialization": "autonomous_alpha_hunting",
+                "completed_at": datetime.now().isoformat(),
+                "decision_tree": list(self.research_tree.values()),
+                "tree_metadata": {
+                    "total_nodes": len(self.research_tree),
+                    "root_nodes": [node_id for node_id, node in self.research_tree.items() if node.get("parent") is None],
+                    "completed_nodes": [node_id for node_id, node in self.research_tree.items() if node.get("status") == "completed"],
+                    "active_nodes": [node_id for node_id, node in self.research_tree.items() if node.get("status") == "active"]
+                },
+                "ai_thoughts": [],  # Could be populated with actual AI thoughts
+                "insights": [],     # Could be populated with research insights
+                "events": []        # Could be populated with research events
+            }
+            
+            # Save to file
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"{track_name}_{timestamp}.json"
+            filepath = research_data_dir / filename
+            
+            with open(filepath, 'w') as f:
+                json.dump(research_data, f, indent=2, default=str)
+            
+            # Also save as latest
+            latest_filepath = research_data_dir / f"{track_name}_latest.json"
+            with open(latest_filepath, 'w') as f:
+                json.dump(research_data, f, indent=2, default=str)
+            
+            print(f"[ConnectionManager] Saved research tree to {filepath}")
+            
+        except Exception as e:
+            print(f"[ConnectionManager] Error saving research tree: {e}")
 
 manager = ConnectionManager()
 
@@ -238,7 +289,7 @@ async def start_autonomous_streaming():
     
     # Start autonomous system in background task
     print("🚀 Creating autonomous task...")
-    autonomous_task = asyncio.create_task(run_autonomous_with_streaming())
+    autonomous_task = asyncio.create_task(run_real_autonomous_agents())
     print(f"✅ Autonomous task created: {autonomous_task}")
     
     return {"status": "started", "message": "Autonomous trading started with real-time streaming"}
@@ -651,6 +702,9 @@ async def run_real_autonomous_agents():
                 await asyncio.sleep(1)
                 await manager.update_tree_node("paper_execution", status="completed")
                 
+                # Save the completed research tree to file
+                await manager.save_research_tree_to_file("autonomous_alpha_hunt")
+                
                 await broadcast_ai_thought("cycle_complete", "🔄 Real autonomous cycle complete. Starting next cycle in 30 seconds...", {"phase": "cycle_complete", "status": "completed"})
                 await asyncio.sleep(30)  # Wait 30 seconds before next cycle
 
@@ -860,7 +914,7 @@ async def get_decision_trees():
         # Get decision trees from latest track data
         track_names = [
             "alpha_discovery", "market_monitoring", "sentiment_tracking",
-            "technical_analysis", "risk_assessment", "deep_research"
+            "technical_analysis", "risk_assessment", "deep_research", "autonomous_alpha_hunt"
         ]
         
         for track_name in track_names:
