@@ -52,7 +52,7 @@ class EnhancedAutonomousAgent:
     def __init__(self, agent_id: str, specialization: str = "general"):
         self.id = agent_id
         self.specialization = specialization
-        self.decision_tree = DecisionTree(agent_name=f"enhanced_{agent_id}")
+        self.decision_tree = DecisionTree(agent_name=f"enhanced_{agent_id}", track_name=specialization)
         
         # Initialize all available tools
         self.tools = self._initialize_all_tools()
@@ -163,13 +163,13 @@ class EnhancedAutonomousAgent:
             )
             
             # Phase 1: Generate research hypotheses
-            hypotheses = await self._generate_research_hypotheses(research_objective, context)
+            hypotheses = await self._generate_research_hypotheses(research_objective, context or {})
             hypothesis_nodes = self.decision_tree.expand_hypotheses(root_id, hypotheses)
             
             # Phase 2: For each hypothesis, create multi-tool research plans
             research_plans = []
             for hypothesis_id in hypothesis_nodes:
-                plan = await self._create_comprehensive_research_plan(hypothesis_id, context)
+                plan = await self._create_comprehensive_research_plan(hypothesis_id, context or {})
                 research_plans.extend(plan)
             
             # Phase 3: Execute research plans in parallel
@@ -182,7 +182,7 @@ class EnhancedAutonomousAgent:
             insights = await self._generate_competitive_insights(pattern_analysis, research_objective)
             
             # Phase 6: Validate insights through additional research if needed
-            validated_insights = await self._validate_insights(insights, context)
+            validated_insights = await self._validate_insights(insights, context or {})
             
             # Phase 7: Learn from the research session
             self._learn_from_research_session(validated_insights, research_plans)
@@ -207,6 +207,10 @@ class EnhancedAutonomousAgent:
             }
             
             logger.info(f"Agent {self.id} completed research with {len(validated_insights)} validated insights")
+            
+            # Save the decision tree to database
+            self.decision_tree.save_to_database()
+            
             return research_session
             
         except Exception as e:
@@ -696,17 +700,26 @@ class EnhancedAutonomousAgent:
             return {"error": str(e), "confidence": 0.1}
     
     async def _execute_parallel_research_plans(self, research_plans: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """Execute multiple research plans in parallel."""
+        """Execute research plans in parallel."""
         if not research_plans:
             return []
         
-        # Extract node IDs for decision tree execution
-        node_ids = [plan.get("node_id") for plan in research_plans if plan.get("node_id")]
+        # Filter out None values and get valid node IDs
+        valid_plans = [plan for plan in research_plans if plan.get("node_id") is not None]
+        node_ids = [plan["node_id"] for plan in valid_plans if plan["node_id"]]
         
-        # Execute in parallel using decision tree
+        if not node_ids:
+            return []
+        
+        # Execute parallel branches
         results = await self.decision_tree.execute_parallel_branches(node_ids)
         
-        return results
+        # Match results with plans
+        for i, result in enumerate(results):
+            if i < len(valid_plans):
+                valid_plans[i]["result"] = result
+        
+        return valid_plans
     
     async def _analyze_research_patterns(self, research_results: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Analyze patterns across research results to identify insights."""
@@ -1159,15 +1172,141 @@ class EnhancedAutonomousAgent:
         return similar_patterns
     
     def get_agent_status(self) -> Dict[str, Any]:
-        """Get comprehensive agent status."""
+        """Get current agent status and performance metrics."""
         return {
             "agent_id": self.id,
             "specialization": self.specialization,
             "performance_metrics": self.performance_metrics,
-            "tool_usage_stats": self.tool_usage_stats,
-            "decision_tree_summary": self.decision_tree.get_summary(),
-            "research_memory_size": len(self.research_memory),
+            "research_memory_count": len(self.research_memory),
             "successful_patterns_count": len(self.successful_patterns),
-            "learning_history_count": len(self.learning_history),
-            "available_tools": list(self.tools.keys())
-        } 
+            "failed_patterns_count": len(self.failed_patterns),
+            "decision_tree_summary": self.decision_tree.get_summary(),
+            "timestamp": datetime.now().isoformat()
+        }
+    
+    async def execute_task(self, task_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Execute a single research task for Monte Carlo simulation."""
+        try:
+            tool_name = task_data.get("tool_name", "")
+            task_type = task_data.get("task_type", "")
+            description = task_data.get("description", "")
+            
+            logger.info(f"Agent {self.id} executing task: {tool_name} - {description}")
+            
+            # Execute based on tool type
+            if tool_name == "calculator":
+                result = await self._execute_calculator_analysis(task_data)
+            elif tool_name == "data_fetcher":
+                result = await self._execute_market_data_analysis(task_data)
+            elif tool_name == "web_researcher":
+                result = await self._execute_web_research(task_data)
+            elif tool_name == "web_search":
+                result = await self._execute_web_search(task_data)
+            elif tool_name == "backtester":
+                result = await self._execute_backtesting(task_data)
+            elif tool_name == "rag_agent":
+                result = await self._execute_memory_lookup(task_data)
+            else:
+                # Default to LLM-based analysis
+                result = await self._execute_llm_analysis(task_data)
+            
+            # Add confidence score based on result quality
+            confidence = self._calculate_task_confidence(result, task_data)
+            result["confidence"] = confidence
+            
+            # Update tool effectiveness
+            self._update_tool_effectiveness(tool_name, confidence)
+            
+            logger.info(f"Agent {self.id} completed task with confidence: {confidence:.3f}")
+            return result
+            
+        except Exception as e:
+            logger.error(f"Agent {self.id} task execution error: {e}")
+            return {
+                "error": str(e),
+                "confidence": 0.0,
+                "tool_name": task_data.get("tool_name", "unknown"),
+                "status": "failed"
+            }
+    
+    async def _execute_llm_analysis(self, task_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Execute LLM-based analysis for tasks without specific tool requirements."""
+        try:
+            description = task_data.get("description", "")
+            context = task_data.get("context", {})
+            
+            analysis_prompt = f"""You are an advanced AI research agent analyzing: {description}
+            
+            Context: {json.dumps(context, indent=2)}
+            
+            Provide a comprehensive analysis including:
+            1. Key insights and findings
+            2. Confidence level in your analysis (0.0-1.0)
+            3. Potential implications for trading decisions
+            4. Risk factors to consider
+            5. Recommended next steps
+            
+            Respond in JSON format:
+            {{
+                "analysis": "detailed analysis",
+                "key_insights": ["insight1", "insight2"],
+                "confidence": 0.0-1.0,
+                "implications": "trading implications",
+                "risks": ["risk1", "risk2"],
+                "next_steps": ["step1", "step2"]
+            }}"""
+            
+            response = openai_manager.chat_completion([
+                {"role": "user", "content": analysis_prompt}
+            ], temperature=0.3)
+            
+            result = json.loads(response.get("content", "{}"))
+            return result
+            
+        except Exception as e:
+            logger.error(f"LLM analysis error: {e}")
+            return {"error": str(e), "confidence": 0.0}
+    
+    def _calculate_task_confidence(self, result: Dict[str, Any], task_data: Dict[str, Any]) -> float:
+        """Calculate confidence score for a completed task."""
+        try:
+            # Base confidence from result
+            base_confidence = result.get("confidence", 0.5)
+            
+            # Adjust based on result quality
+            if "error" in result:
+                return 0.0
+            
+            # Higher confidence for comprehensive results
+            if "key_insights" in result and len(result["key_insights"]) > 0:
+                base_confidence += 0.1
+            
+            if "implications" in result and result["implications"]:
+                base_confidence += 0.1
+            
+            # Tool-specific confidence adjustments
+            tool_name = task_data.get("tool_name", "")
+            if tool_name == "calculator" and "metrics" in result:
+                base_confidence += 0.1
+            elif tool_name == "data_fetcher" and "market_data" in result:
+                base_confidence += 0.1
+            elif tool_name == "web_researcher" and "sentiment_analysis" in result:
+                base_confidence += 0.1
+            
+            return min(base_confidence, 1.0)
+            
+        except Exception as e:
+            logger.error(f"Confidence calculation error: {e}")
+            return 0.5
+    
+    def _update_tool_effectiveness(self, tool_name: str, confidence: float):
+        """Update tool effectiveness metrics."""
+        if tool_name not in self.performance_metrics["tool_effectiveness"]:
+            self.performance_metrics["tool_effectiveness"][tool_name] = []
+        
+        self.performance_metrics["tool_effectiveness"][tool_name].append(confidence)
+        
+        # Keep only recent 10 scores
+        if len(self.performance_metrics["tool_effectiveness"][tool_name]) > 10:
+            self.performance_metrics["tool_effectiveness"][tool_name] = \
+                self.performance_metrics["tool_effectiveness"][tool_name][-10:] 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import json
 import asyncio
@@ -24,11 +24,15 @@ from core.play_reporting import play_reporting
 from core.notification_aggregator import notification_aggregator
 from tools.data_fetcher import data_fetcher
 from core.central_event_bus import central_event_bus, EventType, EventPriority
+# Import graph manager router - will add this later to avoid circular imports
+# from backend.api.graph_manager_endpoints import router as graph_manager_router
 
 # Use enhanced trade executor with structured orders
 trade_executor = enhanced_trade_executor
 
 app = FastAPI(title="RoboInvest API", version="1.0.0")
+
+# Graph manager endpoints will be added directly to avoid import issues
 
 # Health check endpoint for startup script
 @app.get("/api/health")
@@ -39,7 +43,7 @@ async def health_check():
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173", "ws://localhost:5173"],
+    allow_origins=["http://localhost:3000", "http://localhost:5173", "ws://localhost:5173", "http://localhost:8081"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -159,15 +163,11 @@ class ConnectionManager:
         """Clear the research tree"""
         self.research_tree.clear()
     
-    async def save_research_tree_to_file(self, track_name: str = "autonomous_alpha_hunt"):
-        """Save the current research tree to a file for persistence"""
+    async def save_research_tree_to_database(self, tree_id: str, agent_name: str, track_name: str = "autonomous_alpha_hunt"):
+        """Save the current research tree to the database for persistence"""
         try:
             if not self.research_tree:
                 return
-            
-            # Create research data directory if it doesn't exist
-            research_data_dir = Path("research_data")
-            research_data_dir.mkdir(exist_ok=True)
             
             # Prepare the research data
             research_data = {
@@ -186,46 +186,16 @@ class ConnectionManager:
                 "events": []        # Could be populated with research events
             }
             
-            # Save to file
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"{track_name}_{timestamp}.json"
-            filepath = research_data_dir / filename
+            # Save to database
+            root_id = next((node_id for node_id, node in self.research_tree.items() if node.get("parent") is None), "root")
+            central_event_bus.save_research_tree(tree_id, agent_name, track_name, root_id, research_data)
             
-            with open(filepath, 'w') as f:
-                json.dump(research_data, f, indent=2, default=str)
-            
-            # Also save as latest
-            latest_filepath = research_data_dir / f"{track_name}_latest.json"
-            with open(latest_filepath, 'w') as f:
-                json.dump(research_data, f, indent=2, default=str)
-            
-            print(f"[ConnectionManager] Saved research tree to {filepath}")
+            print(f"[ConnectionManager] Saved research tree {tree_id} to database")
             
         except Exception as e:
             print(f"[ConnectionManager] Error saving research tree: {e}")
 
 manager = ConnectionManager()
-
-# Websocket endpoint for real-time AI thoughts streaming
-@app.websocket("/ws/ai-thoughts")
-async def websocket_ai_thoughts(websocket: WebSocket):
-    await manager.connect(websocket)
-    try:
-        while True:
-            # Keep connection alive and wait for messages
-            await websocket.receive_text()
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)
-
-# Websocket endpoint for alpha research tree updates
-@app.websocket("/ws/research-tree")
-async def websocket_research_tree(websocket: WebSocket):
-    await manager.connect(websocket)
-    try:
-        while True:
-            await websocket.receive_text()
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)
 
 # Function to broadcast AI thoughts (called by autonomous system)
 async def broadcast_ai_thought(thought_type: str, content: str, metadata: Optional[Dict[str, Any]] = None):
@@ -256,119 +226,119 @@ async def broadcast_research_update(node_type: str, node_data: Dict[str, Any]):
     await manager.broadcast(message)
 
 # Test websocket connection
-@app.post("/api/test/websocket")
-async def test_websocket_broadcast():
-    """Test websocket by sending a test message"""
-    await broadcast_ai_thought(
-        "system_start", 
-        "🧪 Test message from backend!",
-        {"test": True, "timestamp": datetime.now().isoformat()}
-    )
-    return {"status": "test_sent", "message": "Test message sent to all connected clients"}
+# @app.post("/api/test/websocket")
+# async def test_websocket_broadcast():
+#     """Test websocket by sending a test message"""
+#     await broadcast_ai_thought(
+#         "system_start", 
+#         "🧪 Test message from backend!",
+#         {"test": True, "timestamp": datetime.now().isoformat()}
+#     )
+#     return {"status": "test_sent", "message": "Test message sent to all connected clients"}
 
 # Start autonomous trading with streaming
-@app.post("/api/autonomous/start")
-async def start_autonomous_streaming():
-    """Start autonomous trading with real-time streaming"""
-    global autonomous_task
+# @app.post("/api/autonomous/start")
+# async def start_autonomous_streaming():
+#     """Start autonomous trading with real-time streaming"""
+#     global autonomous_task
     
-    # Cancel existing task if running
-    if autonomous_task and not autonomous_task.done():
-        autonomous_task.cancel()
-        try:
-            await autonomous_task
-        except asyncio.CancelledError:
-            pass
+#     # Cancel existing task if running
+#     if autonomous_task and not autonomous_task.done():
+#         autonomous_task.cancel()
+#         try:
+#             await autonomous_task
+#         except asyncio.CancelledError:
+#             pass
     
-    # Broadcast start message
-    await broadcast_ai_thought(
-        "system_start", 
-        "🚀 Autonomous Alpha Hunter starting...",
-        {"status": "initializing"}
-    )
+#     # Broadcast start message
+#     await broadcast_ai_thought(
+#         "system_start", 
+#         "🚀 Autonomous Alpha Hunter starting...",
+#         {"status": "initializing"}
+#     )
     
-    # Start autonomous system in background task
-    print("🚀 Creating autonomous task...")
-    autonomous_task = asyncio.create_task(run_real_autonomous_agents())
-    print(f"✅ Autonomous task created: {autonomous_task}")
+#     # Start autonomous system in background task
+#     print("🚀 Creating autonomous task...")
+#     autonomous_task = asyncio.create_task(run_real_autonomous_agents())
+#     print(f"✅ Autonomous task created: {autonomous_task}")
     
-    return {"status": "started", "message": "Autonomous trading started with real-time streaming"}
+#     return {"status": "started", "message": "Autonomous trading started with real-time streaming"}
 
-@app.post("/api/autonomous/restart")
-async def restart_autonomous_streaming():
-    """Restart the autonomous streaming demo"""
-    global autonomous_task
+# @app.post("/api/autonomous/restart")
+# async def restart_autonomous_streaming():
+#     """Restart the autonomous streaming demo"""
+#     global autonomous_task
     
-    # Cancel existing task if running
-    if autonomous_task and not autonomous_task.done():
-        autonomous_task.cancel()
-        try:
-            await autonomous_task
-        except asyncio.CancelledError:
-            pass
+#     # Cancel existing task if running
+#     if autonomous_task and not autonomous_task.done():
+#         autonomous_task.cancel()
+#         try:
+#             await autonomous_task
+#         except asyncio.CancelledError:
+#             pass
     
-    # Clear the tree
-    manager.clear_tree()
+#     # Clear the tree
+#     manager.clear_tree()
     
-    # Broadcast restart message
-    await broadcast_ai_thought(
-        "system_restart", 
-        "🔄 Restarting real autonomous agents...",
-        {"status": "restarting"}
-    )
+#     # Broadcast restart message
+#     await broadcast_ai_thought(
+#         "system_restart", 
+#         "🔄 Restarting real autonomous agents...",
+#         {"status": "restarting"}
+#     )
     
-    # Start new autonomous system with real agents
-    print("🔄 Restarting real autonomous task...")
-    autonomous_task = asyncio.create_task(run_real_autonomous_agents())
-    print(f"✅ Real autonomous task restarted: {autonomous_task}")
+#     # Start new autonomous system with real agents
+#     print("🔄 Restarting real autonomous task...")
+#     autonomous_task = asyncio.create_task(run_real_autonomous_agents())
+#     print(f"✅ Real autonomous task restarted: {autonomous_task}")
     
-    return {"status": "restarted", "message": "Real autonomous agents restarted with paper trading"}
+#     return {"status": "restarted", "message": "Real autonomous agents restarted with paper trading"}
 
-@app.get("/api/autonomous/status")
-async def get_autonomous_status():
-    """Get the status of the autonomous system"""
-    global autonomous_task
+# @app.get("/api/autonomous/status")
+# async def get_autonomous_status():
+#     """Get the status of the autonomous system"""
+#     global autonomous_task
     
-    if autonomous_task is None:
-        return {"status": "not_started", "message": "Autonomous system not started"}
-    elif autonomous_task.done():
-        return {"status": "completed", "message": "Autonomous system completed"}
-    elif autonomous_task.cancelled():
-        return {"status": "cancelled", "message": "Autonomous system was cancelled"}
-    else:
-        return {"status": "running", "message": "Autonomous system is running"}
+#     if autonomous_task is None:
+#         return {"status": "not_started", "message": "Autonomous system not started"}
+#     elif autonomous_task.done():
+#         return {"status": "completed", "message": "Autonomous system completed"}
+#     elif autonomous_task.cancelled():
+#         return {"status": "cancelled", "message": "Autonomous system was cancelled"}
+#     else:
+#         return {"status": "running", "message": "Autonomous system is running"}
 
-@app.post("/api/autonomous/stop")
-async def stop_autonomous_streaming():
-    """Stop the autonomous trading system"""
-    global autonomous_task
+# @app.post("/api/autonomous/stop")
+# async def stop_autonomous_streaming():
+#     """Stop the autonomous trading system"""
+#     global autonomous_task
     
-    if autonomous_task is None:
-        return {"status": "not_running", "message": "Autonomous system is not running"}
+#     if autonomous_task is None:
+#         return {"status": "not_running", "message": "Autonomous system is not running"}
     
-    if not autonomous_task.done():
-        print("🛑 Stopping autonomous trading system...")
-        autonomous_task.cancel()
+#     if not autonomous_task.done():
+#         print("🛑 Stopping autonomous trading system...")
+#         autonomous_task.cancel()
         
-        # Wait for task to be cancelled
-        try:
-            await autonomous_task
-        except asyncio.CancelledError:
-            pass
+#         # Wait for task to be cancelled
+#         try:
+#             await autonomous_task
+#         except asyncio.CancelledError:
+#             pass
         
-        autonomous_task = None
+#         autonomous_task = None
         
-        # Broadcast stop message
-        await broadcast_ai_thought(
-            "system_stop", 
-            "🛑 Autonomous trading system stopped",
-            {"status": "stopped"}
-        )
+#         # Broadcast stop message
+#         await broadcast_ai_thought(
+#             "system_stop", 
+#             "🛑 Autonomous trading system stopped",
+#             {"status": "stopped"}
+#         )
         
-        print("✅ Autonomous trading system stopped")
-        return {"status": "stopped", "message": "Autonomous trading system stopped"}
-    else:
-        return {"status": "already_stopped", "message": "Autonomous system was already stopped"}
+#         print("✅ Autonomous trading system stopped")
+#         return {"status": "stopped", "message": "Autonomous trading system stopped"}
+#     else:
+#         return {"status": "already_stopped", "message": "Autonomous system was already stopped"}
 
 async def run_autonomous_with_streaming():
     """Run autonomous trading system with real-time streaming of thoughts"""
@@ -703,7 +673,7 @@ async def run_real_autonomous_agents():
                 await manager.update_tree_node("paper_execution", status="completed")
                 
                 # Save the completed research tree to file
-                await manager.save_research_tree_to_file("autonomous_alpha_hunt")
+                await manager.save_research_tree_to_database("autonomous_alpha_hunt", "enhanced_research_agent", "autonomous_alpha_hunt")
                 
                 await broadcast_ai_thought("cycle_complete", "🔄 Real autonomous cycle complete. Starting next cycle in 30 seconds...", {"phase": "cycle_complete", "status": "completed"})
                 await asyncio.sleep(30)  # Wait 30 seconds before next cycle
@@ -907,33 +877,51 @@ async def get_track_history(track_name: str, hours: int = 24):
 
 @app.get("/api/research/decision-trees")
 async def get_decision_trees():
-    """Get current decision trees from active research."""
+    """Get current decision trees from database."""
     try:
-        trees = {}
+        trees = central_event_bus.get_research_trees()
         
-        # Get decision trees from latest track data
-        track_names = [
-            "alpha_discovery", "market_monitoring", "sentiment_tracking",
-            "technical_analysis", "risk_assessment", "deep_research", "autonomous_alpha_hunt"
-        ]
+        # Convert to the expected format
+        trees_dict = {}
+        for tree in trees:
+            track_name = tree["track_name"]
+            tree_data = tree["tree_data"]
+            
+            # Handle both old format (decision_tree) and new format (nodes)
+            if "decision_tree" in tree_data:
+                tree_nodes = tree_data["decision_tree"]
+            elif "nodes" in tree_data:
+                # Convert nodes dict to array format
+                nodes_dict = tree_data["nodes"]
+                tree_nodes = []
+                for node_id, node_data in nodes_dict.items():
+                    node_data["id"] = node_id
+                    tree_nodes.append(node_data)
+            else:
+                # Skip trees without valid structure
+                continue
+            
+            # Ensure each node has required fields
+            processed_tree_nodes = []
+            for node in tree_nodes:
+                processed_node = {
+                    **node,
+                    "title": node.get("title") or node.get("content") or f"Node {node.get('id', 'unknown')}",
+                    "content": node.get("content") or "",
+                    "status": node.get("status") or "pending",
+                    "type": node.get("type") or "analysis",
+                    "parent": node.get("parent") or node.get("parent_id"),
+                }
+                processed_tree_nodes.append(processed_node)
+            
+            trees_dict[track_name] = {
+                "tree": processed_tree_nodes,
+                "completed_at": tree["updated_at"],
+                "specialization": tree_data.get("specialization", "autonomous_alpha_hunting"),
+                "research_track": track_name
+            }
         
-        for track_name in track_names:
-            track_file = research_data_dir / f"{track_name}_latest.json"
-            if track_file.exists():
-                with open(track_file, 'r') as f:
-                    data = json.load(f)
-                    
-                    # Extract decision tree data
-                    decision_tree = data.get("decision_tree")
-                    if decision_tree:
-                        trees[track_name] = {
-                            "tree": decision_tree,
-                            "completed_at": data.get("completed_at"),
-                            "specialization": data.get("specialization"),
-                            "research_track": data.get("research_track")
-                        }
-        
-        return {"status": "success", "data": trees}
+        return {"status": "success", "data": trees_dict}
         
     except Exception as e:
         return {"status": "error", "message": str(e)}
@@ -944,29 +932,54 @@ async def get_decision_trees():
 
 @app.get("/api/research/decision-trees/all")
 async def get_all_decision_trees():
-    """Get all research decision trees ever made (from all historical files)."""
+    """Get all research decision trees from database."""
     try:
-        import glob
-        trees = []
-        # Find all *_latest.json and *_*.json files in research_data
-        for file_path in glob.glob(str(research_data_dir / "*.json")):
-            if not file_path.endswith(".json"):
+        trees = central_event_bus.get_research_trees()
+        
+        # Convert to flat array format for frontend
+        flat_trees = []
+        for tree in trees:
+            tree_data = tree["tree_data"]
+            
+            # Handle both old format (decision_tree) and new format (nodes)
+            if "decision_tree" in tree_data:
+                decision_tree = tree_data["decision_tree"]
+            elif "nodes" in tree_data:
+                # Convert nodes dict to array format
+                nodes_dict = tree_data["nodes"]
+                decision_tree = []
+                for node_id, node_data in nodes_dict.items():
+                    node_data["id"] = node_id
+                    decision_tree.append(node_data)
+            else:
+                # Skip trees without valid structure
                 continue
-            with open(file_path, 'r') as f:
-                try:
-                    data = json.load(f)
-                    decision_tree = data.get("decision_tree")
-                    if decision_tree:
-                        trees.append({
-                            "tree": decision_tree,
-                            "completed_at": data.get("completed_at"),
-                            "specialization": data.get("specialization"),
-                            "research_track": data.get("research_track"),
-                            "file": file_path
-                        })
-                except Exception:
-                    continue
-        return {"status": "success", "data": trees}
+            
+            if decision_tree:
+                # Ensure each node has required fields
+                processed_tree_nodes = []
+                for node in decision_tree:
+                    processed_node = {
+                        **node,
+                        "title": node.get("title") or node.get("content") or f"Node {node.get('id', 'unknown')}",
+                        "content": node.get("content") or "",
+                        "status": node.get("status") or "pending",
+                        "type": node.get("type") or "analysis",
+                        "parent": node.get("parent") or node.get("parent_id"),
+                        "research_track": "synthesis" if tree.get("agent_name") == "research_graph_manager" else tree.get("track_name"),
+                    }
+                    processed_tree_nodes.append(processed_node)
+                
+                flat_trees.append({
+                    "tree": processed_tree_nodes,
+                    "completed_at": tree["updated_at"],
+                    "specialization": tree_data.get("specialization", "autonomous_alpha_hunting"),
+                    "research_track": tree["track_name"],
+                    "agent_name": tree["agent_name"],
+                    "tree_id": tree["tree_id"]
+                })
+        
+        return {"status": "success", "data": flat_trees}
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
@@ -1087,418 +1100,418 @@ async def get_alpha_opportunities(min_confidence: float = 0.0):
 # PLAY EXECUTOR ENDPOINTS
 # ============================================================================
 
-@app.post("/api/plays/create")
-async def create_play_from_natural_language(
-    play_description: str,
-    symbol: str,
-    initial_quantity: int,
-    confidence_score: float = 0.7
-):
-    """Create a trading play from natural language description."""
-    try:
-        # Get current market data (simplified for now)
-        market_data = {
-            "price": 100.0,  # This would come from real market data
-            "change_pct": 0.0,
-            "volume": 1000000,
-            "avg_volume": 1000000,
-            "pe": 25.5,
-            "pb": 2.1,
-            "valuation": "fair"
-        }
+# @app.post("/api/plays/create")
+# async def create_play_from_natural_language(
+#     play_description: str,
+#     symbol: str,
+#     initial_quantity: int,
+#     confidence_score: float = 0.7
+# ):
+#     """Create a trading play from natural language description."""
+#     try:
+#         # Get current market data (simplified for now)
+#         market_data = {
+#             "price": 100.0,  # This would come from real market data
+#             "change_pct": 0.0,
+#             "volume": 1000000,
+#             "avg_volume": 1000000,
+#             "pe": 25.5,
+#             "pb": 2.1,
+#             "valuation": "fair"
+#         }
         
-        # Get news data (simplified for now)
-        news_data = [
-            "Market sentiment remains neutral",
-            "Trading volume steady"
-        ]
+#         # Get news data (simplified for now)
+#         news_data = [
+#             "Market sentiment remains neutral",
+#             "Trading volume steady"
+#         ]
         
-        # Create the play
-        play = play_executor.create_play_from_natural_language(
-            play_description=play_description,
-            symbol=symbol,
-            initial_quantity=initial_quantity,
-            market_data=market_data,
-            news_data=news_data,
-            confidence_score=confidence_score
-        )
+#         # Create the play
+#         play = play_executor.create_play_from_natural_language(
+#             play_description=play_description,
+#             symbol=symbol,
+#             initial_quantity=initial_quantity,
+#             market_data=market_data,
+#             news_data=news_data,
+#             confidence_score=confidence_score
+#         )
         
-        # Broadcast play creation
-        await broadcast_ai_thought(
-            "play_created",
-            f"Created play for {symbol}: {play['parsed_play']['title']}",
-            {
-                "play_id": play["play_id"],
-                "symbol": symbol,
-                "side": play["parsed_play"]["side"],
-                "confidence": confidence_score
-            }
-        )
+#         # Broadcast play creation
+#         await broadcast_ai_thought(
+#             "play_created",
+#             f"Created play for {symbol}: {play['parsed_play']['title']}",
+#             {
+#                 "play_id": play["play_id"],
+#                 "symbol": symbol,
+#                 "side": play["parsed_play"]["side"],
+#                 "confidence": confidence_score
+#             }
+#         )
         
-        return {
-            "status": "success",
-            "data": {
-                "play_id": play["play_id"],
-                "order_id": play["order_id"],
-                "symbol": symbol,
-                "status": play["status"].value,
-                "title": play["parsed_play"]["title"],
-                "side": play["parsed_play"]["side"],
-                "timeframe": play["parsed_play"]["timeframe"],
-                "priority": play["parsed_play"]["priority"],
-                "tags": play["parsed_play"]["tags"],
-                "created_at": play["created_at"].isoformat()
-            }
-        }
+#         return {
+#             "status": "success",
+#             "data": {
+#                 "play_id": play["play_id"],
+#                 "order_id": play["order_id"],
+#                 "symbol": symbol,
+#                 "status": play["status"].value,
+#                 "title": play["parsed_play"]["title"],
+#                 "side": play["parsed_play"]["side"],
+#                 "timeframe": play["parsed_play"]["timeframe"],
+#                 "priority": play["parsed_play"]["priority"],
+#                 "tags": play["parsed_play"]["tags"],
+#                 "created_at": play["created_at"].isoformat()
+#             }
+#         }
         
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+#     except Exception as e:
+#         return {"status": "error", "message": str(e)}
 
 
-@app.get("/api/plays/{play_id}")
-async def get_play_summary(play_id: str):
-    """Get detailed summary of a specific play."""
-    try:
-        summary = play_executor.get_play_summary(play_id)
+# @app.get("/api/plays/{play_id}")
+# async def get_play_summary(play_id: str):
+#     """Get detailed summary of a specific play."""
+#     try:
+#         summary = play_executor.get_play_summary(play_id)
         
-        if not summary:
-            return {"status": "error", "message": f"Play {play_id} not found"}
+#         if not summary:
+#             return {"status": "error", "message": f"Play {play_id} not found"}
         
-        return {
-            "status": "success",
-            "data": summary
-        }
+#         return {
+#             "status": "success",
+#             "data": summary
+#         }
         
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+#     except Exception as e:
+#         return {"status": "error", "message": str(e)}
 
 
-@app.get("/api/plays")
-async def get_all_plays():
-    """Get summary of all plays (active and historical)."""
-    try:
-        summary = play_executor.get_all_plays_summary()
+# @app.get("/api/plays")
+# async def get_all_plays():
+#     """Get summary of all plays (active and historical)."""
+#     try:
+#         summary = play_executor.get_all_plays_summary()
         
-        return {
-            "status": "success",
-            "data": summary
-        }
+#         return {
+#             "status": "success",
+#             "data": summary
+#         }
         
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+#     except Exception as e:
+#         return {"status": "error", "message": str(e)}
 
 
-@app.post("/api/plays/{play_id}/monitor")
-async def monitor_play(play_id: str, market_data: Dict[str, Any]):
-    """Monitor and potentially intervene in a play based on current market data."""
-    try:
-        result = play_executor.monitor_and_execute_play(play_id, market_data)
+# @app.post("/api/plays/{play_id}/monitor")
+# async def monitor_play(play_id: str, market_data: Dict[str, Any]):
+#     """Monitor and potentially intervene in a play based on current market data."""
+#     try:
+#         result = play_executor.monitor_and_execute_play(play_id, market_data)
         
-        if "error" in result:
-            return {"status": "error", "message": result["error"]}
+#         if "error" in result:
+#             return {"status": "error", "message": result["error"]}
         
-        # Broadcast intervention if it occurred
-        if result["status"] == "intervention_executed":
-            intervention = result["intervention"]
-            await broadcast_ai_thought(
-                "play_intervention",
-                f"Intervention on {play_id}: {intervention['reason']}",
-                {
-                    "play_id": play_id,
-                    "intervention_type": intervention["type"].value,
-                    "reason": intervention["reason"],
-                    "action": intervention["action"]
-                }
-            )
+#         # Broadcast intervention if it occurred
+#         if result["status"] == "intervention_executed":
+#             intervention = result["intervention"]
+#             await broadcast_ai_thought(
+#                 "play_intervention",
+#                 f"Intervention on {play_id}: {intervention['reason']}",
+#                 {
+#                     "play_id": play_id,
+#                     "intervention_type": intervention["type"].value,
+#                     "reason": intervention["reason"],
+#                     "action": intervention["action"]
+#                 }
+#             )
         
-        # Broadcast adaptation if it occurred
-        elif result["status"] == "adaptation_executed":
-            adaptation = result["adaptation"]
-            await broadcast_ai_thought(
-                "play_adaptation",
-                f"Adaptation on {play_id}: {adaptation['reason']}",
-                {
-                    "play_id": play_id,
-                    "adaptation_type": adaptation["type"],
-                    "reason": adaptation["reason"],
-                    "action": adaptation["action"]
-                }
-            )
+#         # Broadcast adaptation if it occurred
+#         elif result["status"] == "adaptation_executed":
+#             adaptation = result["adaptation"]
+#             await broadcast_ai_thought(
+#                 "play_adaptation",
+#                 f"Adaptation on {play_id}: {adaptation['reason']}",
+#                 {
+#                     "play_id": play_id,
+#                     "adaptation_type": adaptation["type"],
+#                     "reason": adaptation["reason"],
+#                     "action": adaptation["action"]
+#                 }
+#             )
         
-        return {
-            "status": "success",
-            "data": result
-        }
+#         return {
+#             "status": "success",
+#             "data": result
+#         }
         
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+#     except Exception as e:
+#         return {"status": "error", "message": str(e)}
 
 
-@app.get("/api/plays/{play_id}/execution-plan")
-async def get_play_execution_plan(play_id: str):
-    """Get the detailed execution plan for a play."""
-    try:
-        if play_id not in play_executor.active_plays:
-            return {"status": "error", "message": f"Play {play_id} not found"}
+# @app.get("/api/plays/{play_id}/execution-plan")
+# async def get_play_execution_plan(play_id: str):
+#     """Get the detailed execution plan for a play."""
+#     try:
+#         if play_id not in play_executor.active_plays:
+#             return {"status": "error", "message": f"Play {play_id} not found"}
         
-        play = play_executor.active_plays[play_id]
+#         play = play_executor.active_plays[play_id]
         
-        return {
-            "status": "success",
-            "data": {
-                "play_id": play_id,
-                "execution_plan": play["execution_plan"],
-                "monitoring_conditions": play["monitoring_conditions"],
-                "natural_language_description": play["natural_language_description"],
-                "parsed_play": play["parsed_play"]
-            }
-        }
+#         return {
+#             "status": "success",
+#             "data": {
+#                 "play_id": play_id,
+#                 "execution_plan": play["execution_plan"],
+#                 "monitoring_conditions": play["monitoring_conditions"],
+#                 "natural_language_description": play["natural_language_description"],
+#                 "parsed_play": play["parsed_play"]
+#             }
+#         }
         
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+#     except Exception as e:
+#         return {"status": "error", "message": str(e)}
 
 
-@app.get("/api/plays/{play_id}/interventions")
-async def get_play_interventions(play_id: str):
-    """Get intervention history for a play."""
-    try:
-        if play_id not in play_executor.active_plays:
-            return {"status": "error", "message": f"Play {play_id} not found"}
+# @app.get("/api/plays/{play_id}/interventions")
+# async def get_play_interventions(play_id: str):
+#     """Get intervention history for a play."""
+#     try:
+#         if play_id not in play_executor.active_plays:
+#             return {"status": "error", "message": f"Play {play_id} not found"}
         
-        play = play_executor.active_plays[play_id]
+#         play = play_executor.active_plays[play_id]
         
-        return {
-            "status": "success",
-            "data": {
-                "play_id": play_id,
-                "interventions": play["intervention_history"],
-                "adaptations": play["adaptation_history"]
-            }
-        }
+#         return {
+#             "status": "success",
+#             "data": {
+#                 "play_id": play_id,
+#                 "interventions": play["intervention_history"],
+#                 "adaptations": play["adaptation_history"]
+#             }
+#         }
         
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+#     except Exception as e:
+#         return {"status": "error", "message": str(e)}
 
 
-@app.post("/api/plays/{play_id}/manual-intervention")
-async def manual_intervention(play_id: str, intervention_type: str, reason: str):
-    """Manually trigger an intervention on a play."""
-    try:
-        if play_id not in play_executor.active_plays:
-            return {"status": "error", "message": f"Play {play_id} not found"}
+# @app.post("/api/plays/{play_id}/manual-intervention")
+# async def manual_intervention(play_id: str, intervention_type: str, reason: str):
+#     """Manually trigger an intervention on a play."""
+#     try:
+#         if play_id not in play_executor.active_plays:
+#             return {"status": "error", "message": f"Play {play_id} not found"}
         
-        play = play_executor.active_plays[play_id]
+#         play = play_executor.active_plays[play_id]
         
-        # Create manual intervention
-        intervention = {
-            "type": InterventionType.MARKET_CONDITION_CHANGE,
-            "reason": f"Manual intervention: {reason}",
-            "action": "manual_exit",
-            "timestamp": datetime.now().isoformat(),
-            "manual": True
-        }
+#         # Create manual intervention
+#         intervention = {
+#             "type": InterventionType.MARKET_CONDITION_CHANGE,
+#             "reason": f"Manual intervention: {reason}",
+#             "action": "manual_exit",
+#             "timestamp": datetime.now().isoformat(),
+#             "manual": True
+#         }
         
-        play["intervention_history"].append(intervention)
-        play["status"] = PlayStatus.INTERVENED
-        play["updated_at"] = datetime.now()
+#         play["intervention_history"].append(intervention)
+#         play["status"] = PlayStatus.INTERVENED
+#         play["updated_at"] = datetime.now()
         
-        # Broadcast manual intervention
-        await broadcast_ai_thought(
-            "manual_intervention",
-            f"Manual intervention on {play_id}: {reason}",
-            {
-                "play_id": play_id,
-                "intervention_type": intervention_type,
-                "reason": reason,
-                "manual": True
-            }
-        )
+#         # Broadcast manual intervention
+#         await broadcast_ai_thought(
+#             "manual_intervention",
+#             f"Manual intervention on {play_id}: {reason}",
+#             {
+#                 "play_id": play_id,
+#                 "intervention_type": intervention_type,
+#                 "reason": reason,
+#                 "manual": True
+#             }
+#         )
         
-        return {
-            "status": "success",
-            "data": {
-                "play_id": play_id,
-                "intervention": intervention,
-                "message": "Manual intervention applied"
-            }
-        }
+#         return {
+#             "status": "success",
+#             "data": {
+#                 "play_id": play_id,
+#                 "intervention": intervention,
+#                 "message": "Manual intervention applied"
+#             }
+#         }
         
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+#     except Exception as e:
+#         return {"status": "error", "message": str(e)}
 
 
-@app.get("/api/plays/statistics")
-async def get_play_statistics():
-    """Get comprehensive statistics about all plays."""
-    try:
-        summary = play_executor.get_all_plays_summary()
-        stats = summary["statistics"]
+# @app.get("/api/plays/statistics")
+# async def get_play_statistics():
+#     """Get comprehensive statistics about all plays."""
+#     try:
+#         summary = play_executor.get_all_plays_summary()
+#         stats = summary["statistics"]
         
-        # Calculate additional statistics
-        active_plays = summary["active_plays"]
-        historical_plays = summary["historical_plays"]
+#         # Calculate additional statistics
+#         active_plays = summary["active_plays"]
+#         historical_plays = summary["historical_plays"]
         
-        # Performance breakdown
-        performance_breakdown: Dict[str, Any] = {
-            "profitable_plays": 0,
-            "losing_plays": 0,
-            "break_even_plays": 0,
-            "avg_profit": 0.0,
-            "avg_loss": 0.0
-        }
+#         # Performance breakdown
+#         performance_breakdown: Dict[str, Any] = {
+#             "profitable_plays": 0,
+#             "losing_plays": 0,
+#             "break_even_plays": 0,
+#             "avg_profit": 0.0,
+#             "avg_loss": 0.0
+#         }
         
-        total_profit = 0.0
-        total_loss = 0.0
-        profit_count = 0
-        loss_count = 0
+#         total_profit = 0.0
+#         total_loss = 0.0
+#         profit_count = 0
+#         loss_count = 0
         
-        for play in historical_plays:
-            if play and "performance" in play:
-                pnl = play["performance"].get("pnl_pct", 0.0)
-                if pnl > 0:
-                    performance_breakdown["profitable_plays"] += 1
-                    total_profit += pnl
-                    profit_count += 1
-                elif pnl < 0:
-                    performance_breakdown["losing_plays"] += 1
-                    total_loss += abs(pnl)
-                    loss_count += 1
-                else:
-                    performance_breakdown["break_even_plays"] += 1
+#         for play in historical_plays:
+#             if play and "performance" in play:
+#                 pnl = play["performance"].get("pnl_pct", 0.0)
+#                 if pnl > 0:
+#                     performance_breakdown["profitable_plays"] += 1
+#                     total_profit += pnl
+#                     profit_count += 1
+#                 elif pnl < 0:
+#                     performance_breakdown["losing_plays"] += 1
+#                     total_loss += abs(pnl)
+#                     loss_count += 1
+#                 else:
+#                     performance_breakdown["break_even_plays"] += 1
         
-        if profit_count > 0:
-            performance_breakdown["avg_profit"] = total_profit / profit_count
-        if loss_count > 0:
-            performance_breakdown["avg_loss"] = total_loss / loss_count
+#         if profit_count > 0:
+#             performance_breakdown["avg_profit"] = total_profit / profit_count
+#         if loss_count > 0:
+#             performance_breakdown["avg_loss"] = total_loss / loss_count
         
-        return {
-            "status": "success",
-            "data": {
-                "overview": stats,
-                "performance_breakdown": performance_breakdown,
-                "active_plays_count": len(active_plays),
-                "historical_plays_count": len(historical_plays),
-                "last_updated": datetime.now().isoformat()
-            }
-        }
+#         return {
+#             "status": "success",
+#             "data": {
+#                 "overview": stats,
+#                 "performance_breakdown": performance_breakdown,
+#                 "active_plays_count": len(active_plays),
+#                 "historical_plays_count": len(historical_plays),
+#                 "last_updated": datetime.now().isoformat()
+#             }
+#         }
         
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+#     except Exception as e:
+#         return {"status": "error", "message": str(e)}
 
 
 # ============================================================================
 # PLAY REPORTING ENDPOINTS
 # ============================================================================
 
-@app.get("/api/plays/reporting/history")
-async def get_play_reporting_history(limit: int = 100):
-    """Get play history from the central reporting system."""
-    try:
-        history = play_reporting.get_play_history(limit)
+# @app.get("/api/plays/reporting/history")
+# async def get_play_reporting_history(limit: int = 100):
+#     """Get play history from the central reporting system."""
+#     try:
+#         history = play_reporting.get_play_history(limit)
         
-        return {
-            "status": "success",
-            "data": {
-                "plays": history,
-                "total_returned": len(history),
-                "limit_requested": limit
-            }
-        }
+#         return {
+#             "status": "success",
+#             "data": {
+#                 "plays": history,
+#                 "total_returned": len(history),
+#                 "limit_requested": limit
+#             }
+#         }
         
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+#     except Exception as e:
+#         return {"status": "error", "message": str(e)}
 
 
-@app.get("/api/plays/reporting/{play_id}/details")
-async def get_play_reporting_details(play_id: str):
-    """Get detailed play information from the central reporting system."""
-    try:
-        details = play_reporting.get_play_details(play_id)
+# @app.get("/api/plays/reporting/{play_id}/details")
+# async def get_play_reporting_details(play_id: str):
+#     """Get detailed play information from the central reporting system."""
+#     try:
+#         details = play_reporting.get_play_details(play_id)
         
-        if not details:
-            return {"status": "error", "message": f"Play {play_id} not found in reporting system"}
+#         if not details:
+#             return {"status": "error", "message": f"Play {play_id} not found in reporting system"}
         
-        return {
-            "status": "success",
-            "data": details
-        }
+#         return {
+#             "status": "success",
+#             "data": details
+#         }
         
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+#     except Exception as e:
+#         return {"status": "error", "message": str(e)}
 
 
-@app.get("/api/plays/reporting/statistics")
-async def get_play_reporting_statistics():
-    """Get comprehensive play statistics from the central reporting system."""
-    try:
-        stats = play_reporting.get_play_statistics()
+# @app.get("/api/plays/reporting/statistics")
+# async def get_play_reporting_statistics():
+#     """Get comprehensive play statistics from the central reporting system."""
+#     try:
+#         stats = play_reporting.get_play_statistics()
         
-        return {
-            "status": "success",
-            "data": stats
-        }
+#         return {
+#             "status": "success",
+#             "data": stats
+#         }
         
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+#     except Exception as e:
+#         return {"status": "error", "message": str(e)}
 
 
 # ============================================================================
 # STRUCTURED ORDER ENDPOINTS
 # ============================================================================
 
-@app.get("/api/structured-orders")
-async def get_structured_orders():
-    """Get all structured orders"""
-    try:
-        orders = trade_executor.get_all_orders_summary()
-        return {"status": "success", "orders": orders}
-    except Exception as e:
-        return {"status": "error", "error": str(e)}
+# @app.get("/api/structured-orders")
+# async def get_structured_orders():
+#     """Get all structured orders"""
+#     try:
+#         orders = trade_executor.get_all_orders_summary()
+#         return {"status": "success", "orders": orders}
+#     except Exception as e:
+#         return {"status": "error", "error": str(e)}
 
-@app.get("/api/structured-orders/{order_id}")
-async def get_structured_order(order_id: str):
-    """Get specific structured order details"""
-    try:
-        order = trade_executor.get_order_summary(order_id)
-        if order:
-            return {"status": "success", "order": order}
-        else:
-            return {"status": "error", "error": "Order not found"}
-    except Exception as e:
-        return {"status": "error", "error": str(e)}
+# @app.get("/api/structured-orders/{order_id}")
+# async def get_structured_order(order_id: str):
+#     """Get specific structured order details"""
+#     try:
+#         order = trade_executor.get_order_summary(order_id)
+#         if order:
+#             return {"status": "success", "order": order}
+#         else:
+#             return {"status": "error", "error": "Order not found"}
+#     except Exception as e:
+#         return {"status": "error", "error": str(e)}
 
-@app.get("/api/structured-orders/approval/required")
-async def get_orders_requiring_approval():
-    """Get orders that require manual approval"""
-    try:
-        orders = trade_executor.get_orders_requiring_approval()
-        return {"status": "success", "orders": orders}
-    except Exception as e:
-        return {"status": "error", "error": str(e)}
+# @app.get("/api/structured-orders/approval/required")
+# async def get_orders_requiring_approval():
+#     """Get orders that require manual approval"""
+#     try:
+#         orders = trade_executor.get_orders_requiring_approval()
+#         return {"status": "success", "orders": orders}
+#     except Exception as e:
+#         return {"status": "error", "error": str(e)}
 
-@app.post("/api/structured-orders/{order_id}/approve")
-async def approve_structured_order(order_id: str):
-    """Approve a structured order"""
-    try:
-        success = trade_executor.approve_order(order_id)
-        if success:
-            return {"status": "success", "message": f"Order {order_id} approved"}
-        else:
-            return {"status": "error", "error": "Failed to approve order"}
-    except Exception as e:
-        return {"status": "error", "error": str(e)}
+# @app.post("/api/structured-orders/{order_id}/approve")
+# async def approve_structured_order(order_id: str):
+#     """Approve a structured order"""
+#     try:
+#         success = trade_executor.approve_order(order_id)
+#         if success:
+#             return {"status": "success", "message": f"Order {order_id} approved"}
+#         else:
+#             return {"status": "error", "error": "Failed to approve order"}
+#     except Exception as e:
+#         return {"status": "error", "error": str(e)}
 
-@app.post("/api/structured-orders/{order_id}/reject")
-async def reject_structured_order(order_id: str, reason: str = ""):
-    """Reject a structured order"""
-    try:
-        success = trade_executor.reject_order(order_id, reason)
-        if success:
-            return {"status": "success", "message": f"Order {order_id} rejected"}
-        else:
-            return {"status": "error", "error": "Failed to reject order"}
-    except Exception as e:
-        return {"status": "error", "error": str(e)}
+# @app.post("/api/structured-orders/{order_id}/reject")
+# async def reject_structured_order(order_id: str, reason: str = ""):
+#     """Reject a structured order"""
+#     try:
+#         success = trade_executor.reject_order(order_id, reason)
+#         if success:
+#             return {"status": "success", "message": f"Order {order_id} rejected"}
+#         else:
+#             return {"status": "error", "error": "Failed to reject order"}
+#     except Exception as e:
+#         return {"status": "error", "error": str(e)}
 
 
 # ============================================================================
@@ -1541,9 +1554,9 @@ async def get_central_events(
 
 @app.get("/api/events/recent")
 async def get_recent_events(limit: int = 100):
-    """Get recent events from memory cache"""
+    """Get recent events from database"""
     try:
-        events = central_event_bus.get_recent_events(limit=limit)
+        events = central_event_bus.get_events_from_db(limit=limit)
         return {
             "status": "success",
             "data": events,
@@ -1598,19 +1611,43 @@ async def get_event_sources():
 # Websocket endpoint for real-time central events
 @app.websocket("/ws/central-events")
 async def websocket_central_events(websocket: WebSocket):
-    await manager.connect(websocket)
+    print(f"[WebSocket] New connection attempt from {websocket.client}")
     try:
+        await manager.connect(websocket)
+        print(f"[WebSocket] Connection accepted for {websocket.client}")
+        
         # Send initial events
         recent_events = central_event_bus.get_recent_events(limit=50)
-        await websocket.send_text(json.dumps({
+        initial_message = {
             "type": "initial_events",
             "events": recent_events
-        }))
+        }
+        await websocket.send_text(json.dumps(initial_message))
+        print(f"[WebSocket] Sent initial events to {websocket.client}")
         
-        # Keep connection alive
+        # Keep connection alive and handle client messages
         while True:
-            await websocket.receive_text()
+            try:
+                # Wait for client message with timeout
+                data = await asyncio.wait_for(websocket.receive_text(), timeout=30.0)
+                print(f"[WebSocket] Received from {websocket.client}: {data}")
+                # Echo back to keep connection alive
+                await websocket.send_text(json.dumps({
+                    "type": "ping",
+                    "timestamp": datetime.now().isoformat()
+                }))
+            except asyncio.TimeoutError:
+                # Send heartbeat to keep connection alive
+                await websocket.send_text(json.dumps({
+                    "type": "heartbeat",
+                    "timestamp": datetime.now().isoformat()
+                }))
+                print(f"[WebSocket] Sent heartbeat to {websocket.client}")
     except WebSocketDisconnect:
+        print(f"[WebSocket] Client disconnected: {websocket.client}")
+        manager.disconnect(websocket)
+    except Exception as e:
+        print(f"[WebSocket] Error for {websocket.client}: {e}")
         manager.disconnect(websocket)
 
 
@@ -1633,6 +1670,151 @@ def on_central_event(event):
 
 # Register the callback with the central event bus
 central_event_bus.subscribe(on_central_event)
+
+# Graph Manager Endpoints
+@app.post("/api/graph/query")
+async def query_graph(query: Dict[str, Any]):
+    """Query the research graph intelligently"""
+    try:
+        user_query = query.get("query", "").lower()
+        
+        # Get research data from the decision trees endpoint
+        research_data = {}
+        try:
+            # Use the working research trees endpoint
+            import requests
+            response = requests.get("http://localhost:8081/api/research/decision-trees")
+            if response.status_code == 200:
+                data = response.json()
+                if data.get('status') == 'success' and data.get('data'):
+                    research_data = data['data']
+        except Exception as e:
+            print(f"Error loading research data: {e}")
+            pass
+        
+        # Extract all nodes from all research tracks
+        all_nodes = []
+        if isinstance(research_data, dict):
+            for track_name, track_data in research_data.items():
+                if isinstance(track_data, dict) and 'tree' in track_data:
+                    for node in track_data['tree']:
+                        node['research_track'] = track_name
+                        all_nodes.append(node)
+        
+        # Process the query with simple keyword matching
+        results = process_graph_query(user_query, all_nodes)
+        
+        return {
+            "status": "success",
+            "data": results,
+            "timestamp": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing query: {str(e)}")
+
+def process_graph_query(query: str, nodes: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Process a natural language query about the research graph"""
+    query_lower = query.lower()
+    
+    # Initialize results
+    results = {
+        "answer": "",
+        "highlighted_nodes": [],
+        "suggestions": [],
+        "node_count": 0,
+        "confidence": 0.0
+    }
+    
+    # Query patterns
+    if any(word in query_lower for word in ['active', 'current', 'ongoing']):
+        active_nodes = [node for node in nodes if node.get('status') == 'active']
+        results.update({
+            "answer": f"I found {len(active_nodes)} active research nodes. These represent ongoing research activities and current investigations.",
+            "highlighted_nodes": [node['id'] for node in active_nodes],
+            "node_count": len(active_nodes),
+            "confidence": 0.9,
+            "suggestions": [
+                "Show me completed research",
+                "Find synthesis nodes",
+                "What are the high-confidence findings?",
+                "Show me market analysis nodes"
+            ]
+        })
+    
+    elif any(word in query_lower for word in ['synthesis', 'finding', 'insight']):
+        synthesis_nodes = [node for node in nodes if node.get('type') == 'synthesis']
+        results.update({
+            "answer": f"I found {len(synthesis_nodes)} synthesis nodes. These represent key findings and insights that combine multiple research threads.",
+            "highlighted_nodes": [node['id'] for node in synthesis_nodes],
+            "node_count": len(synthesis_nodes),
+            "confidence": 0.9,
+            "suggestions": [
+                "Show me market analysis",
+                "Find technical analysis nodes",
+                "What are the risk assessments?",
+                "Show me active research"
+            ]
+        })
+    
+    elif any(word in query_lower for word in ['market', 'trend']):
+        market_nodes = [
+            node for node in nodes 
+            if (node.get('research_track') == 'market_analysis' or 
+                'market' in node.get('content', '').lower() or
+                'trend' in node.get('content', '').lower())
+        ]
+        results.update({
+            "answer": f"I found {len(market_nodes)} market analysis nodes. These contain insights about market trends, sentiment, and analysis.",
+            "highlighted_nodes": [node['id'] for node in market_nodes],
+            "node_count": len(market_nodes),
+            "confidence": 0.8,
+            "suggestions": [
+                "Show me technical indicators",
+                "Find sentiment analysis",
+                "What are the risk factors?",
+                "Show me synthesis findings"
+            ]
+        })
+    
+    elif any(word in query_lower for word in ['confidence', 'important', 'reliable']):
+        high_confidence_nodes = [
+            node for node in nodes 
+            if (node.get('confidence') and 
+                (isinstance(node['confidence'], (int, float)) and node['confidence'] > 0.7 or
+                 isinstance(node['confidence'], str) and float(node['confidence']) > 0.7))
+        ]
+        results.update({
+            "answer": f"I found {len(high_confidence_nodes)} nodes with high confidence (>70%). These represent the most reliable research findings.",
+            "highlighted_nodes": [node['id'] for node in high_confidence_nodes],
+            "node_count": len(high_confidence_nodes),
+            "confidence": 0.9,
+            "suggestions": [
+                "Show me active research",
+                "Find synthesis nodes",
+                "What are the market trends?",
+                "Show me technical analysis"
+            ]
+        })
+    
+    else:
+        # Default response for unrecognized queries
+        results.update({
+            "answer": f"I understand you're asking about '{query}'. I can help you explore the research graph. Try asking about active research, synthesis findings, market analysis, technical indicators, risk assessments, or high-confidence nodes.",
+            "node_count": len(nodes),
+            "confidence": 0.5,
+            "suggestions": [
+                "Show me active research nodes",
+                "Find synthesis nodes",
+                "What are the most important findings?",
+                "Show me market analysis nodes",
+                "Find nodes with high confidence",
+                "Show me technical analysis",
+                "What are the risk factors?"
+            ]
+        })
+    
+    return results
 
 
 if __name__ == "__main__":

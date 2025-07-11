@@ -1,478 +1,242 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import {
-  ReactFlow,
-  addEdge,
-  useNodesState,
-  useEdgesState,
-  Controls,
-  Background,
-  BackgroundVariant,
-  Handle,
-  Position,
-} from 'reactflow';
-import type { Node, Edge, Connection, NodeTypes } from 'reactflow';
-import 'reactflow/dist/style.css';
-import { Box, Typography, Chip, Paper, LinearProgress } from '@mui/material';
-import {
-  Psychology,
-  PlayArrow,
-  Assessment,
-  Web,
-  BarChart,
-  TrendingUp,
-  Search,
-  CheckCircle,
-  Schedule,
-  Error,
-} from '@mui/icons-material';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Paper, CircularProgress, Alert } from '@mui/material';
+import OrganicResearchGraph from './OrganicResearchGraph';
+import GraphChatInterface from './GraphChatInterface';
+import type { TreeNode } from './OrganicResearchGraph';
 
-export interface TreeNode {
-  id: string;
-  type: 'root' | 'decision' | 'analysis' | 'websearch' | 'fundamental' | 'pandas' | 'strategy' | 'execution';
-  title: string;
-  status: 'pending' | 'active' | 'completed' | 'failed';
-  content: string;
-  metadata?: Record<string, any>;
-  children?: TreeNode[];
-  parent?: string;
-  timestamp: string;
-  confidence?: number;
-  progress?: number;
-}
-
-interface ResearchTreeProps {
-  treeData: TreeNode[];
-}
-
-const getNodeColor = (nodeType: string, status: string) => {
-  const colors = {
-    root: { bg: '#1a332a', border: '#4caf50', text: '#ffffff' },
-    decision: { bg: '#2a1a32', border: '#9c27b0', text: '#ffffff' },
-    analysis: { bg: '#1a2332', border: '#2196f3', text: '#ffffff' },
-    websearch: { bg: '#32281a', border: '#ff9800', text: '#ffffff' },
-    fundamental: { bg: '#1a321a', border: '#4caf50', text: '#ffffff' },
-    pandas: { bg: '#321a1a', border: '#f44336', text: '#ffffff' },
-    strategy: { bg: '#32321a', border: '#ffeb3b', text: '#000000' },
-    execution: { bg: '#1a3232', border: '#00bcd4', text: '#ffffff' },
-  };
-
-  const statusOpacity = {
-    pending: 0.6,
-    active: 1,
-    completed: 0.8,
-    failed: 0.4,
-  };
-
-  const baseColor = colors[nodeType as keyof typeof colors] || colors.root;
-  const opacity = statusOpacity[status as keyof typeof statusOpacity] || 0.6;
-
-  return {
-    ...baseColor,
-    opacity,
-  };
-};
-
-const getNodeIcon = (nodeType: string) => {
-  const iconProps = { style: { fontSize: 16 } };
-  switch (nodeType) {
-    case 'root': return <Psychology {...iconProps} />;
-    case 'decision': return <PlayArrow {...iconProps} />;
-    case 'analysis': return <Assessment {...iconProps} />;
-    case 'websearch': return <Web {...iconProps} />;
-    case 'fundamental': return <TrendingUp {...iconProps} />;
-    case 'pandas': return <BarChart {...iconProps} />;
-    case 'strategy': return <Search {...iconProps} />;
-    case 'execution': return <CheckCircle {...iconProps} />;
-    default: return <Psychology {...iconProps} />;
+// API functions for backend on port 8081
+const fetchResearchTrees = async () => {
+  try {
+    const response = await fetch('http://localhost:8081/api/research/decision-trees');
+    if (!response.ok) throw new Error('Failed to fetch research trees');
+    const data = await response.json();
+    console.log('Raw research trees response:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching research trees:', error);
+    return [];
   }
 };
 
-const getStatusIcon = (status: string) => {
-  const iconProps = { style: { fontSize: 14 } };
-  switch (status) {
-    case 'pending': return <Schedule {...iconProps} />;
-    case 'active': return <PlayArrow {...iconProps} />;
-    case 'completed': return <CheckCircle {...iconProps} />;
-    case 'failed': return <Error {...iconProps} />;
-    default: return <Schedule {...iconProps} />;
+const fetchRecentEvents = async () => {
+  try {
+    const response = await fetch('http://localhost:8081/api/events/recent');
+    if (!response.ok) throw new Error('Failed to fetch recent events');
+    const data = await response.json();
+    console.log('Raw recent events response:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching recent events:', error);
+    return [];
   }
 };
 
-// Custom Node Component
-const CustomNode = React.memo(({ data }: { data: any }) => {
-  const { nodeType, status, title, content, progress, confidence, metadata } = data;
-  const colors = getNodeColor(nodeType, status);
+interface ResearchTreeFlowProps {
+  maxNodes?: number;
+}
 
-  return (
-    <Box
-      sx={{
-        background: colors.bg,
-        border: `2px solid ${colors.border}`,
-        borderRadius: 2,
-        padding: 2,
-        minWidth: 200,
-        maxWidth: 300,
-        opacity: colors.opacity,
-        color: colors.text,
-        position: 'relative',
-      }}
-    >
-      <Handle type="target" position={Position.Top} />
-      
-      {/* Header */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-        {getNodeIcon(nodeType)}
-        <Typography variant="subtitle2" sx={{ fontWeight: 'bold', fontSize: '0.85rem' }}>
-          {title}
-        </Typography>
-        {getStatusIcon(status)}
-      </Box>
+const ResearchTreeFlow: React.FC<ResearchTreeFlowProps> = ({ maxNodes = 100 }) => {
+  const [treeData, setTreeData] = useState<TreeNode[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
+  const [highlightedNodes, setHighlightedNodes] = useState<string[]>([]);
 
-      {/* Content */}
-      <Typography variant="body2" sx={{ fontSize: '0.75rem', mb: 1, lineHeight: 1.3 }}>
-        {content}
-      </Typography>
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-      {/* Progress Bar */}
-      {status === 'active' && progress !== undefined && (
-        <LinearProgress
-          variant="determinate"
-          value={progress}
-          sx={{
-            mb: 1,
-            height: 4,
-            borderRadius: 2,
-            backgroundColor: 'rgba(255,255,255,0.2)',
-            '& .MuiLinearProgress-bar': {
-              backgroundColor: colors.border,
-            },
-          }}
-        />
-      )}
+      // Fetch research trees
+      const treesResponse = await fetchResearchTrees();
+      console.log('Research trees response:', treesResponse);
 
-      {/* Metadata */}
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-        {confidence !== undefined && (
-          <Chip
-            label={`${(confidence * 100).toFixed(0)}%`}
-            size="small"
-            sx={{
-              fontSize: '0.65rem',
-              height: 18,
-              backgroundColor: 'rgba(100, 181, 246, 0.2)',
-              color: '#64b5f6',
-            }}
-          />
-        )}
-        {metadata?.real_ai && (
-          <Chip
-            label="REAL AI"
-            size="small"
-            sx={{
-              fontSize: '0.65rem',
-              height: 18,
-              backgroundColor: 'rgba(76, 175, 80, 0.2)',
-              color: '#4caf50',
-            }}
-          />
-        )}
-        {nodeType && (
-          <Chip
-            label={nodeType.toUpperCase()}
-            size="small"
-            variant="outlined"
-            sx={{
-              fontSize: '0.6rem',
-              height: 16,
-              borderColor: colors.border,
-              color: colors.text,
-            }}
-          />
-        )}
-      </Box>
+      // Fetch recent events
+      const eventsResponse = await fetchRecentEvents();
+      console.log('Recent events response:', eventsResponse);
 
-      <Handle type="source" position={Position.Bottom} />
-    </Box>
-  );
-});
+      // Combine and process data
+      let allNodes: TreeNode[] = [];
 
-// Node types
-const nodeTypes: NodeTypes = {
-  custom: CustomNode,
-};
-
-const ResearchTreeFlow: React.FC<ResearchTreeProps> = ({ treeData }) => {
-  const [selectedNode, setSelectedNode] = useState<TreeNode | null>(null);
-
-  // Convert tree data to React Flow format
-  const { nodes, edges } = useMemo(() => {
-    const flowNodes: Node[] = [];
-    const flowEdges: Edge[] = [];
-    const nodeMap = new Map<string, TreeNode>();
-
-    // Create node map
-    treeData.forEach(node => {
-      nodeMap.set(node.id, node);
-    });
-    
-    // Add root node if not present
-    let rootExists = treeData.some(node => !node.parent);
-    if (!rootExists && treeData.length > 0) {
-      const rootNode: TreeNode = {
-        id: 'root',
-        type: 'root',
-        title: 'AI Research Engine',
-        status: 'active',
-        content: 'Autonomous Alpha Hunter',
-        timestamp: new Date().toISOString(),
-      };
-      nodeMap.set('root', rootNode);
-    }
-
-    // Calculate positions using a simple tree layout
-    const positions = new Map<string, { x: number; y: number }>();
-    const levelWidth = new Map<number, number>();
-    const nodeLevel = new Map<string, number>();
-
-    // --- PATCH: Robust level assignment and layout ---
-    // Helper: recursively assign levels from root(s)
-    const assignLevels = (nodeId: string, level: number) => {
-      if (nodeLevel.has(nodeId)) return;
-      nodeLevel.set(nodeId, level);
-      levelWidth.set(level, (levelWidth.get(level) || 0) + 1);
-      // Find children
-      const children = Array.from(nodeMap.values()).filter(n => n.parent === nodeId);
-      children.forEach(child => assignLevels(child.id, level + 1));
-    };
-
-    // Find all root nodes (parent: null or undefined)
-    const rootNodes = treeData.filter(n => !n.parent);
-    rootNodes.forEach(root => assignLevels(root.id, 0));
-
-    // Fallback: assign level 0 to any disconnected node
-    Array.from(nodeMap.values()).forEach(node => {
-      if (!nodeLevel.has(node.id)) {
-        nodeLevel.set(node.id, 0);
-        levelWidth.set(0, (levelWidth.get(0) || 0) + 1);
-      }
-    });
-
-    // --- PATCH: Position nodes by level and sibling index ---
-    const levelCounters = new Map<number, number>();
-    const calculatePosition = (nodeId: string): { x: number; y: number } => {
-      const level = nodeLevel.get(nodeId) || 0;
-      const nodesInLevel = levelWidth.get(level) || 1;
-      const currentIndex = levelCounters.get(level) || 0;
-      levelCounters.set(level, currentIndex + 1);
-      const horizontalSpacing = 300;
-      const verticalSpacing = 180;
-      const x = (currentIndex - (nodesInLevel - 1) / 2) * horizontalSpacing;
-      const y = level * verticalSpacing;
-      return { x, y };
-    };
-
-    // --- PATCH: Color nodes by status ---
-    const getNodeColor = (nodeType: string, status: string) => {
-      if (status === 'completed') return '#fff';
-      if (status === 'active') return '#4caf50';
-      if (status === 'failed') return '#f44336';
-      return '#90caf9'; // pending/other
-    };
-
-    // --- PATCH: Create flow nodes and edges ---
-    const usedIds = new Set<string>();
-    const nodeIdToFlowId = new Map<string, string>();
-    flowNodes.length = 0;
-    flowEdges.length = 0;
-    Array.from(nodeMap.values()).forEach(node => {
-      const position = calculatePosition(node.id);
-      let uniqueId = node.id;
-      let counter = 1;
-      while (usedIds.has(uniqueId)) {
-        uniqueId = `${node.id}_${counter}`;
-        counter++;
-      }
-      usedIds.add(uniqueId);
-      nodeIdToFlowId.set(node.id, uniqueId);
-      flowNodes.push({
-        id: uniqueId,
-        type: 'custom',
-        position,
-        data: {
-          ...node,
-          id: uniqueId,
-          nodeType: node.type,
-          onClick: () => setSelectedNode(node),
-          color: getNodeColor(node.type, node.status),
-        },
-      });
-    });
-    Array.from(nodeMap.values()).forEach(node => {
-      if (node.parent && nodeMap.has(node.parent)) {
-        const sourceId = nodeIdToFlowId.get(node.parent) || node.parent;
-        const targetId = nodeIdToFlowId.get(node.id) || node.id;
-        flowEdges.push({
-          id: `${sourceId}-${targetId}`,
-          source: sourceId,
-          target: targetId,
-          type: 'smoothstep',
-          style: {
-            stroke: '#555',
-            strokeWidth: 2,
-          },
-          animated: node.status === 'active',
+      // Process research trees
+      if (treesResponse && treesResponse.status === 'success' && treesResponse.data) {
+        // Handle the actual response structure from the backend
+        const trees = Array.isArray(treesResponse.data) ? treesResponse.data : [treesResponse.data];
+        
+        trees.forEach((tree: any) => {
+          // The backend returns different research tracks as separate objects
+          // Each track has a 'tree' property containing the nodes
+          Object.keys(tree).forEach((trackKey) => {
+            const track = tree[trackKey];
+            if (track && track.tree && Array.isArray(track.tree)) {
+              const processedNodes = track.tree.map((node: any) => ({
+                id: node.id || `node-${Math.random()}`,
+                type: node.type || 'analysis',
+                title: node.title || node.content?.substring(0, 30) || 'Untitled',
+                status: node.status || 'completed',
+                content: node.content || '',
+                metadata: node.metadata || {},
+                parent: node.parent || null,
+                timestamp: node.timestamp || new Date().toISOString(),
+                confidence: node.confidence || 0.5,
+                progress: node.progress || 0,
+                research_track: trackKey,
+              }));
+              allNodes = [...allNodes, ...processedNodes];
+            }
+          });
         });
       }
-    });
+
+      // Process recent events
+      if (eventsResponse && eventsResponse.status === 'success' && eventsResponse.data) {
+        const events = Array.isArray(eventsResponse.data) ? eventsResponse.data : [eventsResponse.data];
+        
+        events.forEach((event: any) => {
+          // Convert central events to research nodes if they contain research data
+          if (event.event_type === 'research' || event.event_type === 'ai_thought') {
+            const processedNode: TreeNode = {
+              id: event.event_id || `event-${Math.random()}`,
+              type: event.event_type === 'ai_thought' ? 'analysis' : 'websearch',
+              title: event.title || event.message?.substring(0, 30) || 'Event Node',
+              status: 'active',
+              content: event.message || '',
+              metadata: event.metadata || {},
+              parent: undefined,
+              timestamp: event.timestamp || new Date().toISOString(),
+              confidence: 0.5,
+              progress: 0,
+              research_track: 'events',
+            };
+            allNodes.push(processedNode);
+          }
+        });
+      }
+
+      // Remove duplicates and limit nodes
+      const uniqueNodes = allNodes.filter((node, index, self) => 
+        index === self.findIndex(n => n.id === node.id)
+      );
+
+      // Sort by timestamp (newest first) and limit
+      const sortedNodes = uniqueNodes
+        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+        .slice(0, maxNodes);
+
+      console.log(`Processed ${sortedNodes.length} unique nodes from ${allNodes.length} total nodes`);
+      setTreeData(sortedNodes);
+      
+      setLastUpdate(new Date());
+
+    } catch (err) {
+      console.error('Error fetching research data:', err);
+      setError(err instanceof Error ? err.message : 'Failed to fetch research data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+
+    // Set up WebSocket connection for real-time updates
+    const ws = new WebSocket('ws://localhost:8081/ws/central-events');
     
+    ws.onopen = () => {
+      console.log('WebSocket connected for research tree updates');
+    };
 
-    return { nodes: flowNodes, edges: flowEdges };
-  }, [treeData]);
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === 'research_update' || data.type === 'ai_thought') {
+          console.log('Received real-time update:', data);
+          // Refresh data when we receive updates
+          fetchData();
+        }
+      } catch (err) {
+        console.error('Error parsing WebSocket message:', err);
+      }
+    };
 
-  const [flowNodes, setNodes, onNodesChange] = useNodesState(nodes);
-  const [flowEdges, setEdges, onEdgesChange] = useEdgesState(edges);
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
 
-  // Update nodes when treeData changes
-  React.useEffect(() => {
-    setNodes(nodes);
-    setEdges(edges);
-  }, [nodes, edges, setNodes, setEdges]);
+    ws.onclose = () => {
+      console.log('WebSocket disconnected');
+    };
 
-  const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
-  );
+    // Cleanup WebSocket on unmount
+    return () => {
+      ws.close();
+    };
+  }, [maxNodes]);
 
-  const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
-    setSelectedNode(node.data as TreeNode);
-  }, []);
+  // Auto-refresh every 30 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchData();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [maxNodes]);
+
+  if (loading && treeData.length === 0) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '600px' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ p: 2 }}>
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
+  }
 
   return (
-    <Box sx={{ display: 'flex', height: '100%', width: '100%' }}>
-      {/* Main Flow */}
+    <Box sx={{ width: '100%', height: '100%' }}>
+      <Paper sx={{ p: 2, mb: 2 }}>
+        <Typography variant="h6" gutterBottom>
+          Organic Research Graph
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {treeData.length} research nodes • 
+          {treeData.filter(n => n.status === 'active').length} active • 
+          {treeData.filter(n => n.type === 'synthesis').length} synthesis nodes
+          {lastUpdate && ` • Last updated: ${lastUpdate.toLocaleTimeString()}`}
+        </Typography>
+      </Paper>
+
       <Box sx={{ 
-        flex: 1, 
-        height: '100%', 
-        overflow: 'hidden',
+        width: '100%', 
+        height: 'calc(100vh - 200px)', 
+        minHeight: '600px',
         position: 'relative'
       }}>
-        <ReactFlow
-          nodes={flowNodes}
-          edges={flowEdges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          onNodeClick={onNodeClick}
-          nodeTypes={nodeTypes}
-          fitView
-          fitViewOptions={{ padding: 0.1, includeHiddenNodes: false }}
-          minZoom={0.1}
-          maxZoom={2}
-          attributionPosition="bottom-left"
-          style={{
-            backgroundColor: '#0a0a0a',
+        <OrganicResearchGraph 
+          treeData={treeData}
+          width={1200}
+          height={800}
+          onNodeHighlight={setHighlightedNodes}
+        />
+
+        {/* Chat Interface */}
+        <GraphChatInterface
+          onHighlightNodes={setHighlightedNodes}
+          onNavigateToNode={(nodeId) => {
+            // Find the node in the graph and highlight it
+            setHighlightedNodes([nodeId]);
+            // TODO: Add zoom to node functionality
+            console.log('Navigate to node:', nodeId);
           }}
-        >
-          <Controls
-            style={{
-              backgroundColor: '#1a1a1a',
-              border: '1px solid #333',
-            }}
-          />
-          <Background 
-            variant={BackgroundVariant.Dots} 
-            gap={20} 
-            size={1} 
-            color="#333"
-          />
-        </ReactFlow>
+          treeData={treeData}
+        />
       </Box>
-
-      {/* Node Details Panel */}
-      {selectedNode && (
-        <Box sx={{ width: 300, ml: 2, height: '100%' }}>
-          <Paper sx={{
-            p: 2,
-            bgcolor: '#1a1a1a',
-            border: '1px solid #333',
-            height: '100%',
-            overflow: 'auto',
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-              {getNodeIcon(selectedNode.type)}
-              <Typography variant="h6" sx={{ color: '#ffffff' }}>
-                {selectedNode.title}
-              </Typography>
-            </Box>
-
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-              {getStatusIcon(selectedNode.status)}
-              <Chip
-                label={selectedNode.status.toUpperCase()}
-                color={
-                  selectedNode.status === 'completed' ? 'success' :
-                  selectedNode.status === 'active' ? 'primary' :
-                  selectedNode.status === 'failed' ? 'error' : 'default'
-                }
-                size="small"
-              />
-              <Chip
-                label={selectedNode.type.toUpperCase()}
-                variant="outlined"
-                size="small"
-              />
-            </Box>
-
-            <Typography variant="body2" sx={{ color: '#aaa', mb: 2 }}>
-              {selectedNode.content}
-            </Typography>
-
-            {selectedNode.confidence !== undefined && (
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="caption" sx={{ color: '#64b5f6' }}>
-                  Confidence: {(selectedNode.confidence * 100).toFixed(0)}%
-                </Typography>
-              </Box>
-            )}
-
-            {selectedNode.progress !== undefined && (
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="caption" sx={{ color: '#ff9800' }}>
-                  Progress: {selectedNode.progress}%
-                </Typography>
-                <LinearProgress
-                  variant="determinate"
-                  value={selectedNode.progress}
-                  sx={{ mt: 0.5 }}
-                />
-              </Box>
-            )}
-
-            <Typography variant="caption" sx={{ color: '#666' }}>
-              {new Date(selectedNode.timestamp).toLocaleString()}
-            </Typography>
-
-            {selectedNode.metadata && (
-              <Box sx={{ mt: 2 }}>
-                <Typography variant="caption" sx={{ color: '#888', display: 'block', mb: 1 }}>
-                  Metadata:
-                </Typography>
-                <pre style={{
-                  fontSize: '10px',
-                  color: '#666',
-                  background: '#0a0a0a',
-                  padding: '8px',
-                  borderRadius: 4,
-                  overflow: 'auto',
-                  maxHeight: '200px'
-                }}>
-                  {JSON.stringify(selectedNode.metadata, null, 2)}
-                </pre>
-              </Box>
-            )}
-          </Paper>
-        </Box>
-      )}
     </Box>
   );
 };

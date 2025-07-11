@@ -1,0 +1,64 @@
+[
+  {
+    "id": "root_decision",
+    "type": "decision",
+    "title": "🚀 Real Alpha Hunt",
+    "content": "Initiating real autonomous alpha hunting with paper trading",
+    "status": "completed",
+    "parent": null,
+    "timestamp": "2025-07-11T15:01:28.114924",
+    "metadata": {
+      "real_system": true,
+      "paper_trading": true
+    }
+  },
+  {
+    "id": "market_analysis",
+    "type": "analysis",
+    "title": "📊 Real Market Analysis",
+    "content": "Analyzing current market conditions and identifying opportunities",
+    "status": "completed",
+    "parent": "root_decision",
+    "timestamp": "2025-07-11T15:01:28.115898",
+    "metadata": {
+      "phase": "market_analysis"
+    }
+  },
+  {
+    "id": "alpha_discovery",
+    "type": "analysis",
+    "title": "🎯 Real Alpha Discovery",
+    "content": "Using AI agents to discover real alpha opportunities",
+    "status": "completed",
+    "parent": "market_analysis",
+    "timestamp": "2025-07-11T15:01:31.129910",
+    "metadata": {
+      "phase": "alpha_discovery"
+    }
+  },
+  {
+    "id": "strategy_generation",
+    "type": "strategy",
+    "title": "🧠 Real Strategy Generation",
+    "content": "Generating real trading strategies based on alpha insights",
+    "status": "completed",
+    "parent": "alpha_discovery",
+    "timestamp": "2025-07-11T15:01:47.809300",
+    "metadata": {
+      "phase": "strategy_generation"
+    }
+  },
+  {
+    "id": "paper_execution",
+    "type": "execution",
+    "title": "📝 Paper Trade Execution",
+    "content": "Executing paper trades based on generated strategies",
+    "status": "completed",
+    "parent": "strategy_generation",
+    "timestamp": "2025-07-11T15:01:48.811457",
+    "metadata": {
+      "phase": "paper_execution",
+      "paper_trading": true
+    }
+  }
+]

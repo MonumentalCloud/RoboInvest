@@ -22,7 +22,9 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
 from agents.parallel_execution_system import execution_engine, ExecutionPriority
 from agents.enhanced_autonomous_agent import EnhancedAutonomousAgent
+from autonomous_trading_system import AutonomousTradingSystem
 from tools.data_fetcher import data_fetcher
+from core.central_event_bus import central_event_bus
 
 class ContinuousResearchService:
     """
@@ -47,43 +49,52 @@ class ContinuousResearchService:
         self.db_path = Path("research_data/research.db")
         self._init_database()
         
+        # Initialize autonomous trading system for Monte Carlo search
+        self.autonomous_trader = AutonomousTradingSystem()
+        
         # Research configuration
         self.research_cycles = {
             "alpha_discovery": {
                 "interval": 900,  # 15 minutes
                 "last_run": time.time() - 1000,  # Force immediate run for testing
                 "agent_specialization": "alpha_hunting",
-                "enabled": True
+                "enabled": True,
+                "monte_carlo_enabled": True
             },
             "market_monitoring": {
                 "interval": 600,  # 10 minutes  
                 "last_run": time.time() - 700,  # Force immediate run for testing
                 "agent_specialization": "market_analysis",
-                "enabled": True
+                "enabled": True,
+                "monte_carlo_enabled": True
             },
             "sentiment_tracking": {
                 "interval": 1200,  # 20 minutes
                 "last_run": time.time() - 1300,  # Force immediate run for testing
                 "agent_specialization": "sentiment_analysis", 
-                "enabled": True
+                "enabled": True,
+                "monte_carlo_enabled": False
             },
             "technical_analysis": {
                 "interval": 1800,  # 30 minutes
                 "last_run": time.time() - 1900,  # Force immediate run for testing
                 "agent_specialization": "technical_analysis",
-                "enabled": True
+                "enabled": True,
+                "monte_carlo_enabled": True
             },
             "risk_assessment": {
                 "interval": 3600,  # 1 hour
                 "last_run": time.time() - 3700,  # Force immediate run for testing
                 "agent_specialization": "risk_assessment",
-                "enabled": True
+                "enabled": True,
+                "monte_carlo_enabled": True
             },
             "deep_research": {
                 "interval": 7200,  # 2 hours
                 "last_run": time.time() - 7300,  # Force immediate run for testing
                 "agent_specialization": "fundamental_research",
-                "enabled": True
+                "enabled": True,
+                "monte_carlo_enabled": True
             }
         }
         
@@ -183,6 +194,31 @@ class ContinuousResearchService:
             conn.commit()
             conn.close()
             
+            # Also save research tree to central event bus database
+            if "decision_tree" in result:
+                tree_id = result["decision_tree"].get("id", f"{track_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
+                agent_name = result["decision_tree"].get("agent_name", f"enhanced_{track_name}_agent")
+                root_id = result["decision_tree"].get("root_id", "root")
+                
+                # Prepare tree data for central database
+                tree_data = {
+                    "research_track": track_name,
+                    "specialization": specialization,
+                    "completed_at": datetime.now().isoformat(),
+                    "decision_tree": result["decision_tree"],
+                    "tree_metadata": {
+                        "total_nodes": len(result["decision_tree"].get("nodes", {})),
+                        "insights_count": insights_count,
+                        "agent_name": agent_name
+                    },
+                    "ai_thoughts": result.get("ai_thoughts", []),
+                    "insights": result.get("insights", []),
+                    "events": result.get("events", [])
+                }
+                
+                central_event_bus.save_research_tree(tree_id, agent_name, track_name, root_id, tree_data)
+                self._log_to_db("INFO", f"🌳 Saved research tree {tree_id} to central database", track_name)
+            
             self._log_to_db("INFO", f"💾 Saved research results for {track_name}", track_name)
             
         except Exception as e:
@@ -271,40 +307,148 @@ class ContinuousResearchService:
         self._log_to_db("INFO", "🛑 Research service stopped")
     
     async def _run_research_track(self, track_name: str, config: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-        """Run a specific research track."""
-        
+        """Run a single research track."""
         try:
-            # Broadcast research track start
-            self._log_to_db("INFO", f"🔬 Starting {track_name} research track", track_name)
+            print(f"🔍 Running research track: {track_name}")
             
-            specialization = config["agent_specialization"]
+            # Check for ongoing research to continue
+            ongoing_research = await self._check_ongoing_research(track_name, config["agent_specialization"])
             
-            # Create research objective based on track type and current market conditions
-            research_objective = await self._generate_research_objective(track_name, specialization)
-            
-            # Get current market context
-            market_context = await self._get_market_context()
-            
-            # Broadcast research objective
-            self._log_to_db("INFO", f"🎯 Research objective: {research_objective[:100]}...", track_name)
-            
-            # Run the research based on track type
-            if track_name == "deep_research":
-                result = await self._run_deep_research(research_objective, market_context)
+            if ongoing_research:
+                print(f"🔄 Continuing ongoing research for {track_name}")
+                result = await self._continue_ongoing_research(ongoing_research, track_name, config)
             else:
-                result = await self._run_single_agent_research(specialization, research_objective, market_context)
+                print(f"🆕 Starting new research for {track_name}")
+                # Generate research objective
+                research_objective = await self._generate_research_objective(track_name, config["agent_specialization"])
+                
+                # Get market context
+                market_context = await self._get_market_context()
+                
+                # Run the main research cycle
+                if track_name == "deep_research":
+                    result = await self._run_deep_research(research_objective, market_context)
+                elif track_name == "monte_carlo_search":
+                    result = await self._run_monte_carlo_search(track_name, research_objective, market_context)
+                else:
+                    result = await self._run_single_agent_research(config["agent_specialization"], research_objective, market_context)
+                
+                # Run Monte Carlo search if enabled for this track
+                if result and config.get("monte_carlo_enabled", False):
+                    print(f"🎯 Running Monte Carlo search for {track_name}")
+                    mcts_result = await self._run_monte_carlo_search(track_name, research_objective, market_context)
+                    if mcts_result:
+                        result["monte_carlo_search"] = mcts_result
+                        print(f"✅ Monte Carlo search integrated for {track_name}")
             
             if result:
-                # Broadcast research completion
-                insights_count = len(result.get("insights", []))
-                self._log_to_db("INFO", f"✅ {track_name} research complete - {insights_count} insights generated", track_name)
+                # Save result to database
+                self._save_research_result(track_name, result)
+                
+                # Update system stats
+                self.system_stats["successful_cycles"] += 1
+                self.system_stats["insights_generated"] += len(result.get("insights", []))
+                
+                print(f"✅ Research track {track_name} completed successfully")
+                return result
             else:
-                self._log_to_db("ERROR", f"❌ {track_name} research failed", track_name)
+                self.system_stats["failed_cycles"] += 1
+                print(f"❌ Research track {track_name} failed")
+                return None
+                
+        except Exception as e:
+            self.system_stats["failed_cycles"] += 1
+            self._log_to_db("ERROR", f"Research track failed: {e}", track_name)
+            print(f"❌ Research track {track_name} error: {e}")
+            return None
+    
+    async def _check_ongoing_research(self, track_name: str, specialization: str) -> Optional[Dict[str, Any]]:
+        """Check if there's ongoing research for this track."""
+        try:
+            from core.central_event_bus import central_event_bus
+            
+            # Check for existing research trees
+            existing_trees = central_event_bus.get_research_trees(agent_name=f"research_agent_{specialization}", track_name=track_name)
+            
+            if existing_trees:
+                latest_tree = existing_trees[0]
+                tree_data = latest_tree["tree_data"]
+                
+                # Check if tree has active nodes or ongoing Monte Carlo search
+                active_nodes = 0
+                mcts_nodes = 0
+                
+                for node_dict in tree_data.get("nodes", {}).values():
+                    if node_dict.get("status") in ["pending", "in_progress"]:
+                        active_nodes += 1
+                    if node_dict.get("monte_carlo_visits", 0) > 0:
+                        mcts_nodes += 1
+                
+                if active_nodes > 0 or mcts_nodes > 0:
+                    return {
+                        "tree_id": latest_tree["tree_id"],
+                        "tree_data": tree_data,
+                        "active_nodes": active_nodes,
+                        "mcts_nodes": mcts_nodes,
+                        "last_updated": latest_tree["updated_at"]
+                    }
+            
+            return None
+            
+        except Exception as e:
+            print(f"❌ Failed to check ongoing research: {e}")
+            return None
+    
+    async def _continue_ongoing_research(self, ongoing_research: Dict[str, Any], track_name: str, config: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """Continue ongoing research from where it left off."""
+        try:
+            from agents.enhanced_autonomous_agent import EnhancedAutonomousAgent
+            from agents.decision_tree import DecisionTree
+            
+            # Create research agent with existing tree
+            research_agent = EnhancedAutonomousAgent(
+                agent_id=f"research_agent_{config['agent_specialization']}", 
+                specialization=config["agent_specialization"]
+            )
+            
+            # Load existing decision tree
+            research_agent.decision_tree = DecisionTree(
+                tree_id=ongoing_research["tree_id"],
+                agent_name=f"research_agent_{config['agent_specialization']}",
+                track_name=track_name
+            )
+            
+            print(f"🔄 Continuing research with {ongoing_research['active_nodes']} active nodes and {ongoing_research['mcts_nodes']} MCTS nodes")
+            
+            # Continue the research cycle
+            market_context = await self._get_market_context()
+            
+            # Continue with existing research objective or generate new one
+            if research_agent.decision_tree.root_id and research_agent.decision_tree.root_id in research_agent.decision_tree.nodes:
+                root_node = research_agent.decision_tree.nodes[research_agent.decision_tree.root_id]
+                research_objective = root_node.content.replace("Research Objective: ", "")
+            else:
+                research_objective = await self._generate_research_objective(track_name, config["agent_specialization"])
+            
+            # Continue research cycle
+            result = await research_agent.autonomous_research_cycle(
+                research_objective=research_objective,
+                context=market_context
+            )
+            
+            # Continue Monte Carlo search if it was in progress
+            if config.get("monte_carlo_enabled", False) and ongoing_research["mcts_nodes"] > 0:
+                print(f"🎯 Continuing Monte Carlo search for {track_name}")
+                await research_agent.decision_tree.run_monte_carlo_search(
+                    iterations=20,  # Continue with fewer iterations
+                    research_agent=research_agent
+                )
+                result["monte_carlo_continued"] = True
             
             return result
             
         except Exception as e:
-            self._log_to_db("ERROR", f"❌ {track_name} research error: {str(e)}", track_name)
+            print(f"❌ Failed to continue ongoing research: {e}")
             return None
     
     async def _run_deep_research(self, research_objective: str, market_context: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -322,16 +466,73 @@ class ContinuousResearchService:
             return None
     
     async def _run_single_agent_research(self, specialization: str, research_objective: str, market_context: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-        """Run research using a single enhanced agent."""
+        """Run research with a single enhanced autonomous agent."""
         try:
-            agent = EnhancedAutonomousAgent(f"research_agent_{specialization}", specialization)
+            agent = EnhancedAutonomousAgent(agent_id=f"research_agent_{specialization}", specialization=specialization)
             result = await agent.autonomous_research_cycle(
                 research_objective=research_objective,
                 context=market_context
             )
             return result
         except Exception as e:
-            self._log_to_db("ERROR", f"Single agent research failed: {e}", "deep_research") # Assuming deep_research for now
+            self._log_to_db("ERROR", f"Single agent research failed: {e}", specialization)
+            return None
+    
+    async def _run_monte_carlo_search(self, track_name: str, research_objective: str, market_context: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """Run Monte Carlo search for decision optimization."""
+        try:
+            print(f"🎯 Running Monte Carlo search for {track_name}")
+            
+            # Create opportunity data for Monte Carlo search
+            opportunity_data = {
+                "theme": f"{track_name} research",
+                "thesis": research_objective,
+                "catalysts": market_context.get("catalysts", []),
+                "risk_factors": market_context.get("risk_factors", []),
+                "market_context": market_context
+            }
+            
+            # Run Monte Carlo search
+            mcts_result = await self.autonomous_trader.run_monte_carlo_decision_search(opportunity_data)
+            
+            # Also run Monte Carlo search on the research agent's decision tree if available
+            if hasattr(self.autonomous_trader, 'decision_tree') and self.autonomous_trader.decision_tree:
+                # Create a research agent for Monte Carlo simulation
+                from agents.enhanced_autonomous_agent import EnhancedAutonomousAgent
+                research_agent = EnhancedAutonomousAgent(
+                    agent_id=f"mcts_agent_{track_name}", 
+                    specialization=track_name
+                )
+                
+                # Run Monte Carlo search with research agent
+                await self.autonomous_trader.decision_tree.run_monte_carlo_search(
+                    iterations=30, 
+                    research_agent=research_agent
+                )
+                
+            if mcts_result and "error" not in mcts_result:
+                print(f"✅ Monte Carlo search completed for {track_name}")
+                print(f"   Best confidence: {mcts_result.get('best_confidence', 0):.3f}")
+                print(f"   Tree nodes: {mcts_result.get('tree_summary', {}).get('total_nodes', 0)}")
+                
+                # Broadcast tree update to frontend
+                if self.autonomous_trader.decision_tree:
+                    await self.autonomous_trader.decision_tree._broadcast_tree_update()
+                
+                return {
+                    "monte_carlo_search": mcts_result,
+                    "track_name": track_name,
+                    "research_objective": research_objective,
+                    "market_context": market_context,
+                    "timestamp": datetime.now().isoformat()
+                }
+            else:
+                print(f"❌ Monte Carlo search failed for {track_name}")
+                return None
+                
+        except Exception as e:
+            self._log_to_db("ERROR", f"Monte Carlo search failed: {e}", track_name)
+            print(f"❌ Monte Carlo search error: {e}")
             return None
     
     async def _generate_research_objective(self, track_name: str, specialization: str) -> str:

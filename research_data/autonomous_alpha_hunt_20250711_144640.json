@@ -1,7 +1,7 @@
 {
   "research_track": "autonomous_alpha_hunt",
   "specialization": "autonomous_alpha_hunting",
-  "completed_at": "2025-07-11T14:48:26.218484",
+  "completed_at": "2025-07-11T14:46:40.174192",
   "decision_tree": [
     {
       "id": "root_decision",
@@ -10,7 +10,7 @@
       "content": "Initiating real autonomous alpha hunting with paper trading",
       "status": "completed",
       "parent": null,
-      "timestamp": "2025-07-11T14:48:03.270140",
+      "timestamp": "2025-07-11T14:45:58.631762",
       "metadata": {
         "real_system": true,
         "paper_trading": true
@@ -23,7 +23,7 @@
       "content": "Analyzing current market conditions and identifying opportunities",
       "status": "completed",
       "parent": "root_decision",
-      "timestamp": "2025-07-11T14:48:03.271022",
+      "timestamp": "2025-07-11T14:45:58.631943",
       "metadata": {
         "phase": "market_analysis"
       }
@@ -35,7 +35,7 @@
       "content": "Using AI agents to discover real alpha opportunities",
       "status": "completed",
       "parent": "market_analysis",
-      "timestamp": "2025-07-11T14:48:06.276716",
+      "timestamp": "2025-07-11T14:46:18.403856",
       "metadata": {
         "phase": "alpha_discovery"
       }
@@ -47,7 +47,7 @@
       "content": "Generating real trading strategies based on alpha insights",
       "status": "completed",
       "parent": "alpha_discovery",
-      "timestamp": "2025-07-11T14:48:20.189311",
+      "timestamp": "2025-07-11T14:46:31.534730",
       "metadata": {
         "phase": "strategy_generation"
       }
@@ -59,7 +59,7 @@
       "content": "Executing paper trades based on generated strategies",
       "status": "completed",
       "parent": "strategy_generation",
-      "timestamp": "2025-07-11T14:48:21.192591",
+      "timestamp": "2025-07-11T14:46:32.537061",
       "metadata": {
         "phase": "paper_execution",
         "paper_trading": true

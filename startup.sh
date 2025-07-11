@@ -121,7 +121,7 @@ echo "   Backend PID: $BACKEND_PID"
 # Start continuous research service
 echo "🔍 Starting continuous research service..."
 cd "$PROJECT_ROOT"
-nohup /usr/bin/python3 background_research_service.py > research.log 2>&1 &
+nohup /usr/bin/python3 scripts/background_research_service.py > research.log 2>&1 &
 RESEARCH_PID=$!
 echo "   Research Service PID: $RESEARCH_PID"
 

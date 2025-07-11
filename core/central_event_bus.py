@@ -103,6 +103,7 @@ class CentralEventBus:
         """Initialize SQLite database for event storage"""
         try:
             with sqlite3.connect(self.db_path) as conn:
+                # Events table
                 conn.execute("""
                     CREATE TABLE IF NOT EXISTS events (
                         event_id TEXT PRIMARY KEY,
@@ -118,16 +119,54 @@ class CentralEventBus:
                     )
                 """)
                 
+                # Research trees table
+                conn.execute("""
+                    CREATE TABLE IF NOT EXISTS research_trees (
+                        tree_id TEXT PRIMARY KEY,
+                        agent_name TEXT NOT NULL,
+                        track_name TEXT NOT NULL,
+                        root_id TEXT NOT NULL,
+                        tree_data TEXT NOT NULL,
+                        status TEXT DEFAULT 'active',
+                        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+                    )
+                """)
+                
+                # Research tree nodes table
+                conn.execute("""
+                    CREATE TABLE IF NOT EXISTS research_tree_nodes (
+                        node_id TEXT PRIMARY KEY,
+                        tree_id TEXT NOT NULL,
+                        parent_id TEXT,
+                        node_type TEXT NOT NULL,
+                        title TEXT NOT NULL,
+                        content TEXT NOT NULL,
+                        status TEXT DEFAULT 'pending',
+                        metadata TEXT,
+                        confidence REAL,
+                        progress INTEGER DEFAULT 0,
+                        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                        FOREIGN KEY (tree_id) REFERENCES research_trees(tree_id),
+                        FOREIGN KEY (parent_id) REFERENCES research_tree_nodes(node_id)
+                    )
+                """)
+                
                 # Create indexes for efficient querying
                 conn.execute("CREATE INDEX IF NOT EXISTS idx_timestamp ON events(timestamp)")
                 conn.execute("CREATE INDEX IF NOT EXISTS idx_event_type ON events(event_type)")
                 conn.execute("CREATE INDEX IF NOT EXISTS idx_source ON events(source)")
                 conn.execute("CREATE INDEX IF NOT EXISTS idx_priority ON events(priority)")
+                conn.execute("CREATE INDEX IF NOT EXISTS idx_tree_agent ON research_trees(agent_name)")
+                conn.execute("CREATE INDEX IF NOT EXISTS idx_tree_track ON research_trees(track_name)")
+                conn.execute("CREATE INDEX IF NOT EXISTS idx_node_tree ON research_tree_nodes(tree_id)")
+                conn.execute("CREATE INDEX IF NOT EXISTS idx_node_parent ON research_tree_nodes(parent_id)")
                 
                 conn.commit()
-                logger.info(f"📊 Event database initialized: {self.db_path}")
+                logger.info(f"📊 Event and research database initialized: {self.db_path}")
         except Exception as e:
-            logger.error(f"Failed to initialize event database: {e}")
+            logger.error(f"Failed to initialize database: {e}")
     
     async def start(self):
         """Start the event processing loop"""
@@ -283,41 +322,159 @@ class CentralEventBus:
         """Get event statistics"""
         try:
             with sqlite3.connect(self.db_path) as conn:
-                # Total events
-                total = conn.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+                # Event statistics
+                total_events = conn.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+                events_by_type = dict(conn.execute("""
+                    SELECT event_type, COUNT(*) FROM events GROUP BY event_type
+                """).fetchall())
+                events_by_priority = dict(conn.execute("""
+                    SELECT priority, COUNT(*) FROM events GROUP BY priority
+                """).fetchall())
+                events_by_source = dict(conn.execute("""
+                    SELECT source, COUNT(*) FROM events GROUP BY source
+                """).fetchall())
                 
-                # Events by type
-                type_counts = {}
-                cursor = conn.execute("SELECT event_type, COUNT(*) FROM events GROUP BY event_type")
-                for row in cursor.fetchall():
-                    type_counts[row[0]] = row[1]
-                
-                # Events by priority
-                priority_counts = {}
-                cursor = conn.execute("SELECT priority, COUNT(*) FROM events GROUP BY priority")
-                for row in cursor.fetchall():
-                    priority_counts[row[0]] = row[1]
-                
-                # Events by source
-                source_counts = {}
-                cursor = conn.execute("SELECT source, COUNT(*) FROM events GROUP BY source")
-                for row in cursor.fetchall():
-                    source_counts[row[0]] = row[1]
-                
-                # Recent activity (last 24 hours)
-                yesterday = (datetime.now() - timedelta(days=1)).isoformat()
-                recent = conn.execute("SELECT COUNT(*) FROM events WHERE timestamp >= ?", (yesterday,)).fetchone()[0]
+                # Research tree statistics
+                total_trees = conn.execute("SELECT COUNT(*) FROM research_trees").fetchone()[0]
+                total_nodes = conn.execute("SELECT COUNT(*) FROM research_tree_nodes").fetchone()[0]
+                trees_by_agent = dict(conn.execute("""
+                    SELECT agent_name, COUNT(*) FROM research_trees GROUP BY agent_name
+                """).fetchall())
                 
                 return {
-                    "total_events": total,
-                    "recent_events_24h": recent,
-                    "by_type": type_counts,
-                    "by_priority": priority_counts,
-                    "by_source": source_counts
+                    "total_events": total_events,
+                    "events_by_type": events_by_type,
+                    "events_by_priority": events_by_priority,
+                    "events_by_source": events_by_source,
+                    "total_research_trees": total_trees,
+                    "total_research_nodes": total_nodes,
+                    "trees_by_agent": trees_by_agent,
+                    "last_updated": datetime.now().isoformat()
                 }
         except Exception as e:
             logger.error(f"Failed to get event statistics: {e}")
             return {}
+    
+    def _clean_for_json(self, obj: Any) -> Any:
+        """Clean object for JSON serialization by removing non-serializable items"""
+        if isinstance(obj, dict):
+            return {k: self._clean_for_json(v) for k, v in obj.items() 
+                   if not k.startswith('_') and not callable(v)}
+        elif isinstance(obj, list):
+            return [self._clean_for_json(item) for item in obj]
+        elif isinstance(obj, (str, int, float, bool, type(None))):
+            return obj
+        else:
+            return str(obj)  # Convert other types to string
+
+    def save_research_tree(self, tree_id: str, agent_name: str, track_name: str, root_id: str, tree_data: Dict[str, Any]):
+        """Save a research tree to the database"""
+        try:
+            # Clean the tree_data for JSON serialization
+            cleaned_tree_data = self._clean_for_json(tree_data)
+            
+            with sqlite3.connect(self.db_path) as conn:
+                # Save tree metadata
+                conn.execute("""
+                    INSERT OR REPLACE INTO research_trees (tree_id, agent_name, track_name, root_id, tree_data, updated_at)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                """, (
+                    tree_id,
+                    agent_name,
+                    track_name,
+                    root_id,
+                    json.dumps(cleaned_tree_data),
+                    datetime.now().isoformat()
+                ))
+                
+                # Save tree nodes
+                if 'nodes' in tree_data:
+                    for node_id, node_data in tree_data['nodes'].items():
+                        conn.execute("""
+                            INSERT OR REPLACE INTO research_tree_nodes 
+                            (node_id, tree_id, parent_id, node_type, title, content, status, metadata, confidence, progress, updated_at)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        """, (
+                            node_id,
+                            tree_id,
+                            node_data.get('parent_id'),
+                            node_data.get('type', 'unknown'),
+                            node_data.get('title', node_data.get('content', '')),
+                            node_data.get('content', ''),
+                            node_data.get('status', 'pending'),
+                            json.dumps(self._clean_for_json(node_data.get('metadata', {}))),
+                            node_data.get('confidence'),
+                            node_data.get('progress', 0),
+                            datetime.now().isoformat()
+                        ))
+                
+                conn.commit()
+                logger.info(f"📊 Saved research tree {tree_id} to database")
+        except Exception as e:
+            logger.error(f"Failed to save research tree: {e}")
+    
+    def get_research_trees(self, agent_name: Optional[str] = None, track_name: Optional[str] = None) -> List[Dict[str, Any]]:
+        """Get research trees from database"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                query = "SELECT * FROM research_trees WHERE 1=1"
+                params = []
+                
+                if agent_name:
+                    query += " AND agent_name = ?"
+                    params.append(agent_name)
+                
+                if track_name:
+                    query += " AND track_name = ?"
+                    params.append(track_name)
+                
+                query += " ORDER BY created_at DESC"
+                
+                trees = []
+                for row in conn.execute(query, params).fetchall():
+                    tree_data = json.loads(row[4])  # tree_data column
+                    trees.append({
+                        "tree_id": row[0],
+                        "agent_name": row[1],
+                        "track_name": row[2],
+                        "root_id": row[3],
+                        "tree_data": tree_data,
+                        "status": row[5],
+                        "created_at": row[6],
+                        "updated_at": row[7]
+                    })
+                
+                return trees
+        except Exception as e:
+            logger.error(f"Failed to get research trees: {e}")
+            return []
+    
+    def get_research_tree_nodes(self, tree_id: str) -> List[Dict[str, Any]]:
+        """Get all nodes for a specific research tree"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                nodes = []
+                for row in conn.execute("""
+                    SELECT * FROM research_tree_nodes WHERE tree_id = ? ORDER BY created_at
+                """, (tree_id,)).fetchall():
+                    nodes.append({
+                        "id": row[0],
+                        "tree_id": row[1],
+                        "parent": row[2],
+                        "type": row[3],
+                        "title": row[4],
+                        "content": row[5],
+                        "status": row[6],
+                        "metadata": json.loads(row[7]) if row[7] else {},
+                        "confidence": row[8],
+                        "progress": row[9],
+                        "timestamp": row[10]
+                    })
+                
+                return nodes
+        except Exception as e:
+            logger.error(f"Failed to get research tree nodes: {e}")
+            return [] 
 
 
 # Global event bus instance

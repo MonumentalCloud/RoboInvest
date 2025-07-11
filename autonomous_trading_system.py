@@ -5,10 +5,12 @@ A true alpha-hunting system that discovers opportunities, researches them, and c
 
 import json
 import time
+import asyncio
 from typing import Dict, List, Any, Optional
 from datetime import datetime
 
 from agents.autonomous_alpha_hunter import autonomous_alpha_hunter
+from agents.decision_tree import DecisionTree, NodeType
 from tools.web_researcher import web_researcher
 from tools.calculator import calculator
 from tools.data_fetcher import data_fetcher
@@ -33,7 +35,108 @@ class AutonomousTradingSystem:
         self.active_strategies = []
         self.performance_history = []
         self.is_running = False
-        
+        self.decision_tree: Optional[DecisionTree] = None
+    
+    async def run_monte_carlo_decision_search(self, opportunity_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Run Monte Carlo search on decision tree for strategy optimization."""
+        try:
+            # Create decision tree for this opportunity
+            self.decision_tree = DecisionTree(agent_name="AutonomousTrader")
+            
+            # Create root node
+            root_id = self.decision_tree.create_root(
+                content=f"Strategy Decision: {opportunity_data.get('theme', 'Alpha Opportunity')}",
+                data=opportunity_data
+            )
+            
+            # Add hypothesis nodes
+            hypotheses = [
+                "High conviction momentum strategy",
+                "Mean reversion opportunity", 
+                "Catalyst-driven position",
+                "Risk-adjusted position sizing",
+                "Multi-timeframe approach"
+            ]
+            
+            hypothesis_ids = self.decision_tree.expand_hypotheses(root_id, hypotheses)
+            
+            # Add research paths for each hypothesis
+            for hypothesis_id in hypothesis_ids:
+                research_tasks = [
+                    {"description": "Technical analysis", "confidence": 0.7},
+                    {"description": "Fundamental analysis", "confidence": 0.8},
+                    {"description": "Sentiment analysis", "confidence": 0.6},
+                    {"description": "Risk assessment", "confidence": 0.9}
+                ]
+                self.decision_tree.expand_research_paths(hypothesis_id, research_tasks)
+            
+            # Run Monte Carlo search
+            logger.info("AutonomousTrader | Starting Monte Carlo decision search")
+            await self.decision_tree.run_monte_carlo_search(iterations=50, research_agent=self)
+            
+            # Get best path
+            best_path = self.decision_tree.find_best_path()
+            best_confidence = self.decision_tree.best_confidence
+            
+            logger.info(f"AutonomousTrader | Monte Carlo search complete. Best confidence: {best_confidence:.3f}")
+            
+            return {
+                "best_path": best_path,
+                "best_confidence": best_confidence,
+                "tree_summary": self.decision_tree.get_summary()
+            }
+            
+        except Exception as e:
+            logger.error(f"Monte Carlo search error: {e}")
+            return {"error": str(e)}
+    
+    async def _autonomous_cycle_async(self) -> Dict[str, Any]:
+        """Async version of autonomous cycle with Monte Carlo search."""
+        try:
+            cycle_start = time.time()
+            
+            # Step 1: Hunt for alpha opportunities
+            logger.info("AutonomousTrader | Hunting for alpha opportunities")
+            alpha_strategy = autonomous_alpha_hunter.hunt_for_alpha()
+            
+            if not alpha_strategy or alpha_strategy.get("confidence", 0) < 0.3:
+                logger.warning("AutonomousTrader | No viable alpha opportunities found")
+                return self._create_fallback_strategy()
+            
+            # Step 2: Run Monte Carlo search on decision tree
+            opportunity_data = {
+                "theme": alpha_strategy.get("opportunity_theme", "Unknown"),
+                "thesis": alpha_strategy.get("alpha_thesis", ""),
+                "catalysts": alpha_strategy.get("catalysts", []),
+                "risk_factors": [alpha_strategy.get("risk_level", "MEDIUM")]
+            }
+            
+            mcts_result = await self.run_monte_carlo_decision_search(opportunity_data)
+            
+            # Step 3: Deep research on the opportunity
+            logger.info(f"AutonomousTrader | Researching opportunity: {alpha_strategy.get('opportunity_theme', 'Unknown')}")
+            research_report = await web_researcher.research_opportunity(opportunity_data, [alpha_strategy.get("primary_ticker", "SPY")])
+            
+            # Step 4: Enhance strategy with research insights
+            enhanced_strategy = self._enhance_strategy_with_research(alpha_strategy, research_report)
+            
+            # Step 5: Final validation and risk assessment
+            final_strategy = self._validate_final_strategy(enhanced_strategy)
+            
+            # Add Monte Carlo results
+            final_strategy["monte_carlo_search"] = mcts_result
+            
+            cycle_time = time.time() - cycle_start
+            final_strategy["cycle_time_seconds"] = cycle_time
+            
+            logger.info(f"AutonomousTrader | Async cycle complete in {cycle_time:.2f}s - Strategy: {final_strategy.get('action', 'HOLD')}")
+            
+            return final_strategy
+            
+        except Exception as e:
+            logger.error(f"Async autonomous cycle error: {e}")
+            return self._create_fallback_strategy()
+    
     def start_autonomous_trading(self, max_iterations: int = 5) -> Dict[str, Any]:
         """
         Start the autonomous trading system.
@@ -53,8 +156,8 @@ class AutonomousTradingSystem:
             for iteration in range(max_iterations):
                 logger.info(f"AutonomousTrader | Iteration {iteration + 1}/{max_iterations}")
                 
-                # Single iteration of the autonomous trading cycle
-                iteration_result = self._autonomous_cycle()
+                # Run async cycle
+                iteration_result = asyncio.run(self._autonomous_cycle_async())
                 
                 results["iterations"].append({
                     "iteration": iteration + 1,
@@ -114,8 +217,8 @@ class AutonomousTradingSystem:
             
             tickers = [alpha_strategy.get("primary_ticker", "SPY")]
             
-            # Comprehensive web research
-            research_report = web_researcher.research_opportunity(opportunity_data, tickers)
+            # Comprehensive web research (sync wrapper)
+            research_report = asyncio.run(web_researcher.research_opportunity(opportunity_data, tickers))
             
             # Step 3: Enhance strategy with research insights
             enhanced_strategy = self._enhance_strategy_with_research(alpha_strategy, research_report)
