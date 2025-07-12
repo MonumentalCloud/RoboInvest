@@ -132,4 +132,4 @@ __pycache__/
 
 # Runtime files
 *.pid
-*.lock 
+*.lock meta_agent_data/

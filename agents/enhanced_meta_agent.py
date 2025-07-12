@@ -184,6 +184,25 @@ class EnhancedMetaAgent:
             )
         ''')
         
+        # System reports table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS system_reports (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT NOT NULL,
+                report_data TEXT NOT NULL,
+                report_type TEXT NOT NULL
+            )
+        ''')
+        
+        # System status table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS system_status (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT NOT NULL,
+                status_data TEXT NOT NULL
+            )
+        ''')
+        
         conn.commit()
         conn.close()
     
@@ -676,12 +695,8 @@ class EnhancedMetaAgent:
             "recommendations": await self._generate_recommendations()
         }
         
-        # Save report
-        report_path = Path("meta_agent_data/system_reports")
-        report_path.mkdir(exist_ok=True)
-        
-        with open(report_path / f"system_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json", 'w') as f:
-            json.dump(report, f, indent=2, default=str)
+        # Store report in database instead of JSON file
+        await self._store_system_report(report)
         
         return report
     
@@ -754,12 +769,8 @@ class EnhancedMetaAgent:
             "last_metrics_collection": self.system_metrics_history[-1].timestamp.isoformat() if self.system_metrics_history else None
         }
         
-        # Save status
-        status_path = Path("meta_agent_data/system_status.json")
-        status_path.parent.mkdir(exist_ok=True)
-        
-        with open(status_path, 'w') as f:
-            json.dump(status, f, indent=2, default=str)
+        # Store status in database instead of JSON file
+        await self._store_system_status(status)
     
     async def _store_system_metrics(self, metrics: SystemMetrics):
         """Store system metrics in database."""
@@ -920,6 +931,49 @@ class EnhancedMetaAgent:
             
         except Exception as e:
             logger.error(f"Error cleaning up old metrics: {e}")
+    
+    async def _store_system_report(self, report: Dict[str, Any]):
+        """Store system report in database."""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            
+            cursor.execute('''
+                INSERT INTO system_reports 
+                (timestamp, report_data, report_type)
+                VALUES (?, ?, ?)
+            ''', (
+                datetime.now().isoformat(),
+                json.dumps(report),
+                "system_report"
+            ))
+            
+            conn.commit()
+            conn.close()
+            
+        except Exception as e:
+            logger.error(f"Error storing system report: {e}")
+    
+    async def _store_system_status(self, status: Dict[str, Any]):
+        """Store system status in database."""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            
+            cursor.execute('''
+                INSERT OR REPLACE INTO system_status 
+                (timestamp, status_data)
+                VALUES (?, ?)
+            ''', (
+                datetime.now().isoformat(),
+                json.dumps(status)
+            ))
+            
+            conn.commit()
+            conn.close()
+            
+        except Exception as e:
+            logger.error(f"Error storing system status: {e}")
     
     def get_system_status(self) -> Dict[str, Any]:
         """Get current system status."""
