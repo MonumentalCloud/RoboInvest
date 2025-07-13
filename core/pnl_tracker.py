@@ -332,11 +332,15 @@ class PnLTracker:
         if not self.closed_trades:
             return {
                 "total_trades": 0,
-                "total_pnl": 0,
+                "winning_trades": 0,
+                "losing_trades": 0,
                 "win_rate": 0,
-                "avg_win": 0,
-                "avg_loss": 0,
-                "profit_factor": 0
+                "total_pnl": 0,
+                "avg_pnl": 0,
+                "max_drawdown": 0,
+                "sharpe_ratio": 0,
+                "current_positions": len(self.open_positions),
+                "unrealized_pnl": 0
             }
         
         total_pnl = sum(trade.pnl for trade in self.closed_trades)
@@ -344,19 +348,57 @@ class PnLTracker:
         losing_trades = [trade for trade in self.closed_trades if trade.pnl < 0]
         
         win_rate = len(winning_trades) / len(self.closed_trades) * 100
-        avg_win = sum(trade.pnl for trade in winning_trades) / len(winning_trades) if winning_trades else 0
-        avg_loss = sum(trade.pnl for trade in losing_trades) / len(losing_trades) if losing_trades else 0
-        profit_factor = abs(avg_win / avg_loss) if avg_loss != 0 else 0
+        avg_pnl = total_pnl / len(self.closed_trades)
+        
+        # Calculate max drawdown (simplified)
+        cumulative_pnl = 0
+        max_pnl = 0
+        max_drawdown = 0
+        for trade in self.closed_trades:
+            cumulative_pnl += trade.pnl
+            max_pnl = max(max_pnl, cumulative_pnl)
+            drawdown = max_pnl - cumulative_pnl
+            max_drawdown = max(max_drawdown, drawdown)
+        
+        # Calculate Sharpe ratio (simplified, assuming 0% risk-free rate)
+        if len(self.closed_trades) > 1:
+            returns = [trade.pnl for trade in self.closed_trades]
+            avg_return = sum(returns) / len(returns)
+            variance = sum((r - avg_return) ** 2 for r in returns) / (len(returns) - 1)
+            std_dev = variance ** 0.5
+            sharpe_ratio = avg_return / std_dev if std_dev > 0 else 0
+        else:
+            sharpe_ratio = 0
         
         return {
             "total_trades": len(self.closed_trades),
-            "total_pnl": round(total_pnl, 2),
+            "winning_trades": len(winning_trades),
+            "losing_trades": len(losing_trades),
             "win_rate": round(win_rate, 2),
-            "avg_win": round(avg_win, 2),
-            "avg_loss": round(avg_loss, 2),
-            "profit_factor": round(profit_factor, 2),
-            "open_positions": len(self.open_positions)
+            "total_pnl": round(total_pnl, 2),
+            "avg_pnl": round(avg_pnl, 2),
+            "max_drawdown": round(max_drawdown, 2),
+            "sharpe_ratio": round(sharpe_ratio, 2),
+            "current_positions": len(self.open_positions),
+            "unrealized_pnl": 0  # Will be calculated separately
         }
+
+    def get_recent_trades(self, limit: int = 50) -> List[Dict[str, Any]]:
+        """Get recent trades for display."""
+        recent_trades = self.closed_trades[-limit:] if self.closed_trades else []
+        return [trade.to_dict() for trade in recent_trades]
+
+    def get_positions(self) -> List[Dict[str, Any]]:
+        """Get current positions for display."""
+        positions = []
+        for symbol, position in self.open_positions.items():
+            pos_dict = position.to_dict()
+            # Add current price placeholder (would be fetched from market data)
+            pos_dict["current_price"] = position.entry_price  # Placeholder
+            pos_dict["unrealized_pnl"] = 0  # Placeholder
+            pos_dict["unrealized_pnl_pct"] = 0  # Placeholder
+            positions.append(pos_dict)
+        return positions
 
 
 # Global instance

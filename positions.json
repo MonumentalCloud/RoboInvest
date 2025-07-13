@@ -1,9 +1,30 @@
 {
-  "SPY": {
-    "symbol": "SPY",
-    "quantity": 27.609332550942515,
-    "entry_price": 619.5309973510751,
-    "entry_time": "2025-07-10T16:07:49.146418",
+  "TSLA": {
+    "symbol": "TSLA",
+    "quantity": 19,
+    "entry_price": 156.09,
+    "entry_time": "2025-07-10T22:12:44.317126",
+    "side": "SELL"
+  },
+  "NVDA": {
+    "symbol": "NVDA",
+    "quantity": 20,
+    "entry_price": 287.66,
+    "entry_time": "2025-07-02T22:12:44.317129",
+    "side": "SELL"
+  },
+  "MSFT": {
+    "symbol": "MSFT",
+    "quantity": 20,
+    "entry_price": 187.81,
+    "entry_time": "2025-06-29T22:12:44.317133",
     "side": "BUY"
+  },
+  "GOOGL": {
+    "symbol": "GOOGL",
+    "quantity": 17,
+    "entry_price": 348.43,
+    "entry_time": "2025-07-08T22:12:44.317136",
+    "side": "SELL"
   }
 }

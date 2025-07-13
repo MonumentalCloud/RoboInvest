@@ -12,6 +12,7 @@ import time
 import random
 from utils.logger import logger  # type: ignore
 from core.config import config
+import os
 
 # Import Polygon for professional market data
 try:
@@ -26,30 +27,32 @@ class DataFetcher:
     """Enhanced market data fetcher with Polygon.io integration - Upgraded Plan Optimized."""
     
     def __init__(self):
+        """Initialize DataFetcher with Polygon.io upgraded plan."""
         self.cache = {}
-        self.cache_duration = timedelta(minutes=5)  # Shorter cache for upgraded plan
-        self.demo_mode = False  # Disable demo mode - use real data with Polygon API
-        self.last_request_time = 0  # Track last API request for rate limiting
-        self.upgraded_delay = 0.1  # 0.1 seconds between requests for upgraded plan (much faster)
+        self.cache_duration = timedelta(minutes=5)
+        self.last_request_time = 0
+        self.upgraded_delay = 0.1  # 100ms between requests for upgraded plan
         
-        # Initialize Polygon client if available and configured
+        # Initialize Polygon client
         self.polygon_client = None
-        if POLYGON_AVAILABLE and config.polygon_api_key and not self.demo_mode:
-            try:
-                self.polygon_client = RESTClient(api_key=config.polygon_api_key)
+        try:
+            from polygon import RESTClient
+            api_key = os.getenv('POLYGON_API_KEY')
+            if api_key:
+                self.polygon_client = RESTClient(api_key)
                 logger.info("🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled")
-            except Exception as e:
-                logger.error(f"Polygon client initialization failed: {e}")
+            else:
+                logger.error("❌ POLYGON_API_KEY not found in environment variables")
+        except Exception as e:
+            logger.error(f"Polygon client initialization failed: {e}")
         
-        # Determine data source priority
-        if self.demo_mode:
-            self.data_source = "demo_data"
-            logger.info("🎭 DataFetcher | Demo mode enabled - using realistic mock data")
-        elif self.polygon_client:
+        # Set data source
+        if self.polygon_client:
             self.data_source = "polygon_upgraded"
             logger.info("📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)")
         else:
             logger.error("❌ Polygon.io not available - please check API key configuration")
+            self.data_source = "unavailable"
     
     def _wait_for_rate_limit(self):
         """Implement minimal rate limiting for Polygon upgraded plan."""
@@ -91,13 +94,6 @@ class DataFetcher:
                     return cached_data
             
             logger.info(f"DataFetcher | Fetching {symbol} data for {period} via {self.data_source}")
-            
-            # Use demo data if in demo mode
-            if self.demo_mode:
-                data = self._get_demo_historical_data(symbol, period, interval)
-                if data:
-                    self.cache[cache_key] = (data, datetime.now())
-                    return data
             
             # Use Polygon for all data
             if self.polygon_client:
@@ -202,121 +198,6 @@ class DataFetcher:
             return {"error": str(e), "data": None}
     
 
-    
-    def _get_demo_historical_data(self, symbol: str, period: str, interval: str) -> Dict[str, Any]:
-        """Generate realistic demo data for testing purposes."""
-        try:
-            logger.info(f"🎭 Generating demo data for {symbol}")
-            
-            # Base prices for different symbols
-            base_prices = {
-                'SPY': 450.0,
-                'AAPL': 175.0,
-                'MSFT': 335.0,
-                'GOOGL': 140.0,
-                'TSLA': 250.0,
-                'NVDA': 800.0,
-                'VIX': 18.0,
-                'QQQ': 380.0,
-                'IWM': 195.0
-            }
-            
-            base_price = base_prices.get(symbol, 100.0)
-            
-            # Calculate number of data points
-            period_days = {
-                '1d': 1, '5d': 5, '1mo': 22, '3mo': 66, 
-                '6mo': 132, '1y': 252, '2y': 504, '5y': 1260, '10y': 2520
-            }
-            days = period_days.get(period, 5)
-            
-            # Generate dates
-            end_date = datetime.now()
-            dates = []
-            for i in range(days):
-                date = end_date - timedelta(days=days-1-i)
-                dates.append(date.strftime('%Y-%m-%d'))
-            
-            # Generate realistic price movements
-            opens = []
-            highs = []
-            lows = []
-            closes = []
-            volumes = []
-            
-            current_price = base_price
-            
-            for i in range(days):
-                # Add some realistic volatility
-                daily_change = random.uniform(-0.03, 0.03)  # ±3% daily movement
-                trend = 0.0002  # Slight upward trend
-                
-                if symbol == 'VIX':
-                    # VIX has different behavior
-                    daily_change = random.uniform(-0.15, 0.15)
-                    trend = -0.001
-                
-                # Calculate prices
-                open_price = current_price * (1 + random.uniform(-0.005, 0.005))
-                close_price = current_price * (1 + daily_change + trend)
-                
-                high_price = max(open_price, close_price) * (1 + random.uniform(0.001, 0.02))
-                low_price = min(open_price, close_price) * (1 - random.uniform(0.001, 0.02))
-                
-                opens.append(round(open_price, 2))
-                highs.append(round(high_price, 2))
-                lows.append(round(low_price, 2))
-                closes.append(round(close_price, 2))
-                
-                # Generate volume
-                base_volume = {
-                    'SPY': 50000000, 'AAPL': 45000000, 'MSFT': 25000000,
-                    'GOOGL': 20000000, 'TSLA': 35000000, 'NVDA': 30000000,
-                    'VIX': 0, 'QQQ': 25000000, 'IWM': 15000000
-                }.get(symbol, 10000000)
-                
-                volume = int(base_volume * random.uniform(0.5, 1.5))
-                volumes.append(volume)
-                
-                current_price = close_price
-            
-            # Calculate statistics
-            start_price = closes[0]
-            end_price = closes[-1]
-            total_return = ((end_price / start_price - 1) * 100) if start_price != 0 else 0
-            
-            result_data = {
-                "symbol": symbol,
-                "period": period,
-                "interval": interval,
-                "data": {
-                    "dates": dates,
-                    "prices": {
-                        "open": opens,
-                        "high": highs,
-                        "low": lows,
-                        "close": closes,
-                        "volume": volumes
-                    }
-                },
-                "stats": {
-                    "total_days": len(closes),
-                    "start_date": dates[0] if dates else None,
-                    "end_date": dates[-1] if dates else None,
-                    "start_price": start_price,
-                    "end_price": end_price,
-                    "total_return": round(total_return, 2),
-                    "avg_volume": int(np.mean(volumes)) if volumes else 0
-                },
-                "data_source": "Demo Data (Mock)"
-            }
-            
-            logger.info(f"✅ Generated demo data for {symbol} ({len(closes)} points)")
-            return result_data
-            
-        except Exception as e:
-            logger.error(f"Demo data generation error for {symbol}: {e}")
-            return {"error": str(e), "data": None}
     
     def get_real_time_quote(self, symbol: str) -> Dict[str, Any]:
         """
@@ -579,6 +460,35 @@ class DataFetcher:
         rs = gain / loss
         rsi = 100 - (100 / (1 + rs))
         return rsi
+
+    def get_fundamentals(self, symbol: str) -> Dict[str, Any]:
+        """
+        Fetch key fundamentals for a symbol from Polygon.io.
+        Returns a dict with pe, pb, eps, market_cap, revenue, and other fields if available.
+        """
+        if not self.polygon_client:
+            logger.warning("Polygon client not available for fundamentals.")
+            return {"pe": None, "pb": None, "eps": None, "market_cap": None, "revenue": None}
+        try:
+            # Polygon vX/reference/financials endpoint (quarterly or annual)
+            # We'll use the most recent annual report if available
+            fin = self.polygon_client.get_stock_financials(symbol, limit=1, time_frame="annual")
+            if fin and hasattr(fin, 'results') and fin.results:
+                f = fin.results[0]
+                return {
+                    "pe": f.get("ratios", {}).get("priceToEarnings", None),
+                    "pb": f.get("ratios", {}).get("priceToBook", None),
+                    "eps": f.get("earningsPerBasicShare", None),
+                    "market_cap": f.get("marketCapitalization", None),
+                    "revenue": f.get("incomeStatement", {}).get("revenues", None),
+                    "raw": f
+                }
+            else:
+                logger.warning(f"No fundamentals found for {symbol}")
+                return {"pe": None, "pb": None, "eps": None, "market_cap": None, "revenue": None}
+        except Exception as e:
+            logger.error(f"Error fetching fundamentals for {symbol}: {e}")
+            return {"pe": None, "pb": None, "eps": None, "market_cap": None, "revenue": None}
 
 
 # Global data fetcher instance

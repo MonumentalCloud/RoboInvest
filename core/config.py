@@ -45,6 +45,18 @@ class Config:
         # ChromaDB
         self.chroma_db_path: str = get_local_or_env("CHROMA_DB_PATH", "./chroma")
         
+        # System Mode
+        self.testing_mode: bool = get_local_or_env("TESTING_MODE", "false").lower() == "true"
+        
+        # Override paths for testing mode
+        if self.testing_mode:
+            self.chroma_db_path = "./test_chroma"
+            self.agents_dir: str = "test_agents"
+            self.data_dir: str = "test_data"
+        else:
+            self.agents_dir = "agents"
+            self.data_dir = "data"
+        
         # Trading Settings
         self.paper_trading: bool = True
         self.max_position_size: float = 0.05  # 5% of portfolio per trade
@@ -68,9 +80,6 @@ class Config:
         # Logging
         self.log_level: str = "INFO"
         self.log_file: str = "organic_bot.log"
-
-        # Finnhub
-        self.finnhub_api_key: str = get_local_or_env("FINNHUB_API_KEY", "")
 
 # Global config instance
 config = Config() 

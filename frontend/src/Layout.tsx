@@ -1,12 +1,13 @@
-import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { Outlet, Link as RouterLink, useLocation } from 'react-router-dom';
+import { Psychology } from '@mui/icons-material';
 
 export default function Layout() {
   const location = useLocation();
   const navItems = [
-    { label: '🚀 Alpha Stream', path: '/' },
-    { label: '📊 Profit Analysis', path: '/insights' },
-    { label: '🎭 Play Executor', path: '/plays' },
+    { label: '👑 Governor Control', path: '/' },
+    { label: '📊 Dashboard', path: '/dashboard' },
+    { label: '🚀 Alpha Stream', path: '/alpha-stream' },
   ];
 
   return (
@@ -14,7 +15,7 @@ export default function Layout() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            🧠 RoboInvest | Autonomous Alpha Hunter
+            🧠 RoboInvest | Governor Control System
           </Typography>
           {navItems.map(item => (
             <Button
@@ -26,6 +27,12 @@ export default function Layout() {
               {item.label}
             </Button>
           ))}
+          <ListItem component={RouterLink} to="/experience">
+            <ListItemIcon>
+              <Psychology />
+            </ListItemIcon>
+            <ListItemText primary="Experience Learning" />
+          </ListItem>
         </Toolbar>
       </AppBar>
       <Box sx={{ mt: 2, px: 2, width: '100%' }}>

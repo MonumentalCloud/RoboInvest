@@ -7,7 +7,6 @@ import math
 
 from core.openai_manager import openai_manager
 from core.structured_order import RiskAssessment, RiskLevel
-from core.finnhub_client import finnhub_client
 from utils.logger import logger
 
 
@@ -84,6 +83,84 @@ class RiskAssessorAgent:
             liquidity_risk=liquidity_risk,
             overall_risk_score=overall_risk_score
         )
+    
+    async def hybrid_assess_risk(self,
+                              symbol: str,
+                              quantity: int,
+                              current_price: float,
+                              market_data: Dict[str, Any],
+                              historical_data: Optional[List[Dict[str, Any]]] = None,
+                              sector_data: Optional[Dict[str, Any]] = None,
+                              market_context: Optional[Dict[str, Any]] = None,
+                              news_sentiment: Optional[str] = None,
+                              alpha_insights: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """
+        Hybrid risk assessment: combines rule-based and LLM-based/contextual analysis.
+        Returns a dict with base risk, LLM adjustment, and final risk.
+        """
+        # 1. Rule-based assessment
+        base_risk = self.assess_risk(
+            symbol=symbol,
+            quantity=quantity,
+            current_price=current_price,
+            market_data=market_data,
+            historical_data=historical_data,
+            sector_data=sector_data,
+            market_context=market_context
+        )
+        base_risk_score = base_risk.overall_risk_score
+        base_risk_level = base_risk.risk_level.value
+        explanation = [f"Base risk score: {base_risk_score:.2f} ({base_risk_level.upper()}, rule-based)"]
+
+        # 2. LLM-based/contextual adjustment
+        llm_adjustment = 0.0
+        llm_reasoning = None
+        try:
+            from core.openai_manager import openai_manager
+            prompt = (
+                f"You are a risk analyst. Given the following trade and context, "
+                f"suggest a risk adjustment (-0.2 to +0.2) and explain why.\n"
+                f"Symbol: {symbol}\nQuantity: {quantity}\nCurrent Price: {current_price}\n"
+                f"Base Risk Score: {base_risk_score:.2f}\nBase Risk Level: {base_risk_level}\n"
+                f"Market Data: {market_data}\n"
+                f"Historical Data: {historical_data}\n"
+                f"Sector Data: {sector_data}\n"
+                f"Market Context: {market_context}\n"
+                f"News Sentiment: {news_sentiment}\n"
+                f"Alpha Insights: {alpha_insights}\n"
+                f"Respond in JSON: {{'adjustment': float, 'reasoning': str}}"
+            )
+            import asyncio
+            loop = asyncio.get_running_loop()
+            llm_result = await loop.run_in_executor(
+                None,
+                lambda: openai_manager.chat_completion([
+                    {"role": "user", "content": prompt}
+                ], temperature=0.2)
+            )
+            import json
+            llm_data = json.loads(llm_result["content"] or "{}")
+            llm_adjustment = float(llm_data.get("adjustment", 0.0))
+            llm_reasoning = llm_data.get("reasoning", "")
+            explanation.append(f"LLM adjustment: {llm_adjustment:+.2f} ({llm_reasoning})")
+        except Exception as e:
+            explanation.append(f"LLM adjustment unavailable: {e}")
+
+        # 3. Combine
+        final_risk_score = min(max(base_risk_score + llm_adjustment, 0.0), 1.0)
+        final_risk_level = self._determine_risk_level(final_risk_score)
+        explanation.append(f"Final risk score: {final_risk_score:.2f} ({final_risk_level.value.upper()})")
+
+        return {
+            "base_risk": base_risk,
+            "base_risk_score": base_risk_score,
+            "base_risk_level": base_risk_level,
+            "llm_adjustment": llm_adjustment,
+            "llm_reasoning": llm_reasoning,
+            "final_risk_score": final_risk_score,
+            "final_risk_level": final_risk_level.value,
+            "explanation": explanation
+        }
     
     def _calculate_volatility(self, historical_data: List[Dict[str, Any]]) -> float:
         """Calculate historical volatility"""

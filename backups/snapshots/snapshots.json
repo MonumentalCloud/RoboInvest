@@ -1,0 +1,15 @@
+{
+  "snapshots": [
+    {
+      "id": "snapshot_2025-07-12T17-39-16-001138",
+      "timestamp": "2025-07-12T17:39:16.001138",
+      "description": "Test snapshot via API",
+      "change_type": "test",
+      "files": {
+        "codebase": "codebase.tar.gz",
+        "databases": "databases.tar.gz",
+        "metadata": "metadata.json"
+      }
+    }
+  ]
+}

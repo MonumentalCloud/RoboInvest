@@ -1,0 +1,46 @@
+{
+  "sms": {
+    "enabled": false,
+    "provider": "twilio",
+    "account_sid": "",
+    "auth_token": "",
+    "from_number": "",
+    "to_number": ""
+  },
+  "email": {
+    "enabled": false,
+    "smtp_server": "smtp.gmail.com",
+    "smtp_port": 587,
+    "username": "",
+    "password": "",
+    "from_email": "",
+    "to_email": ""
+  },
+  "slack": {
+    "enabled": false,
+    "webhook_url": ""
+  },
+  "notification_levels": {
+    "critical": [
+      "sms",
+      "email",
+      "slack"
+    ],
+    "high": [
+      "email",
+      "slack"
+    ],
+    "medium": [
+      "email"
+    ],
+    "low": [
+      "email"
+    ]
+  },
+  "daily_report_time": "18:00",
+  "emergency_thresholds": {
+    "critical_errors": 5,
+    "offline_agents": 2,
+    "system_health_below": 70
+  }
+}

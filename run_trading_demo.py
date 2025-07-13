@@ -77,7 +77,7 @@ class TradingDemo:
         print("✅ Environment configuration looks good!")
         print(f"   📈 Alpaca Paper Trading: {'✅' if config.alpaca_api_key else '❌'}")
         print(f"   🧠 OpenAI LLM: {'✅' if config.openai_api_key else '❌ (limited functionality)'}")
-        print(f"   📊 Finnhub Data: {'✅' if config.finnhub_api_key else '❌ (optional)'}")
+        # Removed Finnhub Data printout
         return True
     
     def demo_market_data(self):

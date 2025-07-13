@@ -1,33 +1,38 @@
+#!/usr/bin/env python3
 """
 Autonomous Trading System
-A true alpha-hunting system that discovers opportunities, researches them, and creates dynamic strategies.
+Real-time autonomous trading with Monte Carlo decision search and risk management.
 """
 
-import json
-import time
 import asyncio
-from typing import Dict, List, Any, Optional
+import time
+import json
 from datetime import datetime
+from typing import Dict, List, Any, Optional
+import logging
 
 from agents.autonomous_alpha_hunter import autonomous_alpha_hunter
-from agents.decision_tree import DecisionTree, NodeType
+from agents.decision_tree import DecisionTree
 from tools.web_researcher import web_researcher
-from tools.calculator import calculator
 from tools.data_fetcher import data_fetcher
-from core.config import config
-from core.openai_manager import openai_manager
-from core.pnl_tracker import pnl_tracker
 from core.ai_risk_monitor import ai_risk_monitor
-from utils.logger import logger  # type: ignore
+from core.pnl_tracker import pnl_tracker
+from agents.agent_monitoring_system import agent_monitor
+from core.governor_directive_system import GovernorDirectiveSystem
 
+logger = logging.getLogger(__name__)
 
 class AutonomousTradingSystem:
     """
-    Complete autonomous trading system that:
-    1. Hunts for alpha opportunities globally
-    2. Researches opportunities using web tools
-    3. Creates dynamic short-term strategies
-    4. Tracks performance and learns from outcomes
+    Autonomous trading system with Monte Carlo decision search.
+    
+    Features:
+    - Real-time alpha hunting
+    - Monte Carlo decision tree optimization
+    - Risk assessment and management
+    - Paper trading execution
+    - Performance tracking
+    - Governor directive integration
     """
     
     def __init__(self):
@@ -36,6 +41,188 @@ class AutonomousTradingSystem:
         self.performance_history = []
         self.is_running = False
         self.decision_tree: Optional[DecisionTree] = None
+        
+        # Initialize Governor Directive System
+        self.governor_system = GovernorDirectiveSystem()
+        
+        # Register agents with monitoring system
+        self._register_agents()
+        
+        # Subscribe to governor directives
+        self._subscribe_to_directives()
+    
+    def _register_agents(self):
+        """Register all autonomous trading agents with the monitoring system."""
+        try:
+            # Register the main autonomous trading system
+            agent_monitor.register_agent("AutonomousTradingSystem", {
+                "type": "autonomous_trading",
+                "description": "Main autonomous trading orchestrator",
+                "capabilities": ["alpha_hunting", "strategy_generation", "risk_management", "paper_trading"],
+                "status": "active"
+            })
+            
+            # Register the alpha hunter agent
+            agent_monitor.register_agent("AutonomousAlphaHunter", {
+                "type": "alpha_hunter",
+                "description": "Autonomous alpha opportunity discovery agent",
+                "capabilities": ["market_analysis", "opportunity_detection", "alpha_thesis_generation"],
+                "status": "active"
+            })
+            
+            # Register the web researcher agent
+            agent_monitor.register_agent("WebResearcher", {
+                "type": "research",
+                "description": "Comprehensive web research and analysis agent",
+                "capabilities": ["web_research", "sentiment_analysis", "fundamental_analysis"],
+                "status": "active"
+            })
+            
+            # Register the decision tree agent
+            agent_monitor.register_agent("DecisionTree", {
+                "type": "decision_optimization",
+                "description": "Monte Carlo decision tree optimization agent",
+                "capabilities": ["decision_search", "confidence_optimization", "path_analysis"],
+                "status": "active"
+            })
+            
+            # Register the risk monitor agent
+            agent_monitor.register_agent("AIRiskMonitor", {
+                "type": "risk_management",
+                "description": "AI-powered risk assessment and management agent",
+                "capabilities": ["risk_assessment", "position_sizing", "risk_mitigation"],
+                "status": "active"
+            })
+            
+            logger.info("✅ All autonomous trading agents registered with monitoring system")
+            
+        except Exception as e:
+            logger.error(f"Error registering agents: {e}")
+    
+    def _subscribe_to_directives(self):
+        """Subscribe to governor directives for real-time updates."""
+        try:
+            # Create a wrapper function to handle async callback
+            def directive_wrapper(directive):
+                asyncio.create_task(self._handle_governor_directive(directive))
+            
+            # Subscribe to all directives
+            self.governor_system.subscribe_to_directives(directive_wrapper)
+            
+            logger.info("✅ Autonomous trading system subscribed to governor directives")
+            
+        except Exception as e:
+            logger.error(f"Error subscribing to directives: {e}")
+    
+    async def _handle_governor_directive(self, directive):
+        """Handle incoming governor directives."""
+        try:
+            directive_type = directive.directive_type.value
+            title = directive.title
+            payload = directive.payload
+            
+            logger.info(f"🔄 Processing governor directive: {title} ({directive_type})")
+            
+            # Acknowledge the directive
+            self.governor_system.acknowledge_directive(
+                directive_id=directive.directive_id,
+                agent_id="AutonomousTradingSystem"
+            )
+            
+            # Handle different directive types
+            if directive_type == "mission_update":
+                await self._handle_mission_update(payload)
+            elif directive_type == "strategy_change":
+                await self._handle_strategy_change(payload)
+            elif directive_type == "risk_adjustment":
+                await self._handle_risk_adjustment(payload)
+            elif directive_type == "research_priority":
+                await self._handle_research_priority(payload)
+            elif directive_type == "emergency_stop":
+                await self._handle_emergency_stop(payload)
+            elif directive_type == "system_parameter":
+                await self._handle_system_parameter(payload)
+            
+            # Report completion
+            self.governor_system.report_directive_completion(
+                directive_id=directive.directive_id,
+                agent_id="AutonomousTradingSystem",
+                report={
+                    "status": "completed",
+                    "actions_taken": f"Applied {directive_type} directive",
+                    "timestamp": datetime.now().isoformat()
+                }
+            )
+            
+        except Exception as e:
+            logger.error(f"Error handling governor directive: {e}")
+            # Report failure
+            self.governor_system.report_directive_completion(
+                directive_id=directive.directive_id,
+                agent_id="AutonomousTradingSystem",
+                report={
+                    "status": "failed",
+                    "error": str(e),
+                    "timestamp": datetime.now().isoformat()
+                }
+            )
+    
+    async def _handle_mission_update(self, payload: Dict[str, Any]):
+        """Handle mission update directives."""
+        new_mission = payload.get("mission", "")
+        if new_mission:
+            logger.info(f"🎯 Mission updated: {new_mission}")
+            # Update system context with new mission
+            async with self.governor_system.context_update() as context:
+                context.mission = new_mission
+    
+    async def _handle_strategy_change(self, payload: Dict[str, Any]):
+        """Handle strategy change directives."""
+        new_strategy = payload.get("strategy", "")
+        if new_strategy:
+            logger.info(f"📈 Strategy changed: {new_strategy}")
+            # Update system context with new strategy
+            async with self.governor_system.context_update() as context:
+                context.current_strategy = new_strategy
+    
+    async def _handle_risk_adjustment(self, payload: Dict[str, Any]):
+        """Handle risk adjustment directives."""
+        risk_params = payload.get("risk_parameters", {})
+        if risk_params:
+            logger.info(f"🛡️ Risk parameters adjusted: {risk_params}")
+            # Update system context with new risk parameters
+            async with self.governor_system.context_update() as context:
+                context.risk_parameters.update(risk_params)
+    
+    async def _handle_research_priority(self, payload: Dict[str, Any]):
+        """Handle research priority directives."""
+        priorities = payload.get("research_priorities", [])
+        if priorities:
+            logger.info(f"🔍 Research priorities updated: {priorities}")
+            # Update system context with new research priorities
+            async with self.governor_system.context_update() as context:
+                context.research_priorities = priorities
+    
+    async def _handle_emergency_stop(self, payload: Dict[str, Any]):
+        """Handle emergency stop directives."""
+        reason = payload.get("reason", "Emergency stop initiated")
+        logger.warning(f"🚨 EMERGENCY STOP: {reason}")
+        
+        # Stop all trading activities
+        self.is_running = False
+        
+        # Update system context
+        async with self.governor_system.context_update() as context:
+            context.system_mode = "emergency_stop"
+    
+    async def _handle_system_parameter(self, payload: Dict[str, Any]):
+        """Handle system parameter directives."""
+        trading_rules = payload.get("trading_rules", {})
+        if trading_rules:
+            logger.info(f"⚙️ Trading rules updated: {trading_rules}")
+            # Update system context with new trading rules
+            async with self.governor_system.context_update() as context:
+                context.trading_rules.update(trading_rules)
     
     async def run_monte_carlo_decision_search(self, opportunity_data: Dict[str, Any]) -> Dict[str, Any]:
         """Run Monte Carlo search on decision tree for strategy optimization."""
@@ -242,61 +429,60 @@ class AutonomousTradingSystem:
         Enhance the base strategy with research insights.
         """
         try:
-            if not config.openai_api_key:
-                return base_strategy
-            
             # Extract key research insights
             sentiment = research.get("sentiment_analysis", {})
             fundamentals = research.get("fundamental_analysis", {})
             news = research.get("news_analysis", {})
             report = research.get("report", {})
             
-            # LLM integrates research with strategy
-            enhancement_prompt = f"""You are enhancing a trading strategy with comprehensive research insights.
+            # Rule-based strategy enhancement
+            enhanced_strategy = base_strategy.copy()
             
-            Base Strategy:
-            {json.dumps(base_strategy, indent=2)}
+            # Extract research metrics
+            sentiment_strength = sentiment.get('strength', 0.5)
+            sentiment_value = sentiment.get('sentiment', 'neutral')
+            fundamental_health = fundamentals.get('financial_health', 'unknown')
+            fundamental_score = fundamentals.get('overall_score', 0.5)
+            news_impact = news.get('impact', 'neutral')
+            research_confidence = report.get('confidence', 0.5)
             
-            Research Insights:
-            - Sentiment: {sentiment.get('sentiment', 'neutral')} (strength: {sentiment.get('strength', 0.5)})
-            - Fundamentals: {fundamentals.get('financial_health', 'unknown')} health, {fundamentals.get('valuation', 'unknown')} valuation
-            - News Impact: {news.get('impact', 'neutral')} with {news.get('time_sensitivity', 'unknown')} timing
-            - Research Recommendation: {report.get('recommendation', 'HOLD')} (confidence: {report.get('confidence', 0.5)})
+            # Calculate enhanced confidence
+            base_confidence = enhanced_strategy.get("confidence", 0.5)
+            confidence_factors = [
+                base_confidence,
+                research_confidence,
+                sentiment_strength,
+                fundamental_score
+            ]
             
-            Detailed Research:
-            {json.dumps(research, indent=2)}
+            # Weight the factors
+            enhanced_confidence = sum(confidence_factors) / len(confidence_factors)
+            enhanced_strategy["confidence"] = min(1.0, max(0.0, enhanced_confidence))
             
-            Enhance the strategy by:
-            1. Adjusting position size based on research confidence
-            2. Refining entry/exit criteria with research insights
-            3. Updating risk assessment with research findings
-            4. Modifying time horizon based on catalysts
-            5. Integrating sentiment and fundamental factors
+            # Adjust position size based on research confidence
+            base_position = enhanced_strategy.get("position_size", 0.05)
+            if research_confidence > 0.7 and sentiment_strength > 0.6:
+                enhanced_strategy["position_size"] = min(base_position * 1.3, 0.15)
+            elif research_confidence < 0.3 or sentiment_strength < 0.4:
+                enhanced_strategy["position_size"] = base_position * 0.7
             
-            Respond with enhanced strategy in JSON:
-            {{
-                "primary_ticker": "TICKER",
-                "action": "BUY/SELL/HOLD",
-                "position_size": 0.0-0.2,
-                "entry_criteria": "enhanced entry conditions",
-                "exit_criteria": "enhanced exit conditions",
-                "stop_loss": percentage,
-                "take_profit": percentage,
-                "time_horizon": "enhanced timeline",
-                "confidence": 0.0-1.0,
-                "risk_level": "LOW/MEDIUM/HIGH",
-                "alpha_thesis": "research-enhanced thesis",
-                "research_factors": ["key research insight 1", "key research insight 2"],
-                "catalyst_timeline": "when catalysts expected",
-                "sentiment_factor": 0.0-1.0,
-                "fundamental_factor": 0.0-1.0
-            }}"""
+            # Enhance alpha thesis
+            current_thesis = enhanced_strategy.get("alpha_thesis", "")
+            research_insights = [
+                f"Sentiment: {sentiment_value} (strength: {sentiment_strength:.2f})",
+                f"Fundamentals: {fundamental_health} (score: {fundamental_score:.2f})",
+                f"News: {news_impact} impact"
+            ]
             
-            response = openai_manager.chat_completion([
-                {"role": "user", "content": enhancement_prompt}
-            ], temperature=0.2)
+            enhanced_thesis = f"{current_thesis} | Research: {' | '.join(research_insights)}"
+            enhanced_strategy["alpha_thesis"] = enhanced_thesis
             
-            enhanced_strategy = json.loads(response.get("content", "{}"))
+            # Add research factors
+            enhanced_strategy["research_factors"] = research_insights
+            
+            # Set sentiment and fundamental factors
+            enhanced_strategy["sentiment_factor"] = sentiment_strength
+            enhanced_strategy["fundamental_factor"] = fundamental_score
             
             # Add research metadata
             enhanced_strategy["research_summary"] = {

@@ -4,24 +4,21 @@ import {
   Route,
 } from 'react-router-dom';
 import Layout from './Layout';
-import Dashboard from './pages/Dashboard';
-import Trades from './pages/Trades';
-import Positions from './pages/Positions';
-import Insights from './pages/Insights';
+import GovernorControlPanel from './components/GovernorControlPanel';
 import AlphaStream from './pages/AlphaStream';
-import PlayExecutor from './pages/PlayExecutor';
+import Dashboard from './pages/Dashboard';
+import ExperienceLearningDashboard from './components/ExperienceLearningDashboard';
 
 export default function App() {
   return (
     <Router>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<AlphaStream />} />
+          <Route path="/" element={<GovernorControlPanel />} />
+          <Route path="/governor" element={<GovernorControlPanel />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/trades" element={<Trades />} />
-          <Route path="/positions" element={<Positions />} />
-          <Route path="/insights" element={<Insights />} />
-          <Route path="/plays" element={<PlayExecutor />} />
+          <Route path="/alpha-stream" element={<AlphaStream />} />
+          <Route path="/experience" element={<ExperienceLearningDashboard />} />
         </Route>
       </Routes>
     </Router>

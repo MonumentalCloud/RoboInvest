@@ -39,7 +39,7 @@ const GraphChatInterface: React.FC<GraphChatInterfaceProps> = ({
     {
       id: '1',
       type: 'agent',
-      content: "Hello! I'm your research graph assistant. I can help you explore the research data, find specific nodes, analyze patterns, and answer questions about the research. What would you like to know?",
+      content: "Hello! I'm your AI-powered research graph assistant. I use advanced language models to intelligently analyze your research data, find patterns, and provide insights. I can help you explore the research data, find specific nodes, analyze patterns, and answer complex questions about the research. What would you like to know?",
       timestamp: new Date(),
       suggestions: [
         "Show me active research nodes",
@@ -77,33 +77,39 @@ const GraphChatInterface: React.FC<GraphChatInterfaceProps> = ({
     setInputValue('');
     setIsLoading(true);
 
+    // Create a streaming message
+    const streamingMessageId = (Date.now() + 1).toString();
+    const streamingMessage: ChatMessage = {
+      id: streamingMessageId,
+      type: 'agent',
+      content: '',
+      timestamp: new Date(),
+    };
+
+    setMessages(prev => [...prev, streamingMessage]);
+
     try {
-      // Simulate AI processing - in real implementation, this would call the graph manager agent
+      // Call the LLM-based graph manager agent for intelligent processing
       const response = await processUserQuery(content.trim());
       
-      const agentMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        type: 'agent',
-        content: response.answer,
-        timestamp: new Date(),
-        highlightedNodes: response.highlightedNodes,
-        suggestions: response.suggestions,
-      };
-
-      setMessages(prev => [...prev, agentMessage]);
+      // Update the streaming message with full content
+      setMessages(prev => prev.map(msg => 
+        msg.id === streamingMessageId 
+          ? { ...msg, content: response.answer, highlightedNodes: response.highlightedNodes, suggestions: response.suggestions }
+          : msg
+      ));
 
       // Highlight nodes if specified
       if (response.highlightedNodes && response.highlightedNodes.length > 0) {
         onHighlightNodes(response.highlightedNodes);
       }
     } catch (error) {
-      const errorMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        type: 'agent',
-        content: "I'm sorry, I encountered an error processing your request. Please try again.",
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      // Update the streaming message with error
+      setMessages(prev => prev.map(msg => 
+        msg.id === streamingMessageId 
+          ? { ...msg, content: "I'm sorry, I encountered an error processing your request. Please try again." }
+          : msg
+      ));
     } finally {
       setIsLoading(false);
     }
@@ -115,7 +121,7 @@ const GraphChatInterface: React.FC<GraphChatInterfaceProps> = ({
     suggestions?: string[];
   }> => {
     try {
-      // Call the real backend graph manager API
+      // Call the LLM-based backend graph manager API
       const response = await fetch('http://localhost:8081/api/graph/query', {
         method: 'POST',
         headers: {
@@ -142,125 +148,17 @@ const GraphChatInterface: React.FC<GraphChatInterfaceProps> = ({
     } catch (error) {
       console.error('Error querying graph:', error);
       
-      // Fallback to local processing if backend fails
-      const lowerQuery = query.toLowerCase();
-      
-      if (lowerQuery.includes('active') || lowerQuery.includes('current')) {
-        const activeNodes = treeData.filter(node => node.status === 'active');
-        return {
-          answer: `I found ${activeNodes.length} active research nodes. These are currently being processed and represent ongoing research activities.`,
-          highlightedNodes: activeNodes.map(n => n.id),
-          suggestions: [
-            "Show me completed research",
-            "What are the synthesis findings?",
-            "Find high-confidence nodes",
-          ],
-        };
-      }
-
-      if (lowerQuery.includes('synthesis') || lowerQuery.includes('findings')) {
-        const synthesisNodes = treeData.filter(node => node.type === 'synthesis');
-        return {
-          answer: `I found ${synthesisNodes.length} synthesis nodes. These represent key findings and insights that combine multiple research threads.`,
-          highlightedNodes: synthesisNodes.map(n => n.id),
-          suggestions: [
-            "Show me market analysis",
-            "Find technical analysis nodes",
-            "What are the risk assessments?",
-          ],
-        };
-      }
-
-      if (lowerQuery.includes('market') || lowerQuery.includes('analysis')) {
-        const marketNodes = treeData.filter(node => 
-          node.research_track === 'market_analysis' || 
-          node.content.toLowerCase().includes('market')
-        );
-        return {
-          answer: `I found ${marketNodes.length} market analysis nodes. These contain insights about market trends, sentiment, and analysis.`,
-          highlightedNodes: marketNodes.map(n => n.id),
-          suggestions: [
-            "Show me technical indicators",
-            "Find sentiment analysis",
-            "What are the risk factors?",
-          ],
-        };
-      }
-
-      if (lowerQuery.includes('confidence') || lowerQuery.includes('important')) {
-        const highConfidenceNodes = treeData.filter(node => 
-          node.confidence && 
-          (typeof node.confidence === 'number' ? node.confidence > 0.7 : parseFloat(node.confidence) > 0.7)
-        );
-        return {
-          answer: `I found ${highConfidenceNodes.length} nodes with high confidence (>70%). These represent the most reliable research findings.`,
-          highlightedNodes: highConfidenceNodes.map(n => n.id),
-          suggestions: [
-            "Show me active research",
-            "Find synthesis nodes",
-            "What are the market trends?",
-          ],
-        };
-      }
-
-      if (lowerQuery.includes('technical') || lowerQuery.includes('indicator')) {
-        const technicalNodes = treeData.filter(node => 
-          node.research_track === 'technical_analysis' || 
-          node.content.toLowerCase().includes('technical') ||
-          node.content.toLowerCase().includes('indicator')
-        );
-        return {
-          answer: `I found ${technicalNodes.length} technical analysis nodes. These contain technical indicators, patterns, and analysis.`,
-          highlightedNodes: technicalNodes.map(n => n.id),
-          suggestions: [
-            "Show me market analysis",
-            "Find fundamental research",
-            "What are the synthesis findings?",
-          ],
-        };
-      }
-
-      // Default response
+      // Simple fallback response if LLM backend fails
       return {
-        answer: `I understand you're asking about "${query}". I can help you explore the research graph. Try asking about active research, synthesis findings, market analysis, technical indicators, or high-confidence nodes.`,
+        answer: "I'm sorry, I'm having trouble connecting to my AI brain right now. Please try again in a moment, or check if the backend service is running.",
+        highlightedNodes: [],
         suggestions: [
+          "Try asking again",
+          "Check system status",
           "Show me active research nodes",
-          "Find synthesis nodes",
-          "What are the most important findings?",
-          "Show me market analysis nodes",
-          "Find nodes with high confidence",
+          "Find synthesis nodes"
         ],
       };
-
-
-    if (lowerQuery.includes('technical') || lowerQuery.includes('indicator')) {
-      const technicalNodes = treeData.filter(node => 
-        node.research_track === 'technical_analysis' || 
-        node.content.toLowerCase().includes('technical') ||
-        node.content.toLowerCase().includes('indicator')
-      );
-      return {
-        answer: `I found ${technicalNodes.length} technical analysis nodes. These contain technical indicators, patterns, and analysis.`,
-        highlightedNodes: technicalNodes.map(n => n.id),
-        suggestions: [
-          "Show me market analysis",
-          "Find fundamental research",
-          "What are the synthesis findings?",
-        ],
-      };
-    }
-
-    // Default response
-    return {
-      answer: `I understand you're asking about "${query}". I can help you explore the research graph. Try asking about active research, synthesis findings, market analysis, technical indicators, or high-confidence nodes.`,
-      suggestions: [
-        "Show me active research nodes",
-        "Find synthesis nodes",
-        "What are the most important findings?",
-        "Show me market analysis nodes",
-        "Find nodes with high confidence",
-      ],
-    };
     }
   };
 
@@ -283,9 +181,10 @@ const GraphChatInterface: React.FC<GraphChatInterfaceProps> = ({
         zIndex: 1000,
         display: 'flex',
         flexDirection: 'column',
-        background: 'rgba(0,0,0,0.95)',
+        background: 'rgba(0,0,0,0.98)',
         color: 'white',
-        border: '1px solid #333',
+        border: '2px solid #333',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
       }}
     >
       {/* Header */}
@@ -333,16 +232,17 @@ const GraphChatInterface: React.FC<GraphChatInterfaceProps> = ({
                 sx={{
                   p: 1.5,
                   maxWidth: '80%',
-                  background: message.type === 'user' ? '#4caf50' : '#333',
+                  background: message.type === 'user' ? '#4caf50' : '#1a1a1a',
                   color: 'white',
                   borderRadius: 2,
+                  border: message.type === 'agent' ? '1px solid #333' : 'none',
                 }}
               >
                 <Typography variant="body2">{message.content}</Typography>
                 
                 {message.highlightedNodes && message.highlightedNodes.length > 0 && (
                   <Box sx={{ mt: 1 }}>
-                    <Typography variant="caption" sx={{ color: '#4caf50' }}>
+                    <Typography variant="caption" sx={{ color: '#4caf50', fontWeight: 'bold' }}>
                       Highlighted {message.highlightedNodes.length} nodes
                     </Typography>
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 0.5 }}>
@@ -351,7 +251,13 @@ const GraphChatInterface: React.FC<GraphChatInterfaceProps> = ({
                           key={nodeId}
                           label={nodeId.substring(0, 8)}
                           size="small"
-                          sx={{ fontSize: '0.6rem', background: '#555' }}
+                          sx={{ 
+                            fontSize: '0.6rem', 
+                            background: '#2a2a2a', 
+                            color: '#4caf50',
+                            border: '1px solid #4caf50',
+                            '&:hover': { background: '#3a3a3a' }
+                          }}
                           onClick={() => handleNodeClick(nodeId)}
                         />
                       ))}
@@ -359,7 +265,11 @@ const GraphChatInterface: React.FC<GraphChatInterfaceProps> = ({
                         <Chip
                           label={`+${message.highlightedNodes.length - 3}`}
                           size="small"
-                          sx={{ fontSize: '0.6rem', background: '#555' }}
+                          sx={{ 
+                            fontSize: '0.6rem', 
+                            background: '#2a2a2a',
+                            color: '#999'
+                          }}
                         />
                       )}
                     </Box>
@@ -376,9 +286,14 @@ const GraphChatInterface: React.FC<GraphChatInterfaceProps> = ({
                       size="small"
                       sx={{
                         fontSize: '0.7rem',
-                        background: '#555',
+                        background: '#2a2a2a',
+                        color: '#e0e0e0',
                         cursor: 'pointer',
-                        '&:hover': { background: '#666' },
+                        border: '1px solid #444',
+                        '&:hover': { 
+                          background: '#3a3a3a',
+                          border: '1px solid #4caf50'
+                        },
                       }}
                       onClick={() => handleSuggestionClick(suggestion)}
                     />
@@ -391,7 +306,7 @@ const GraphChatInterface: React.FC<GraphChatInterfaceProps> = ({
           {isLoading && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 1 }}>
               <CircularProgress size={16} sx={{ color: '#4caf50' }} />
-              <Typography variant="caption" sx={{ color: '#999' }}>
+              <Typography variant="caption" sx={{ color: '#4caf50', fontWeight: 'bold' }}>
                 Thinking...
               </Typography>
             </Box>

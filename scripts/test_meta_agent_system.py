@@ -27,7 +27,7 @@ async def test_meta_agent_system():
         "type": "monitoring",
         "specialization": "market_monitoring",
         "capabilities": ["data_collection", "sentiment_analysis"],
-        "dependencies": ["finnhub_client", "feedparser"]
+        "dependencies": ["feedparser"]
     })
     
     await meta_agent.register_agent("trade_executor_agent", {

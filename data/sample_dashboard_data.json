@@ -1,0 +1,769 @@
+{
+  "trades": [
+    {
+      "symbol": "TSLA",
+      "quantity": 9,
+      "entry_price": 313.41,
+      "exit_price": 301.31,
+      "entry_time": "2025-06-18T22:12:44.316922",
+      "exit_time": "2025-06-19T22:12:44.316922",
+      "side": "BUY",
+      "pnl": -108.94,
+      "pnl_pct": -3.86,
+      "confidence": 0.63
+    },
+    {
+      "symbol": "QQQ",
+      "quantity": 2,
+      "entry_price": 250.73,
+      "exit_price": 272.88,
+      "entry_time": "2025-07-05T22:12:44.316922",
+      "exit_time": "2025-07-10T22:12:44.316922",
+      "side": "BUY",
+      "pnl": 44.3,
+      "pnl_pct": 8.83,
+      "confidence": 0.71
+    },
+    {
+      "symbol": "SPY",
+      "quantity": 10,
+      "entry_price": 286.38,
+      "exit_price": 333.62,
+      "entry_time": "2025-07-11T22:12:44.316922",
+      "exit_time": "2025-07-12T22:12:44.316922",
+      "side": "BUY",
+      "pnl": 472.44,
+      "pnl_pct": 16.5,
+      "confidence": 0.76
+    },
+    {
+      "symbol": "MSFT",
+      "quantity": 4,
+      "entry_price": 334.81,
+      "exit_price": 331.34,
+      "entry_time": "2025-06-17T22:12:44.316922",
+      "exit_time": "2025-06-21T22:12:44.316922",
+      "side": "SELL",
+      "pnl": 13.9,
+      "pnl_pct": 1.04,
+      "confidence": 0.7
+    },
+    {
+      "symbol": "SPY",
+      "quantity": 10,
+      "entry_price": 444.92,
+      "exit_price": 446.32,
+      "entry_time": "2025-06-21T22:12:44.316922",
+      "exit_time": "2025-06-28T22:12:44.316922",
+      "side": "BUY",
+      "pnl": 13.95,
+      "pnl_pct": 0.31,
+      "confidence": 0.58
+    },
+    {
+      "symbol": "NVDA",
+      "quantity": 2,
+      "entry_price": 376.75,
+      "entry_time": "2025-07-04T22:12:44.316922",
+      "side": "SELL",
+      "confidence": 0.9
+    },
+    {
+      "symbol": "AAPL",
+      "quantity": 7,
+      "entry_price": 72.91,
+      "exit_price": 112.12,
+      "entry_time": "2025-06-18T22:12:44.316922",
+      "exit_time": "2025-06-24T22:12:44.316922",
+      "side": "BUY",
+      "pnl": 274.48,
+      "pnl_pct": 53.78,
+      "confidence": 0.4
+    },
+    {
+      "symbol": "AMZN",
+      "quantity": 4,
+      "entry_price": 172.41,
+      "entry_time": "2025-06-30T22:12:44.316922",
+      "side": "BUY",
+      "confidence": 0.31
+    },
+    {
+      "symbol": "MSFT",
+      "quantity": 8,
+      "entry_price": 286.27,
+      "exit_price": 248.14,
+      "entry_time": "2025-07-05T22:12:44.316922",
+      "exit_time": "2025-07-08T22:12:44.316922",
+      "side": "SELL",
+      "pnl": 305.07,
+      "pnl_pct": 13.32,
+      "confidence": 0.64
+    },
+    {
+      "symbol": "GOOGL",
+      "quantity": 5,
+      "entry_price": 451.89,
+      "exit_price": 413.11,
+      "entry_time": "2025-07-03T22:12:44.316922",
+      "exit_time": "2025-07-06T22:12:44.316922",
+      "side": "SELL",
+      "pnl": 193.91,
+      "pnl_pct": 8.58,
+      "confidence": 0.8
+    },
+    {
+      "symbol": "AMZN",
+      "quantity": 1,
+      "entry_price": 80.41,
+      "entry_time": "2025-07-06T22:12:44.316922",
+      "side": "SELL",
+      "confidence": 0.67
+    },
+    {
+      "symbol": "GOOGL",
+      "quantity": 2,
+      "entry_price": 56.87,
+      "exit_price": 59.12,
+      "entry_time": "2025-06-23T22:12:44.316922",
+      "exit_time": "2025-06-25T22:12:44.316922",
+      "side": "BUY",
+      "pnl": 4.5,
+      "pnl_pct": 3.96,
+      "confidence": 0.36
+    },
+    {
+      "symbol": "SPY",
+      "quantity": 7,
+      "entry_price": 362.03,
+      "entry_time": "2025-07-03T22:12:44.316922",
+      "side": "SELL",
+      "confidence": 0.35
+    },
+    {
+      "symbol": "AAPL",
+      "quantity": 3,
+      "entry_price": 205.34,
+      "exit_price": 177.32,
+      "entry_time": "2025-06-23T22:12:44.316922",
+      "exit_time": "2025-06-29T22:12:44.316922",
+      "side": "BUY",
+      "pnl": -84.05,
+      "pnl_pct": -13.64,
+      "confidence": 0.41
+    },
+    {
+      "symbol": "SPY",
+      "quantity": 7,
+      "entry_price": 303.6,
+      "exit_price": 303.02,
+      "entry_time": "2025-07-05T22:12:44.316922",
+      "exit_time": "2025-07-07T22:12:44.316922",
+      "side": "BUY",
+      "pnl": -4.05,
+      "pnl_pct": -0.19,
+      "confidence": 0.31
+    },
+    {
+      "symbol": "NVDA",
+      "quantity": 5,
+      "entry_price": 68.22,
+      "exit_price": 68.49,
+      "entry_time": "2025-07-01T22:12:44.316922",
+      "exit_time": "2025-07-04T22:12:44.316922",
+      "side": "SELL",
+      "pnl": -1.35,
+      "pnl_pct": -0.4,
+      "confidence": 0.78
+    },
+    {
+      "symbol": "MSFT",
+      "quantity": 3,
+      "entry_price": 143.78,
+      "exit_price": 157.46,
+      "entry_time": "2025-06-26T22:12:44.316922",
+      "exit_time": "2025-07-01T22:12:44.316922",
+      "side": "SELL",
+      "pnl": -41.04,
+      "pnl_pct": -9.51,
+      "confidence": 0.42
+    },
+    {
+      "symbol": "QQQ",
+      "quantity": 3,
+      "entry_price": 283.35,
+      "entry_time": "2025-06-15T22:12:44.316922",
+      "side": "SELL",
+      "confidence": 0.61
+    },
+    {
+      "symbol": "MSFT",
+      "quantity": 6,
+      "entry_price": 389.07,
+      "exit_price": 387.17,
+      "entry_time": "2025-06-18T22:12:44.316922",
+      "exit_time": "2025-06-21T22:12:44.316922",
+      "side": "SELL",
+      "pnl": 11.4,
+      "pnl_pct": 0.49,
+      "confidence": 0.64
+    },
+    {
+      "symbol": "IWM",
+      "quantity": 7,
+      "entry_price": 341.0,
+      "exit_price": 341.41,
+      "entry_time": "2025-06-25T22:12:44.316922",
+      "exit_time": "2025-06-26T22:12:44.316922",
+      "side": "BUY",
+      "pnl": 2.89,
+      "pnl_pct": 0.12,
+      "confidence": 0.47
+    },
+    {
+      "symbol": "AAPL",
+      "quantity": 8,
+      "entry_price": 239.22,
+      "entry_time": "2025-06-27T22:12:44.316922",
+      "side": "BUY",
+      "confidence": 0.31
+    },
+    {
+      "symbol": "META",
+      "quantity": 2,
+      "entry_price": 494.63,
+      "exit_price": 543.87,
+      "entry_time": "2025-06-24T22:12:44.316922",
+      "exit_time": "2025-06-28T22:12:44.316922",
+      "side": "BUY",
+      "pnl": 98.49,
+      "pnl_pct": 9.96,
+      "confidence": 0.87
+    },
+    {
+      "symbol": "META",
+      "quantity": 2,
+      "entry_price": 70.39,
+      "entry_time": "2025-07-06T22:12:44.316922",
+      "side": "SELL",
+      "confidence": 0.81
+    },
+    {
+      "symbol": "GOOGL",
+      "quantity": 10,
+      "entry_price": 365.18,
+      "entry_time": "2025-06-29T22:12:44.316922",
+      "side": "SELL",
+      "confidence": 0.75
+    },
+    {
+      "symbol": "SPY",
+      "quantity": 9,
+      "entry_price": 261.91,
+      "entry_time": "2025-06-21T22:12:44.316922",
+      "side": "SELL",
+      "confidence": 0.75
+    },
+    {
+      "symbol": "NVDA",
+      "quantity": 6,
+      "entry_price": 363.99,
+      "entry_time": "2025-07-05T22:12:44.316922",
+      "side": "BUY",
+      "confidence": 0.81
+    },
+    {
+      "symbol": "TSLA",
+      "quantity": 5,
+      "entry_price": 410.65,
+      "exit_price": 401.57,
+      "entry_time": "2025-06-21T22:12:44.316922",
+      "exit_time": "2025-06-26T22:12:44.316922",
+      "side": "SELL",
+      "pnl": 45.42,
+      "pnl_pct": 2.21,
+      "confidence": 0.65
+    },
+    {
+      "symbol": "TSLA",
+      "quantity": 5,
+      "entry_price": 394.03,
+      "entry_time": "2025-07-05T22:12:44.316922",
+      "side": "SELL",
+      "confidence": 0.34
+    },
+    {
+      "symbol": "NVDA",
+      "quantity": 6,
+      "entry_price": 442.92,
+      "entry_time": "2025-07-12T22:12:44.316922",
+      "side": "SELL",
+      "confidence": 0.3
+    },
+    {
+      "symbol": "NVDA",
+      "quantity": 6,
+      "entry_price": 329.25,
+      "exit_price": 371.85,
+      "entry_time": "2025-06-24T22:12:44.316922",
+      "exit_time": "2025-06-29T22:12:44.316922",
+      "side": "SELL",
+      "pnl": -255.59,
+      "pnl_pct": -12.94,
+      "confidence": 0.48
+    },
+    {
+      "symbol": "TSLA",
+      "quantity": 7,
+      "entry_price": 63.61,
+      "exit_price": 87.77,
+      "entry_time": "2025-07-01T22:12:44.316922",
+      "exit_time": "2025-07-07T22:12:44.316922",
+      "side": "SELL",
+      "pnl": -169.15,
+      "pnl_pct": -37.99,
+      "confidence": 0.63
+    },
+    {
+      "symbol": "QQQ",
+      "quantity": 9,
+      "entry_price": 161.25,
+      "exit_price": 164.71,
+      "entry_time": "2025-06-17T22:12:44.316922",
+      "exit_time": "2025-06-19T22:12:44.316922",
+      "side": "BUY",
+      "pnl": 31.17,
+      "pnl_pct": 2.15,
+      "confidence": 0.52
+    },
+    {
+      "symbol": "QQQ",
+      "quantity": 3,
+      "entry_price": 402.84,
+      "exit_price": 388.08,
+      "entry_time": "2025-06-24T22:12:44.316922",
+      "exit_time": "2025-07-01T22:12:44.316922",
+      "side": "SELL",
+      "pnl": 44.29,
+      "pnl_pct": 3.67,
+      "confidence": 0.71
+    },
+    {
+      "symbol": "GOOGL",
+      "quantity": 3,
+      "entry_price": 313.27,
+      "entry_time": "2025-07-05T22:12:44.316922",
+      "side": "BUY",
+      "confidence": 0.64
+    },
+    {
+      "symbol": "MSFT",
+      "quantity": 4,
+      "entry_price": 371.66,
+      "entry_time": "2025-06-30T22:12:44.316922",
+      "side": "BUY",
+      "confidence": 0.42
+    },
+    {
+      "symbol": "NVDA",
+      "quantity": 9,
+      "entry_price": 62.23,
+      "exit_price": 91.6,
+      "entry_time": "2025-06-14T22:12:44.316922",
+      "exit_time": "2025-06-16T22:12:44.316922",
+      "side": "SELL",
+      "pnl": -264.3,
+      "pnl_pct": -47.19,
+      "confidence": 0.56
+    },
+    {
+      "symbol": "TSLA",
+      "quantity": 4,
+      "entry_price": 246.88,
+      "entry_time": "2025-06-25T22:12:44.316922",
+      "side": "BUY",
+      "confidence": 0.74
+    },
+    {
+      "symbol": "AMZN",
+      "quantity": 6,
+      "entry_price": 189.29,
+      "exit_price": 209.16,
+      "entry_time": "2025-06-23T22:12:44.316922",
+      "exit_time": "2025-06-29T22:12:44.316922",
+      "side": "BUY",
+      "pnl": 119.24,
+      "pnl_pct": 10.5,
+      "confidence": 0.74
+    },
+    {
+      "symbol": "QQQ",
+      "quantity": 5,
+      "entry_price": 339.1,
+      "exit_price": 289.84,
+      "entry_time": "2025-06-28T22:12:44.316922",
+      "exit_time": "2025-07-01T22:12:44.316922",
+      "side": "BUY",
+      "pnl": -246.28,
+      "pnl_pct": -14.53,
+      "confidence": 0.38
+    },
+    {
+      "symbol": "TSLA",
+      "quantity": 5,
+      "entry_price": 224.5,
+      "exit_price": 188.19,
+      "entry_time": "2025-06-21T22:12:44.316922",
+      "exit_time": "2025-06-23T22:12:44.316922",
+      "side": "BUY",
+      "pnl": -181.54,
+      "pnl_pct": -16.17,
+      "confidence": 0.59
+    },
+    {
+      "symbol": "AAPL",
+      "quantity": 10,
+      "entry_price": 223.75,
+      "entry_time": "2025-06-23T22:12:44.316922",
+      "side": "BUY",
+      "confidence": 0.73
+    },
+    {
+      "symbol": "META",
+      "quantity": 3,
+      "entry_price": 490.6,
+      "exit_price": 483.8,
+      "entry_time": "2025-06-14T22:12:44.316922",
+      "exit_time": "2025-06-16T22:12:44.316922",
+      "side": "BUY",
+      "pnl": -20.39,
+      "pnl_pct": -1.39,
+      "confidence": 0.4
+    },
+    {
+      "symbol": "GOOGL",
+      "quantity": 4,
+      "entry_price": 285.51,
+      "exit_price": 253.76,
+      "entry_time": "2025-06-24T22:12:44.316922",
+      "exit_time": "2025-06-26T22:12:44.316922",
+      "side": "BUY",
+      "pnl": -127.01,
+      "pnl_pct": -11.12,
+      "confidence": 0.77
+    },
+    {
+      "symbol": "NVDA",
+      "quantity": 9,
+      "entry_price": 452.63,
+      "exit_price": 410.2,
+      "entry_time": "2025-06-27T22:12:44.316922",
+      "exit_time": "2025-07-01T22:12:44.316922",
+      "side": "BUY",
+      "pnl": -381.87,
+      "pnl_pct": -9.37,
+      "confidence": 0.72
+    },
+    {
+      "symbol": "QQQ",
+      "quantity": 3,
+      "entry_price": 176.68,
+      "exit_price": 165.52,
+      "entry_time": "2025-06-16T22:12:44.316922",
+      "exit_time": "2025-06-22T22:12:44.316922",
+      "side": "BUY",
+      "pnl": -33.47,
+      "pnl_pct": -6.31,
+      "confidence": 0.36
+    },
+    {
+      "symbol": "MSFT",
+      "quantity": 2,
+      "entry_price": 326.75,
+      "exit_price": 376.13,
+      "entry_time": "2025-06-29T22:12:44.316922",
+      "exit_time": "2025-07-06T22:12:44.316922",
+      "side": "BUY",
+      "pnl": 98.76,
+      "pnl_pct": 15.11,
+      "confidence": 0.33
+    },
+    {
+      "symbol": "NVDA",
+      "quantity": 7,
+      "entry_price": 136.86,
+      "entry_time": "2025-06-13T22:12:44.316922",
+      "side": "BUY",
+      "confidence": 0.38
+    },
+    {
+      "symbol": "GOOGL",
+      "quantity": 5,
+      "entry_price": 245.76,
+      "exit_price": 234.85,
+      "entry_time": "2025-07-11T22:12:44.316922",
+      "exit_time": "2025-07-12T22:12:44.316922",
+      "side": "BUY",
+      "pnl": -54.56,
+      "pnl_pct": -4.44,
+      "confidence": 0.89
+    },
+    {
+      "symbol": "AAPL",
+      "quantity": 1,
+      "entry_price": 458.12,
+      "exit_price": 441.8,
+      "entry_time": "2025-07-06T22:12:44.316922",
+      "exit_time": "2025-07-07T22:12:44.316922",
+      "side": "SELL",
+      "pnl": 16.32,
+      "pnl_pct": 3.56,
+      "confidence": 0.56
+    },
+    {
+      "symbol": "GOOGL",
+      "quantity": 10,
+      "entry_price": 498.1,
+      "exit_price": 499.66,
+      "entry_time": "2025-06-24T22:12:44.316922",
+      "exit_time": "2025-06-26T22:12:44.316922",
+      "side": "BUY",
+      "pnl": 15.64,
+      "pnl_pct": 0.31,
+      "confidence": 0.47
+    }
+  ],
+  "positions": [
+    {
+      "symbol": "TSLA",
+      "quantity": 19,
+      "entry_price": 156.09,
+      "current_price": 131.78,
+      "entry_time": "2025-07-10T22:12:44.317126",
+      "side": "SELL",
+      "unrealized_pnl": 461.98,
+      "unrealized_pnl_pct": 15.58
+    },
+    {
+      "symbol": "NVDA",
+      "quantity": 20,
+      "entry_price": 287.66,
+      "current_price": 273.87,
+      "entry_time": "2025-07-02T22:12:44.317129",
+      "side": "SELL",
+      "unrealized_pnl": 275.72,
+      "unrealized_pnl_pct": 4.79
+    },
+    {
+      "symbol": "MSFT",
+      "quantity": 20,
+      "entry_price": 187.81,
+      "current_price": 172.21,
+      "entry_time": "2025-06-29T22:12:44.317133",
+      "side": "BUY",
+      "unrealized_pnl": -311.91,
+      "unrealized_pnl_pct": -8.3
+    },
+    {
+      "symbol": "GOOGL",
+      "quantity": 17,
+      "entry_price": 348.43,
+      "current_price": 333.24,
+      "entry_time": "2025-07-08T22:12:44.317136",
+      "side": "SELL",
+      "unrealized_pnl": 258.2,
+      "unrealized_pnl_pct": 4.36
+    }
+  ],
+  "performance": {
+    "total_trades": 50,
+    "winning_trades": 32,
+    "losing_trades": 18,
+    "win_rate": 64.0,
+    "total_pnl": 1267.91,
+    "avg_pnl": 25.36,
+    "max_drawdown": 13.75,
+    "sharpe_ratio": 2.18,
+    "current_positions": 5,
+    "unrealized_pnl": 251.55
+  },
+  "graph_data": {
+    "nodes": [
+      {
+        "id": "SPY",
+        "name": "SPY",
+        "type": "ETF",
+        "value": 100,
+        "group": 0
+      },
+      {
+        "id": "QQQ",
+        "name": "QQQ",
+        "type": "ETF",
+        "value": 85,
+        "group": 0
+      },
+      {
+        "id": "IWM",
+        "name": "IWM",
+        "type": "ETF",
+        "value": 70,
+        "group": 0
+      },
+      {
+        "id": "AAPL",
+        "name": "AAPL",
+        "type": "Stock",
+        "value": 90,
+        "group": 1
+      },
+      {
+        "id": "TSLA",
+        "name": "TSLA",
+        "type": "Stock",
+        "value": 75,
+        "group": 1
+      },
+      {
+        "id": "NVDA",
+        "name": "NVDA",
+        "type": "Stock",
+        "value": 95,
+        "group": 1
+      },
+      {
+        "id": "MSFT",
+        "name": "MSFT",
+        "type": "Stock",
+        "value": 88,
+        "group": 1
+      },
+      {
+        "id": "GOOGL",
+        "name": "GOOGL",
+        "type": "Stock",
+        "value": 82,
+        "group": 1
+      },
+      {
+        "id": "Tech",
+        "name": "Tech Sector",
+        "type": "Sector",
+        "value": 85,
+        "group": 2
+      },
+      {
+        "id": "AI",
+        "name": "AI Sector",
+        "type": "Sector",
+        "value": 92,
+        "group": 2
+      },
+      {
+        "id": "EV",
+        "name": "EV Sector",
+        "type": "Sector",
+        "value": 68,
+        "group": 2
+      }
+    ],
+    "links": [
+      {
+        "source": "SPY",
+        "target": "AAPL",
+        "value": 1,
+        "type": "correlation"
+      },
+      {
+        "source": "SPY",
+        "target": "TSLA",
+        "value": 1,
+        "type": "correlation"
+      },
+      {
+        "source": "SPY",
+        "target": "NVDA",
+        "value": 1,
+        "type": "correlation"
+      },
+      {
+        "source": "SPY",
+        "target": "MSFT",
+        "value": 1,
+        "type": "correlation"
+      },
+      {
+        "source": "SPY",
+        "target": "GOOGL",
+        "value": 1,
+        "type": "correlation"
+      },
+      {
+        "source": "QQQ",
+        "target": "AAPL",
+        "value": 1,
+        "type": "correlation"
+      },
+      {
+        "source": "QQQ",
+        "target": "NVDA",
+        "value": 1,
+        "type": "correlation"
+      },
+      {
+        "source": "QQQ",
+        "target": "MSFT",
+        "value": 1,
+        "type": "correlation"
+      },
+      {
+        "source": "QQQ",
+        "target": "GOOGL",
+        "value": 1,
+        "type": "correlation"
+      },
+      {
+        "source": "AAPL",
+        "target": "Tech",
+        "value": 1,
+        "type": "sector"
+      },
+      {
+        "source": "MSFT",
+        "target": "Tech",
+        "value": 1,
+        "type": "sector"
+      },
+      {
+        "source": "GOOGL",
+        "target": "Tech",
+        "value": 1,
+        "type": "sector"
+      },
+      {
+        "source": "NVDA",
+        "target": "AI",
+        "value": 1,
+        "type": "sector"
+      },
+      {
+        "source": "TSLA",
+        "target": "EV",
+        "value": 1,
+        "type": "sector"
+      },
+      {
+        "source": "AI",
+        "target": "Tech",
+        "value": 1,
+        "type": "correlation"
+      },
+      {
+        "source": "EV",
+        "target": "Tech",
+        "value": 1,
+        "type": "correlation"
+      }
+    ]
+  }
+}

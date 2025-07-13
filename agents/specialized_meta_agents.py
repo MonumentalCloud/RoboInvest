@@ -23,6 +23,7 @@ import re
 
 from core.openai_manager import openai_manager
 from utils.logger import logger
+from core.config import config
 
 class CodeEditorAgent:
     """
@@ -207,12 +208,17 @@ class CodeEditorAgent:
     
     def _find_agent_file(self, agent_name: str) -> Optional[str]:
         """Find the file for a specific agent."""
-        # Look in agents directory
-        agents_dir = Path("agents")
-        if agents_dir.exists():
-            for file in agents_dir.glob("*.py"):
-                if agent_name.lower() in file.name.lower():
-                    return str(file)
+        # Use config.agents_dir to support testing mode
+        agents_dir = Path(config.agents_dir)
+        possible_files = [
+            agents_dir / f"{agent_name}.py",
+            agents_dir / f"{agent_name.lower()}.py",
+            agents_dir / f"{agent_name.lower().replace(' ', '_')}.py"
+        ]
+        
+        for file_path in possible_files:
+            if file_path.exists():
+                return str(file_path)
         
         return None
     
@@ -640,7 +646,7 @@ class PromptEngineerAgent:
     
     def _find_agent_file(self, agent_name: str) -> Optional[str]:
         """Find the file for a specific agent."""
-        agents_dir = Path("agents")
+        agents_dir = Path(config.agents_dir)
         if agents_dir.exists():
             for file in agents_dir.glob("*.py"):
                 if agent_name.lower() in file.name.lower():
@@ -777,7 +783,8 @@ class SystemArchitectAgent:
     async def _create_agent_file(self, agent_name: str, agent_code: str):
         """Create the agent file."""
         try:
-            agents_dir = Path("agents")
+            # Use config.agents_dir to support testing mode
+            agents_dir = Path(config.agents_dir)
             agents_dir.mkdir(exist_ok=True)
             
             filename = f"{agent_name.lower().replace(' ', '_')}.py"

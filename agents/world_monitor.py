@@ -9,7 +9,7 @@ import feedparser  # type: ignore
 
 from core.config import config
 from utils.logger import logger  # type: ignore
-from core.finnhub_client import finnhub_client
+from tools.data_fetcher import data_fetcher
 from tools.web_intelligence_agent import web_intelligence_agent
 from core.openai_manager import openai_manager
 
@@ -52,7 +52,7 @@ class WorldMonitorAgent:
         web_opps = await web_task
 
         # LLM-based extraction of tickers/opportunities from all sources
-        all_text = "\n".join(news + web_opps)
+        all_text = "\n".join([str(x) for x in news + web_opps])
         extracted = await self._extract_opportunities_with_llm(all_text)
 
         observation = {
@@ -70,18 +70,21 @@ class WorldMonitorAgent:
     async def _get_market_data(self) -> Dict[str, Any]:
         data: Dict[str, Any] = {}
         for sym in self.symbols:
-            quote = finnhub_client.quote(sym)
-            if not quote:
+            quote = data_fetcher.get_real_time_quote(sym)
+            if not quote or 'current_price' not in quote:
                 continue
-            price = quote.get("c")  # current price
-            prev_close = quote.get("pc", price)
-            change_pct = ((price - prev_close) / prev_close) * 100 if prev_close else 0
+            price = quote['current_price']
+            prev_close = price  # No direct prev_close, so use price for now
+            change_pct = 0  # No direct change_pct, set to 0 for now
 
-            fundamentals = finnhub_client.fundamentals(sym)
-            pe = fundamentals.get("peBasicExclExtraTTM") or fundamentals.get("peInclExtraTTM")
-            pb = fundamentals.get("pbAnnual")
+            fundamentals = data_fetcher.get_fundamentals(sym)
+            pe = fundamentals.get('pe')
+            pb = fundamentals.get('pb')
+            eps = fundamentals.get('eps')
+            market_cap = fundamentals.get('market_cap')
+            revenue = fundamentals.get('revenue')
             undervalued = None
-            if pe and pb:
+            if pe is not None and pb is not None:
                 undervalued = "under" if pe < 15 and pb < 1.5 else "over" if pe > 25 or pb > 3 else "fair"
 
             data[sym] = {
@@ -89,6 +92,9 @@ class WorldMonitorAgent:
                 "change_pct": change_pct,
                 "pe": pe,
                 "pb": pb,
+                "eps": eps,
+                "market_cap": market_cap,
+                "revenue": revenue,
                 "valuation": undervalued,
             }
         return data
