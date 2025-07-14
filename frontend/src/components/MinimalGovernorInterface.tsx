@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 interface Message {
   id: string;
@@ -6,203 +6,66 @@ interface Message {
   content: string;
   timestamp: Date;
   visualData?: any;
-  responseData?: any; // Store the full response data for rich rendering
-}
-
-interface VisualElement {
-  id: string;
-  type: 'chart' | 'graph' | 'metric' | 'diagram';
-  title: string;
-  data: any;
-  timestamp: Date;
+  responseData?: any;
+  customVisualization?: {
+    html: string;
+    css?: string;
+    js?: string;
+    title: string;
+  };
 }
 
 const MinimalGovernorInterface: React.FC = () => {
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [systemStatus, setSystemStatus] = useState<string>('');
-  const [visualElements, setVisualElements] = useState<VisualElement[]>([]);
   const [showWhiteboard, setShowWhiteboard] = useState(false);
+  const [currentVisualization, setCurrentVisualization] = useState<{
+    html: string;
+    css?: string;
+    js?: string;
+    title: string;
+  } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
-
-  const generateVisualData = (request: string): VisualElement | null => {
-    const lowerRequest = request.toLowerCase();
-    
-    // Performance metrics chart
-    if (lowerRequest.includes('performance') || lowerRequest.includes('pnl') || lowerRequest.includes('profit')) {
-      return {
-        id: Date.now().toString(),
-        type: 'chart',
-        title: 'Trading Performance',
-        data: {
-          type: 'line',
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-          datasets: [{
-            label: 'Portfolio Value',
-            data: [10000, 10500, 11200, 10800, 12000, 12500],
-            borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-            tension: 0.4
-          }]
-        },
-        timestamp: new Date()
-      };
-    }
-    
-    // Risk metrics
-    if (lowerRequest.includes('risk') || lowerRequest.includes('volatility') || lowerRequest.includes('drawdown')) {
-      return {
-        id: Date.now().toString(),
-        type: 'chart',
-        title: 'Risk Metrics',
-        data: {
-          type: 'bar',
-          labels: ['Max Drawdown', 'Volatility', 'Sharpe Ratio', 'Beta'],
-          datasets: [{
-            label: 'Current Values',
-            data: [0.08, 0.15, 1.2, 0.9],
-            backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#3b82f6']
-          }]
-        },
-        timestamp: new Date()
-      };
-    }
-    
-    // Agent activity
-    if (lowerRequest.includes('agent') || lowerRequest.includes('activity') || lowerRequest.includes('workload')) {
-      return {
-        id: Date.now().toString(),
-        type: 'chart',
-        title: 'Agent Activity',
-        data: {
-          type: 'doughnut',
-          labels: ['Research', 'Analysis', 'Execution', 'Monitoring'],
-          datasets: [{
-            data: [35, 25, 20, 20],
-            backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444']
-          }]
-        },
-        timestamp: new Date()
-      };
-    }
-    
-    // Market sentiment
-    if (lowerRequest.includes('sentiment') || lowerRequest.includes('market') || lowerRequest.includes('mood')) {
-      return {
-        id: Date.now().toString(),
-        type: 'chart',
-        title: 'Market Sentiment',
-        data: {
-          type: 'radar',
-          labels: ['Fear', 'Greed', 'Optimism', 'Pessimism', 'Neutrality'],
-          datasets: [{
-            label: 'Current Sentiment',
-            data: [0.3, 0.7, 0.6, 0.2, 0.4],
-            borderColor: '#8b5cf6',
-            backgroundColor: 'rgba(139, 92, 246, 0.2)'
-          }]
-        },
-        timestamp: new Date()
-      };
-    }
-    
-    // System health
-    if (lowerRequest.includes('health') || lowerRequest.includes('status') || lowerRequest.includes('system')) {
-      return {
-        id: Date.now().toString(),
-        type: 'metric',
-        title: 'System Health',
-        data: {
-          metrics: [
-            { label: 'CPU Usage', value: '45%', color: '#10b981' },
-            { label: 'Memory', value: '2.1GB', color: '#3b82f6' },
-            { label: 'Active Agents', value: '5', color: '#f59e0b' },
-            { label: 'Uptime', value: '99.8%', color: '#10b981' }
-          ]
-        },
-        timestamp: new Date()
-      };
-    }
-    
-    return null;
-  };
-
-  const renderVisualElement = (element: VisualElement) => {
-    switch (element.type) {
-      case 'chart':
-        return (
-          <div key={element.id} style={{
-            background: 'rgba(255, 255, 255, 0.9)',
-            borderRadius: '12px',
-            padding: '1rem',
-            marginBottom: '1rem',
-            backdropFilter: 'blur(8px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)'
-          }}>
-            <h3 style={{ margin: '0 0 1rem 0', color: '#1e3a8a', fontSize: '1rem' }}>
-              {element.title}
-            </h3>
-            <div style={{
-              height: '200px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%)',
-              borderRadius: '8px',
-              color: '#6b7280',
-              fontSize: '0.9rem'
-            }}>
-              📊 {element.data.type} Chart
-              <br />
-              <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>
-                {element.data.labels?.length || 0} data points
-              </span>
-            </div>
-          </div>
-        );
+  // Handle custom visualization from agent
+  const handleCustomVisualization = (visualization: any) => {
+    if (visualization && visualization.html) {
+      setCurrentVisualization(visualization);
+      setShowWhiteboard(true);
       
-      case 'metric':
-        return (
-          <div key={element.id} style={{
-            background: 'rgba(255, 255, 255, 0.9)',
-            borderRadius: '12px',
-            padding: '1rem',
-            marginBottom: '1rem',
-            backdropFilter: 'blur(8px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)'
-          }}>
-            <h3 style={{ margin: '0 0 1rem 0', color: '#1e3a8a', fontSize: '1rem' }}>
-              {element.title}
-            </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.5rem' }}>
-              {element.data.metrics.map((metric: any, index: number) => (
-                <div key={index} style={{
-                  padding: '0.5rem',
-                  background: 'rgba(248, 250, 252, 0.8)',
-                  borderRadius: '6px',
-                  textAlign: 'center'
-                }}>
-                  <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>{metric.label}</div>
-                  <div style={{ fontSize: '1.1rem', fontWeight: '600', color: metric.color }}>
-                    {metric.value}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      
-      default:
-        return null;
+      // Update iframe content
+      setTimeout(() => {
+        if (iframeRef.current && iframeRef.current.contentDocument) {
+          const doc = iframeRef.current.contentDocument;
+          doc.open();
+          doc.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <title>${visualization.title || 'Agent Visualization'}</title>
+              <style>
+                body { 
+                  margin: 0; 
+                  padding: 20px; 
+                  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                  background: #f8fafc;
+                }
+                ${visualization.css || ''}
+              </style>
+            </head>
+            <body>
+              ${visualization.html}
+              ${visualization.js ? `<script>${visualization.js}</script>` : ''}
+            </body>
+            </html>
+          `);
+          doc.close();
+        }
+      }, 100);
     }
   };
 
@@ -220,13 +83,6 @@ const MinimalGovernorInterface: React.FC = () => {
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
     setIsTyping(true);
-
-    // Check if user wants a visual
-    const visualData = generateVisualData(inputValue);
-    if (visualData) {
-      setVisualElements(prev => [...prev, visualData]);
-      setShowWhiteboard(true);
-    }
 
     try {
       const response = await fetch('http://localhost:8000/api/governor/conversation', {
@@ -256,18 +112,14 @@ const MinimalGovernorInterface: React.FC = () => {
           type: 'agent',
           content: content,
           timestamp: new Date(),
-          responseData: data.response, // Store the full response data
+          responseData: data.response,
         };
 
         setMessages(prev => [...prev, agentMessage]);
         
-        // Check if the governor agent wants to show any visuals
-        if (data.metadata && data.metadata.visual_request) {
-          const visualData = generateVisualData(data.metadata.visual_request);
-          if (visualData) {
-            setVisualElements(prev => [...prev, visualData]);
-            setShowWhiteboard(true);
-          }
+        // Check if the agent wants to show a custom visualization
+        if (data.response && data.response.customVisualization) {
+          handleCustomVisualization(data.response.customVisualization);
         }
       }
     } catch (error) {
@@ -405,7 +257,7 @@ const MinimalGovernorInterface: React.FC = () => {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask anything... (try 'show me performance' or 'display risk metrics')"
+              placeholder="Ask anything... (try 'show me positions' or 'analyze portfolio')"
               disabled={isTyping}
               style={{
                 width: '100%',
@@ -425,27 +277,27 @@ const MinimalGovernorInterface: React.FC = () => {
         </div>
       </div>
 
-      {/* Right side - Visual Whiteboard */}
+      {/* Right side - Agent Visualization Whiteboard */}
       {showWhiteboard && (
         <div style={{
           width: '40%',
           background: 'rgba(255, 255, 255, 0.1)',
           backdropFilter: 'blur(8px)',
           borderLeft: '1px solid rgba(255, 255, 255, 0.2)',
-          padding: '1rem',
-          overflowY: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
           maxHeight: '100vh'
         }}>
+          {/* Header */}
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: '1rem',
-            paddingBottom: '0.5rem',
+            padding: '1rem',
             borderBottom: '1px solid rgba(255, 255, 255, 0.2)'
           }}>
             <h2 style={{ margin: 0, color: '#1e3a8a', fontSize: '1.2rem' }}>
-              📊 Visual Whiteboard
+              📊 {currentVisualization?.title || 'Agent Visualization'}
             </h2>
             <button
               onClick={() => setShowWhiteboard(false)}
@@ -462,22 +314,42 @@ const MinimalGovernorInterface: React.FC = () => {
             </button>
           </div>
           
-          {visualElements.length === 0 ? (
-            <div style={{
-              textAlign: 'center',
-              color: '#6b7280',
-              padding: '2rem',
-              fontSize: '0.9rem'
-            }}>
-              Ask for charts, graphs, or metrics to see them here
-              <br />
-              <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>
-                Try: "show me performance", "display risk metrics", "agent activity"
-              </span>
-            </div>
-          ) : (
-            visualElements.map(renderVisualElement)
-          )}
+          {/* Iframe for agent-generated content */}
+          <div style={{ flex: 1, position: 'relative' }}>
+            {currentVisualization ? (
+              <iframe
+                ref={iframeRef}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  border: 'none',
+                  background: 'white'
+                }}
+                title="Agent Visualization"
+                sandbox="allow-scripts allow-same-origin"
+              />
+            ) : (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+                color: '#6b7280',
+                fontSize: '0.9rem',
+                textAlign: 'center',
+                padding: '2rem'
+              }}>
+                <div>
+                  <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>📊</div>
+                  Ask agents to create visualizations
+                  <br />
+                  <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>
+                    Try: "show me positions", "analyze portfolio", "create chart"
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
