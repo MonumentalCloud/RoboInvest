@@ -45,6 +45,14 @@ class Config:
         # ChromaDB
         self.chroma_db_path: str = get_local_or_env("CHROMA_DB_PATH", "./chroma")
         
+        # Email Configuration for Error Notifications
+        self.smtp_server: str = get_local_or_env("SMTP_SERVER", "smtp.gmail.com")
+        self.smtp_port: int = int(get_local_or_env("SMTP_PORT", "587"))
+        self.email_user: str = get_local_or_env("EMAIL_USER", "")
+        self.email_password: str = get_local_or_env("EMAIL_PASSWORD", "")
+        self.admin_email: str = get_local_or_env("ADMIN_EMAIL", "")
+        self.notifications_enabled: bool = get_local_or_env("NOTIFICATIONS_ENABLED", "false").lower() == "true"
+        
         # System Mode
         self.testing_mode: bool = get_local_or_env("TESTING_MODE", "false").lower() == "true"
         

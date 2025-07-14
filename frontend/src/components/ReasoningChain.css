@@ -1,0 +1,319 @@
+.reasoning-chain-container {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #333;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  max-height: 600px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.reasoning-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #333;
+}
+
+.reasoning-header h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.reasoning-status {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.streaming-indicator {
+  color: #00ff88;
+  font-size: 14px;
+  animation: pulse 2s infinite;
+}
+
+.error-indicator {
+  color: #ff4444;
+  font-size: 14px;
+}
+
+.complete-indicator {
+  color: #00ff88;
+  font-size: 14px;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.reasoning-steps {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+  max-height: 400px;
+}
+
+.reasoning-steps::-webkit-scrollbar {
+  width: 8px;
+}
+
+.reasoning-steps::-webkit-scrollbar-track {
+  background: #2a2a2a;
+  border-radius: 4px;
+}
+
+.reasoning-steps::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+
+.reasoning-steps::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+.no-steps {
+  color: #888;
+  text-align: center;
+  padding: 40px 20px;
+  font-style: italic;
+}
+
+.reasoning-step {
+  background: #2a2a2a;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 12px;
+  border-left: 4px solid #555;
+  transition: all 0.3s ease;
+  animation: slideIn 0.3s ease-out;
+}
+
+.reasoning-step:hover {
+  background: #333;
+  transform: translateX(2px);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.step-icon {
+  font-size: 16px;
+  min-width: 20px;
+}
+
+.step-type {
+  background: #444;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.step-agent {
+  color: #00aaff;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.step-time {
+  color: #888;
+  font-size: 11px;
+  margin-left: auto;
+}
+
+.step-content {
+  color: #e0e0e0;
+  line-height: 1.5;
+  font-size: 14px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.step-details {
+  margin-top: 10px;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.step-tool, .step-agent-called {
+  background: #3a3a3a;
+  color: #ccc;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  border: 1px solid #555;
+}
+
+/* Step type specific colors */
+.reasoning-step.thought {
+  border-left-color: #4a9eff;
+}
+
+.reasoning-step.tool_use {
+  border-left-color: #ffaa00;
+}
+
+.reasoning-step.agent_call {
+  border-left-color: #ff6b6b;
+}
+
+.reasoning-step.reflection {
+  border-left-color: #a855f7;
+}
+
+.reasoning-step.decision {
+  border-left-color: #10b981;
+}
+
+.reasoning-step.result {
+  border-left-color: #00ff88;
+}
+
+.reasoning-step.error {
+  border-left-color: #ff4444;
+  background: #3a1a1a;
+}
+
+/* CSS Variables for colors */
+:root {
+  --thought-color: #4a9eff;
+  --tool-color: #ffaa00;
+  --agent-color: #ff6b6b;
+  --reflection-color: #a855f7;
+  --decision-color: #10b981;
+  --result-color: #00ff88;
+  --error-color: #ff4444;
+  --default-color: #555;
+}
+
+.reasoning-error {
+  background: #3a1a1a;
+  border: 1px solid #ff4444;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.reasoning-error h4 {
+  color: #ff4444;
+  margin: 0 0 10px 0;
+}
+
+.reasoning-error p {
+  color: #e0e0e0;
+  margin: 0 0 15px 0;
+}
+
+.retry-button {
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.retry-button:hover {
+  background: #ff6666;
+}
+
+.final-response {
+  background: #1a3a1a;
+  border: 1px solid #00ff88;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.final-response h4 {
+  color: #00ff88;
+  margin: 0 0 15px 0;
+  font-size: 16px;
+}
+
+.response-content {
+  color: #e0e0e0;
+  line-height: 1.6;
+  font-size: 14px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: 15px;
+}
+
+.continue-button {
+  background: #00ff88;
+  color: #1a1a1a;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.continue-button:hover {
+  background: #00cc6a;
+  transform: translateY(-1px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .reasoning-chain-container {
+    padding: 15px;
+    margin: 10px 0;
+  }
+  
+  .reasoning-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  
+  .step-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .step-time {
+    margin-left: 0;
+  }
+  
+  .step-details {
+    flex-direction: column;
+    gap: 8px;
+  }
+} 

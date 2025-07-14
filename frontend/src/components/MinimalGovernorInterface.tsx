@@ -1,372 +1,639 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import './MinimalGovernorInterface.css';
 
 interface Message {
   id: string;
-  type: 'user' | 'agent';
   content: string;
+  sender: 'user' | 'agent';
   timestamp: Date;
-  visualData?: any;
+  responseType?: string;
   responseData?: any;
-  customVisualization?: {
-    html: string;
-    css?: string;
-    js?: string;
-    title: string;
-  };
+  actions?: Array<{
+    label: string;
+    action: string;
+    icon: string;
+    style: string;
+  }>;
+  uiHints?: string[];
+}
+
+interface SystemContext {
+  mission: string;
+  current_strategy: string;
+  system_mode: string;
+  active_directives: number;
+}
+
+interface SystemPulse {
+  active_agents: number;
+  directives_processed: number;
+  trades_executed: number;
+  research_activities: number;
+  system_health: string;
+}
+
+interface AgentThought {
+  step_id: string;
+  step_type: string;
+  content: string;
+  agent_name: string;
+  timestamp: number;
+  tool_used?: string;
+  agent_called?: string;
+  metadata?: any;
+}
+
+// Rich response type definitions
+interface RichResponse {
+  type: 'markdown' | 'table' | 'chart' | 'code_diff' | 'interactive' | 'dashboard' | 'alert' | 'progress' | 'research_tree';
+  content: any;
+  agent: string;
+  actions_taken?: string[];
+  metadata?: any;
+  timestamp: string;
+  ui_config?: any;
+  actions?: Array<{
+    label: string;
+    action: string;
+    icon: string;
+    style: string;
+  }>;
+  ui_hints?: string[];
+  reasoningChain?: AgentThought[]; // Added reasoningChain to RichResponse
 }
 
 const MinimalGovernorInterface: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [inputValue, setInputValue] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const [showWhiteboard, setShowWhiteboard] = useState(false);
-  const [currentVisualization, setCurrentVisualization] = useState<{
-    html: string;
-    css?: string;
-    js?: string;
-    title: string;
-  } | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [inputMessage, setInputMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [systemContext, setSystemContext] = useState<SystemContext | null>(null);
+  const [systemPulse, setSystemPulse] = useState<SystemPulse | null>(null);
+  const [agentThoughts, setAgentThoughts] = useState<AgentThought[]>([]);
+  const [transparencyLevel, setTransparencyLevel] = useState<'full' | 'mission' | 'minimal'>('full');
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [reasoningChain, setReasoningChain] = useState<AgentThought[]>([]);
+  const [showReasoning, setShowReasoning] = useState(false);
+  const [expandedReasoning, setExpandedReasoning] = useState<string | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const wsRef = useRef<WebSocket | null>(null);
+  // Add a new state to track visual content for the sidebar
+  const [visualContent, setVisualContent] = useState<RichResponse[]>([]);
+  const [focusedVisual, setFocusedVisual] = useState<number | null>(null);
 
-  // Handle custom visualization from agent
-  const handleCustomVisualization = (visualization: any) => {
-    if (visualization && visualization.html) {
-      setCurrentVisualization(visualization);
-      setShowWhiteboard(true);
-      
-      // Update iframe content
-      setTimeout(() => {
-        if (iframeRef.current && iframeRef.current.contentDocument) {
-          const doc = iframeRef.current.contentDocument;
-          doc.open();
-          doc.write(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-              <meta charset="utf-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1">
-              <title>${visualization.title || 'Agent Visualization'}</title>
-              <style>
-                body { 
-                  margin: 0; 
-                  padding: 20px; 
-                  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                  background: #f8fafc;
-                }
-                ${visualization.css || ''}
-              </style>
-            </head>
-            <body>
-              ${visualization.html}
-              ${visualization.js ? `<script>${visualization.js}</script>` : ''}
-            </body>
-            </html>
-          `);
-          doc.close();
-        }
-      }, 100);
-    }
+  // Initialize WebSocket connections
+  useEffect(() => {
+    // TODO: Add WebSocket connection when backend supports it
+    // For now, just set streaming to false
+    setIsStreaming(false);
+    
+    // TODO: Load system context and pulse when backend supports it
+    // For now, use default values
+    setSystemContext({
+      mission: "Discover the smartest and greatest upside that nobody is looking at",
+      current_strategy: "organic_alpha_hunting",
+      system_mode: "normal",
+      active_directives: 0
+    });
+    
+    setSystemPulse({
+      active_agents: 0,
+      directives_processed: 0,
+      trades_executed: 0,
+      research_activities: 0,
+      system_health: "offline"
+    });
+
+    return () => {
+      // Cleanup when component unmounts
+    };
+  }, []);
+
+  const handleWebSocketMessage = (data: any) => {
+    // TODO: Handle WebSocket messages when backend supports it
+    console.log('WebSocket message received:', data);
   };
+
+  const loadSystemContext = async () => {
+    // TODO: Load system context when backend supports it
+    console.log('Loading system context...');
+  };
+
+  const loadSystemPulse = async () => {
+    // TODO: Load system pulse when backend supports it
+    console.log('Loading system pulse...');
+  };
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    // Find new visual content in the latest agent message
+    const lastMsg = messages[messages.length - 1];
+    if (lastMsg && lastMsg.sender === 'agent' && lastMsg.responseData) {
+      const { type } = lastMsg.responseData;
+      if (["chart", "dashboard", "research_tree"].includes(type)) {
+        setVisualContent((prev) => [...prev, lastMsg.responseData]);
+      }
+    }
+    // eslint-disable-next-line
+  }, [messages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputValue.trim() || isTyping) return;
+    if (!inputMessage.trim() || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      type: 'user',
-      content: inputValue,
-      timestamp: new Date(),
+      content: inputMessage,
+      sender: 'user',
+      timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
-    setInputValue('');
-    setIsTyping(true);
+    setInputMessage('');
+    setIsLoading(true);
+    setReasoningChain([]);
+    setShowReasoning(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/governor/conversation', {
+      // Use the reasoning endpoint for streaming responses
+      const response = await fetch('http://localhost:8000/api/reasoning/conversation', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: userMessage.content }),
+        body: JSON.stringify({
+          message: inputMessage,
+          session_id: 'default_session',
+          stream_reasoning: true
+        }),
       });
 
-      const data = await response.json();
-      
-      if (data.status === 'success') {
-        // Extract the actual content from the LLM response object
-        let content = '';
-        if (typeof data.response === 'string') {
-          content = data.response;
-        } else if (data.response && typeof data.response === 'object') {
-          // Handle the new LLM-based response format
-          content = data.response.content || data.response.toString();
-        } else {
-          content = 'I received an unexpected response format.';
-        }
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-        const agentMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          type: 'agent',
-          content: content,
-          timestamp: new Date(),
-          responseData: data.response,
-        };
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('No response body');
+      }
 
-        setMessages(prev => [...prev, agentMessage]);
-        
-        // Check if the agent wants to show a custom visualization
-        if (data.response && data.response.customVisualization) {
-          handleCustomVisualization(data.response.customVisualization);
+      let fullResponse = '';
+      let finalResponseData: RichResponse | null = null;
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = new TextDecoder().decode(value);
+        const lines = chunk.split('\n');
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              
+              if (data.step_type === 'result' && data.content) {
+                // Check if this is the final response
+                if (data.content.includes('Final response:')) {
+                  const responseMatch = data.content.match(/Final response: (.+)/);
+                  if (responseMatch) {
+                    fullResponse = responseMatch[1];
+                    // Try to parse as rich response
+                    try {
+                      finalResponseData = JSON.parse(fullResponse);
+                    } catch {
+                      // Fallback to markdown
+                      finalResponseData = {
+                        type: 'markdown',
+                        content: fullResponse,
+                        agent: data.agent_name || 'governor',
+                        timestamp: new Date().toISOString()
+                      };
+                    }
+                  }
+                } else {
+                  fullResponse = data.content;
+                }
+              }
+
+              // Add to reasoning chain
+              console.log('Received reasoning step:', data);
+              setReasoningChain(prev => [...prev, data]);
+            } catch (e) {
+              console.error('Error parsing SSE data:', e);
+            }
+          }
         }
       }
+
+      // Attach the reasoning chain to the final response data for UI display
+      if (finalResponseData) {
+        finalResponseData.reasoningChain = reasoningChain;
+      }
+
+      // Create the agent message with rich response data
+      const agentMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: fullResponse,
+        sender: 'agent',
+        timestamp: new Date(),
+        responseType: finalResponseData?.type || 'markdown',
+        responseData: finalResponseData,
+        actions: finalResponseData?.actions,
+        uiHints: finalResponseData?.ui_hints
+      };
+
+      setMessages(prev => [...prev, agentMessage]);
+
     } catch (error) {
-      console.error('Error connecting to governor agent:', error);
+      console.error('Error sending message:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        type: 'agent',
-        content: 'I encountered an error connecting to the governor agent system. Please check if the backend is running.',
-        timestamp: new Date(),
+        content: 'Sorry, I encountered an error. Please try again.',
+        sender: 'agent',
+        timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
     } finally {
-      setIsTyping(false);
-      setTimeout(() => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
-      }, 100);
+      setIsLoading(false);
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit(e as any);
+  const renderRichContent = (message: Message) => {
+    if (!message.responseData) {
+      return <div className="message-content">{message.content}</div>;
+    }
+
+    const { type, content, ui_config } = message.responseData;
+
+    switch (type) {
+      case 'table':
+        return <TableComponent data={content} config={ui_config} />;
+      
+      case 'chart':
+        return <ChartComponent data={content} config={ui_config} />;
+      
+      case 'code_diff':
+        return <CodeDiffComponent data={content} config={ui_config} />;
+      
+      case 'interactive':
+        return <InteractiveComponent data={content} actions={message.actions} uiHints={message.uiHints} />;
+      
+      case 'dashboard':
+        return <DashboardComponent data={content} config={ui_config} />;
+      
+      case 'alert':
+        return <AlertComponent data={content} config={ui_config} />;
+      
+      case 'progress':
+        return <ProgressComponent data={content} config={ui_config} />;
+      
+      default:
+        return <div className="message-content markdown-content" dangerouslySetInnerHTML={{ __html: renderMarkdown(message.content) }} />;
+    }
+  };
+
+  const renderMarkdown = (content: string): string => {
+    // Simple markdown to HTML conversion
+    return content
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/`(.*?)`/g, '<code>$1</code>')
+      .replace(/\n/g, '<br>')
+      .replace(/## (.*?)\n/g, '<h2>$1</h2>')
+      .replace(/# (.*?)\n/g, '<h1>$1</h1>');
+  };
+
+  const handleAction = async (action: string) => {
+    console.log('Action triggered:', action);
+    // Handle different actions
+    switch (action) {
+      case 'refresh_system_status':
+        await loadSystemPulse();
+        break;
+      case 'start_research_agents':
+        // Trigger research agent start
+        break;
+      case 'view_positions':
+        // Show positions modal
+        break;
+      default:
+        console.log('Unknown action:', action);
     }
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%)',
-      display: 'flex',
-      fontFamily: 'system-ui, -apple-system, sans-serif',
-      position: 'relative'
-    }}>
-      {/* Left side - Conversation */}
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        maxWidth: showWhiteboard ? '60%' : '100%',
-        transition: 'max-width 0.3s ease'
-      }}>
-        {/* Mission header */}
-        <div style={{
-          padding: '2rem',
-          textAlign: 'center',
-          color: '#1e3a8a',
-          fontSize: '1.1rem',
-          fontWeight: '300',
-          opacity: 0.8
-        }}>
-          Discover the smartest and greatest upside that nobody is looking at
+    <div className="minimal-governor-interface-with-sidebar">
+      <div className="main-chat-area">
+        {/* Mission Statement */}
+        <div className="mission-statement">
+          {systemContext?.mission || "Discover the smartest and greatest upside that nobody is looking at"}
         </div>
 
-        {/* Messages area */}
-        <div style={{
-          flex: 1,
-          padding: '0 2rem',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          gap: '1rem',
-          marginBottom: '2rem'
-        }}>
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              style={{
-                display: 'flex',
-                justifyContent: message.type === 'user' ? 'flex-end' : 'flex-start',
-                opacity: 0.9
-              }}
-            >
-              <div style={{
-                maxWidth: '70%',
-                padding: '0.5rem 1rem',
-                borderRadius: '1rem',
-                background: message.type === 'user' ? '#3b82f6' : 'rgba(255, 255, 255, 0.8)',
-                color: message.type === 'user' ? 'white' : '#374151',
-                fontSize: '0.95rem',
-                lineHeight: '1.4',
-                backdropFilter: 'blur(8px)',
-                border: message.type === 'agent' ? '1px solid rgba(255, 255, 255, 0.2)' : 'none',
-                boxShadow: message.type === 'agent' ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none'
-              }}>
-                {message.content}
-                {message.responseData && message.responseData.type === 'markdown' && (
-                  <div style={{ 
-                    marginTop: '0.5rem', 
-                    padding: '0.5rem', 
-                    background: 'rgba(0, 0, 0, 0.05)', 
-                    borderRadius: '0.5rem',
-                    fontSize: '0.9rem'
-                  }}>
-                    <strong>Agent:</strong> {message.responseData.agent || 'Unknown'}
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-          
-          {isTyping && (
-            <div style={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              opacity: 0.7
-            }}>
-              <div style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '1rem',
-                background: 'rgba(255, 255, 255, 0.8)',
-                color: '#6b7280',
-                fontSize: '0.9rem',
-                backdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)'
-              }}>
-                Thinking...
-              </div>
+        {/* System Status */}
+        <div className="system-status">
+          {systemPulse && (
+            <div className="status-indicator">
+              <span className={`health-dot ${systemPulse.system_health}`}></span>
+              {systemPulse.active_agents} agents
             </div>
           )}
         </div>
 
-        {/* Input area */}
-        <div style={{
-          padding: '0 2rem 2rem 2rem',
-          display: 'flex',
-          justifyContent: 'center'
-        }}>
-          <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '600px' }}>
-            <input
-              ref={inputRef}
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Ask anything... (try 'show me positions' or 'analyze portfolio')"
-              disabled={isTyping}
-              style={{
-                width: '100%',
-                padding: '1rem 1.5rem',
-                border: 'none',
-                borderRadius: '2rem',
-                background: 'rgba(255, 255, 255, 0.9)',
-                fontSize: '1rem',
-                outline: 'none',
-                backdropFilter: 'blur(12px)',
-                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)',
-                transition: 'all 0.2s ease',
-                color: '#374151'
-              }}
-            />
-          </form>
-        </div>
-      </div>
-
-      {/* Right side - Agent Visualization Whiteboard */}
-      {showWhiteboard && (
-        <div style={{
-          width: '40%',
-          background: 'rgba(255, 255, 255, 0.1)',
-          backdropFilter: 'blur(8px)',
-          borderLeft: '1px solid rgba(255, 255, 255, 0.2)',
-          display: 'flex',
-          flexDirection: 'column',
-          maxHeight: '100vh'
-        }}>
-          {/* Header */}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '1rem',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.2)'
-          }}>
-            <h2 style={{ margin: 0, color: '#1e3a8a', fontSize: '1.2rem' }}>
-              📊 {currentVisualization?.title || 'Agent Visualization'}
-            </h2>
-            <button
-              onClick={() => setShowWhiteboard(false)}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#6b7280',
-                cursor: 'pointer',
-                fontSize: '1.2rem',
-                padding: '0.25rem'
-              }}
-            >
-              ✕
-            </button>
-          </div>
-          
-          {/* Iframe for agent-generated content */}
-          <div style={{ flex: 1, position: 'relative' }}>
-            {currentVisualization ? (
-              <iframe
-                ref={iframeRef}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  border: 'none',
-                  background: 'white'
-                }}
-                title="Agent Visualization"
-                sandbox="allow-scripts allow-same-origin"
-              />
-            ) : (
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '100%',
-                color: '#6b7280',
-                fontSize: '0.9rem',
-                textAlign: 'center',
-                padding: '2rem'
-              }}>
-                <div>
-                  <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>📊</div>
-                  Ask agents to create visualizations
-                  <br />
-                  <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>
-                    Try: "show me positions", "analyze portfolio", "create chart"
-                  </span>
+        {/* Live Reasoning Chain Display */}
+        {showReasoning && reasoningChain.length > 0 && (
+          <div className="reasoning-chain-live">
+            <h4>🧠 Reasoning (Live)</h4>
+            <div>
+              {reasoningChain.map((step, i) => (
+                <div key={step.step_id || i} className={`reasoning-step ${step.step_type}`}>
+                  <div className="step-header">
+                    <span className="step-type">{step.step_type}</span>
+                    <span className="agent-name">{step.agent_name}</span>
+                    {step.tool_used && <span className="tool-used">🔧 {step.tool_used}</span>}
+                  </div>
+                  <div className="step-content">{step.content}</div>
                 </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Messages */}
+        <div className="messages-container">
+        {messages.map((message, idx) => (
+          <div key={message.id} className={`message ${message.sender}`}>
+            <div className="message-header">
+              <span className="sender">{message.sender === 'user' ? 'You' : 'Governor'}</span>
+              <span className="timestamp">{message.timestamp.toLocaleTimeString()}</span>
+            </div>
+            {renderRichContent(message)}
+            {/* Reasoning chain for this message, if available */}
+            {message.sender === 'agent' && message.responseData && message.responseData.reasoningChain && (
+              <div className="reasoning-chain-bubble">
+                <button
+                  className="toggle-reasoning-btn"
+                  onClick={() => setExpandedReasoning(expandedReasoning === message.id ? null : message.id)}
+                >
+                  {expandedReasoning === message.id ? 'Hide Reasoning' : 'Show Reasoning'}
+                </button>
+                {expandedReasoning === message.id && (
+                  <div className="reasoning-steps">
+                    {message.responseData.reasoningChain.map((step: any, i: number) => (
+                      <div key={i} className={`reasoning-step ${step.step_type}`}>
+                        <div className="step-header">
+                          <span className="step-type">{step.step_type}</span>
+                          <span className="agent-name">{step.agent_name}</span>
+                          {step.tool_used && <span className="tool-used">🔧 {step.tool_used}</span>}
+                        </div>
+                        <div className="step-content">{step.content}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
-        </div>
-      )}
+        ))}
+        
+        {isLoading && (
+          <div className="message agent">
+            <div className="message-header">
+              <span className="sender">Governor</span>
+              <span className="timestamp">Thinking...</span>
+            </div>
+            <div className="message-content">
+              <div className="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        <div ref={messagesEndRef} />
+      </div>
 
-      {/* Footer */}
-      <div style={{
-        position: 'absolute',
-        bottom: '0.5rem',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        fontSize: '0.7rem',
-        color: '#9ca3af',
-        opacity: 0.5
-      }}>
-        RoboInvest Governor
+      {/* Input Form */}
+      <form onSubmit={handleSubmit} className="input-form">
+        <input
+          type="text"
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
+          placeholder="Ask the Governor anything..."
+          className="message-input"
+          disabled={isLoading}
+          autoFocus
+        />
+        <button type="submit" className="send-button" disabled={isLoading || !inputMessage.trim()}>
+          Send
+        </button>
+      </form>
+
+      {/* Minimal Footer */}
+      <div className="minimal-footer">
+        <span className="connection-status">
+          {isStreaming ? '🟢 Connected' : '🔴 Disconnected'}
+        </span>
+      </div>
+      </div>
+      
+      <div className="visual-sidebar">
+        <h4>Visual Insights</h4>
+        {visualContent.length === 0 && <div className="sidebar-empty">No visual content yet.</div>}
+        {visualContent.map((visual, idx) => (
+          <div key={idx} className={`visual-preview ${focusedVisual === idx ? 'focused' : ''}`}
+            onClick={() => setFocusedVisual(focusedVisual === idx ? null : idx)}>
+            <div className="visual-type-label">{visual.type}</div>
+            <div className="visual-preview-content">
+              {visual.type === 'chart' && <ChartComponent data={visual.content} config={visual.ui_config} />}
+              {visual.type === 'dashboard' && <DashboardComponent data={visual.content} config={visual.ui_config} />}
+              {visual.type === 'research_tree' && <ChartComponent data={visual.content} config={visual.ui_config} />}
+            </div>
+            {focusedVisual === idx && (
+              <div className="visual-expanded">
+                {/* Render full visual here, could be modal or expanded view */}
+                {visual.type === 'chart' && <ChartComponent data={visual.content} config={visual.ui_config} />}
+                {visual.type === 'dashboard' && <DashboardComponent data={visual.content} config={visual.ui_config} />}
+                {visual.type === 'research_tree' && <ChartComponent data={visual.content} config={visual.ui_config} />}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
+};
+
+// Rich Content Components
+const TableComponent: React.FC<{ data: any; config: any }> = ({ data, config }) => {
+  const { headers, rows, title } = data;
+  
+  return (
+    <div className="table-component">
+      {title && <h3>{title}</h3>}
+      <div className="table-container">
+        <table>
+          <thead>
+            <tr>
+              {headers.map((header: string, index: number) => (
+                <th key={index}>{header}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row: any[], rowIndex: number) => (
+              <tr key={rowIndex}>
+                {row.map((cell: any, cellIndex: number) => (
+                  <td key={cellIndex}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+const ChartComponent: React.FC<{ data: any; config: any }> = ({ data, config }) => {
+  const { chart_type, title, data: chartData } = data;
+  
+  return (
+    <div className="chart-component">
+      {title && <h3>{title}</h3>}
+      <div className="chart-placeholder">
+        <div className="chart-info">
+          <strong>Chart Type:</strong> {chart_type}
+        </div>
+        <div className="chart-data">
+          <pre>{JSON.stringify(chartData, null, 2)}</pre>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CodeDiffComponent: React.FC<{ data: any; config: any }> = ({ data, config }) => {
+  const { file_path, old_code, new_code, description } = data;
+  
+  return (
+    <div className="code-diff-component">
+      <h3>Code Changes: {file_path}</h3>
+      {description && <p className="diff-description">{description}</p>}
+      <div className="diff-container">
+        <div className="diff-side">
+          <h4>Old Code</h4>
+          <pre className="code-block">{old_code}</pre>
+        </div>
+        <div className="diff-side">
+          <h4>New Code</h4>
+          <pre className="code-block">{new_code}</pre>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const InteractiveComponent: React.FC<{ 
+  data: string; 
+  actions?: Array<{ label: string; action: string; icon: string; style: string }>;
+  uiHints?: string[];
+}> = ({ data, actions, uiHints }) => {
+  return (
+    <div className="interactive-component">
+      <div className="interactive-content" dangerouslySetInnerHTML={{ __html: renderMarkdown(data) }} />
+      {actions && actions.length > 0 && (
+        <div className="action-buttons">
+          {actions.map((action, index) => (
+            <button
+              key={index}
+              className={`action-button ${action.style}`}
+              onClick={() => handleAction(action.action)}
+            >
+              <span className="action-icon">{action.icon}</span>
+              {action.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const DashboardComponent: React.FC<{ data: any; config: any }> = ({ data, config }) => {
+  const { panels, layout, title } = data;
+  
+  return (
+    <div className="dashboard-component">
+      {title && <h3>{title}</h3>}
+      <div className={`dashboard-panels ${layout}`}>
+        {panels.map((panel: any, index: number) => (
+          <div key={index} className={`dashboard-panel ${panel.type}`}>
+            <h4>{panel.title}</h4>
+            <div className="panel-content">{panel.content}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const AlertComponent: React.FC<{ data: any; config: any }> = ({ data, config }) => {
+  const { level, message, title } = data;
+  
+  return (
+    <div className={`alert-component alert-${level}`}>
+      {title && <h4>{title}</h4>}
+      <p>{message}</p>
+    </div>
+  );
+};
+
+const ProgressComponent: React.FC<{ data: any; config: any }> = ({ data, config }) => {
+  const { current, total, percentage, message } = data;
+  
+  return (
+    <div className="progress-component">
+      <div className="progress-header">
+        <span className="progress-text">{message}</span>
+        <span className="progress-percentage">{percentage.toFixed(1)}%</span>
+      </div>
+      <div className="progress-bar">
+        <div 
+          className="progress-fill" 
+          style={{ width: `${percentage}%` }}
+        ></div>
+      </div>
+      <div className="progress-details">
+        {current} / {total}
+      </div>
+    </div>
+  );
+};
+
+// Helper function for markdown rendering (moved outside component)
+const renderMarkdown = (content: string): string => {
+  return content
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/`(.*?)`/g, '<code>$1</code>')
+    .replace(/\n/g, '<br>')
+    .replace(/## (.*?)\n/g, '<h2>$1</h2>')
+    .replace(/# (.*?)\n/g, '<h1>$1</h1>');
+};
+
+// Helper function for action handling (moved outside component)
+const handleAction = async (action: string) => {
+  console.log('Action triggered:', action);
+  // Implementation would go here
 };
 
 export default MinimalGovernorInterface; 
