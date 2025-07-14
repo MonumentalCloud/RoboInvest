@@ -1,0 +1,1006 @@
+2025-07-14 10:48:58 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:49:04 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:49:10 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:49:23 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:49:29 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:49:29 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 10:49:29 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 10:49:34 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:49:35 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 10:49:35 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 10:49:42 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:49:42 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 10:49:42 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 10:49:47 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:49:47 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 10:49:47 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 10:49:54 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:49:54 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 10:49:54 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 10:49:54 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 10:49:54 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 10:49:54 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 10:49:54 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:49:54 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:49:54 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:49:54 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:49:54 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 10:49:54 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 10:49:54 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 10:49:54 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 10:49:54 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 10:49:59 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:50:00 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 10:50:00 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 10:50:00 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 10:50:00 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 10:50:00 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 10:50:00 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:50:00 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:50:00 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:50:00 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:50:00 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 10:50:00 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 10:50:00 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 10:50:00 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 10:50:00 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 10:50:00 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 10:50:00 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 10:50:07 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:50:07 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 10:50:07 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 10:50:07 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 10:50:07 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 10:50:07 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 10:50:07 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:50:07 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:50:07 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:50:07 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:50:07 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 10:50:07 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 10:50:07 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 10:50:07 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 10:50:07 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 10:50:07 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 10:50:07 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 10:50:07 | INFO     | agents.notification_system:_load_config:98 - 📝 Created default notification config: notification_config.json
+2025-07-14 10:50:07 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 10:50:13 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:50:13 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 10:50:13 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 10:50:14 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 10:50:14 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 10:50:14 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 10:50:14 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:50:14 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:50:14 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:50:14 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:50:14 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 10:50:14 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 10:50:14 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 10:50:14 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 10:50:14 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 10:50:14 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 10:50:14 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 10:50:14 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 10:50:23 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:50:23 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 10:50:23 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 10:50:23 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 10:50:23 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 10:50:23 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 10:50:23 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:50:23 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:50:23 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:50:23 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:50:23 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 10:50:23 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 10:50:23 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 10:50:23 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 10:50:23 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 10:50:23 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 10:50:23 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 10:50:23 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 10:50:23 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 10:50:23 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 10:50:23 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:586 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 10:50:43 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:50:43 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 10:50:43 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 10:50:43 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 10:50:43 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 10:50:43 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 10:50:43 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:50:43 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:50:43 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:50:43 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:50:43 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 10:50:43 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 10:50:43 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 10:50:43 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 10:50:43 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 10:50:43 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 10:50:43 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 10:50:43 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 10:50:43 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 10:50:43 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 10:50:43 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:586 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 10:51:00 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:51:00 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 10:51:00 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 10:51:01 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 10:51:01 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 10:51:01 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 10:51:01 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:51:01 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:51:01 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:51:01 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:51:01 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 10:51:01 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 10:51:01 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 10:51:01 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 10:51:01 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 10:51:01 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 10:51:01 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 10:51:01 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 10:51:01 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 10:51:01 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 10:51:01 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:586 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 10:53:02 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 10:53:02 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 10:53:02 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 10:53:02 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 10:53:02 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 10:53:02 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 10:53:02 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:53:02 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:53:02 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 10:53:02 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 10:53:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 10:53:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 10:53:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 10:53:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 10:53:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 10:53:02 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 10:53:02 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 10:53:02 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 10:53:02 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 10:53:02 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 10:53:02 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:586 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 10:58:32 | WARNING  | agents.agent_monitoring_system:_heartbeat_monitor:377 - Agent AutonomousTradingSystem appears offline (no heartbeat for 330s)
+2025-07-14 10:58:32 | WARNING  | agents.agent_monitoring_system:_heartbeat_monitor:377 - Agent AutonomousAlphaHunter appears offline (no heartbeat for 330s)
+2025-07-14 10:58:32 | WARNING  | agents.agent_monitoring_system:_heartbeat_monitor:377 - Agent WebResearcher appears offline (no heartbeat for 330s)
+2025-07-14 10:58:32 | WARNING  | agents.agent_monitoring_system:_heartbeat_monitor:377 - Agent DecisionTree appears offline (no heartbeat for 330s)
+2025-07-14 10:58:32 | WARNING  | agents.agent_monitoring_system:_heartbeat_monitor:377 - Agent AIRiskMonitor appears offline (no heartbeat for 330s)
+2025-07-14 11:01:16 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:01:16 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:01:16 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:01:17 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:01:17 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:01:17 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:01:17 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:01:17 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:01:17 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:01:17 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:01:17 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:01:17 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:01:17 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:01:17 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:01:17 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:01:17 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:01:17 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:01:17 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:01:17 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:01:17 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:01:17 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:586 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:02:48 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:02:59 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:03:00 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:03:00 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:03:00 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:03:00 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:03:00 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:03:00 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:03:00 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:03:00 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:03:00 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:03:00 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:03:00 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:03:00 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:03:00 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:03:00 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:03:00 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:03:00 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:03:00 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:03:00 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:03:00 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:03:00 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:586 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:03:06 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:03:06 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:03:06 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:03:06 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:03:06 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:03:06 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:03:06 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:03:06 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:03:06 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:03:06 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:03:06 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:03:06 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:03:06 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:03:06 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:03:06 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:03:06 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:03:06 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:03:06 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:03:06 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:03:06 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:03:06 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:586 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:03:09 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:03:10 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=12 cost_today=$0.0001
+2025-07-14 11:03:19 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:03:19 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:03:19 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:03:19 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:03:19 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:03:19 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:03:19 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:03:19 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:03:19 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:03:19 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:03:19 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:03:19 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:03:19 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:03:19 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:03:19 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:03:19 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:03:19 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:03:19 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:03:19 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:03:19 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:03:19 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:586 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:03:26 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:03:26 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:03:26 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:03:26 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:03:26 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:03:26 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:03:26 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:03:26 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:03:26 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:03:26 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:03:26 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:03:26 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:03:26 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:03:26 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:03:26 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:03:26 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:03:26 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:03:26 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:03:26 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:03:26 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:03:26 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:586 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:04:31 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=301 cost_today=$0.0015
+2025-07-14 11:04:38 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=467 cost_today=$0.0038
+2025-07-14 11:04:49 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=304 cost_today=$0.0054
+2025-07-14 11:05:09 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=374 cost_today=$0.0072
+2025-07-14 11:05:32 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=327 cost_today=$0.0089
+2025-07-14 11:07:52 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:07:52 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:07:52 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:07:52 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:07:52 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:07:52 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:07:52 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:07:52 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:07:52 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:07:52 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:07:52 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:07:52 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:07:52 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:07:52 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:07:52 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:07:52 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:07:52 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:07:52 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:07:52 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:07:52 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:07:52 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:586 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:08:02 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:08:02 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:08:02 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:08:02 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:08:02 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:08:02 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:08:02 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:08:02 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:08:02 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:08:02 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:08:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:08:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:08:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:08:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:08:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:08:02 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:08:02 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:08:02 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:08:02 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:08:02 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:08:02 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:08:07 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:08:07 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:08:07 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:08:07 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:08:07 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:08:07 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:08:07 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:08:07 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:08:07 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:08:07 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:08:07 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:08:07 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:08:07 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:08:07 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:08:07 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:08:07 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:08:07 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:08:07 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:08:07 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:08:07 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:08:07 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:08:41 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=359 cost_today=$0.0018
+2025-07-14 11:08:46 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=549 cost_today=$0.0045
+2025-07-14 11:08:52 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=541 cost_today=$0.0072
+2025-07-14 11:08:53 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=366 cost_today=$0.0091
+2025-07-14 11:09:11 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=383 cost_today=$0.0110
+2025-07-14 11:09:35 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=434 cost_today=$0.0132
+2025-07-14 11:10:07 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=440 cost_today=$0.0154
+2025-07-14 11:11:23 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:11:23 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:11:23 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:11:23 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:11:23 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:11:23 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:11:23 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:11:23 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:11:23 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:11:23 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:11:23 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:11:23 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:11:23 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:11:23 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:11:23 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:11:23 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:11:23 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:11:23 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:11:23 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:11:23 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:11:23 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:11:26 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:11:27 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:11:27 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:11:27 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:11:27 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:11:27 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:11:27 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:11:27 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:11:27 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:11:27 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:11:27 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:11:27 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:11:27 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:11:27 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:11:27 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:11:27 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:11:27 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:11:27 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:11:27 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:11:27 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:11:27 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:11:37 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:11:37 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:11:37 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:11:37 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:11:37 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:11:37 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:11:37 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:11:37 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:11:37 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:11:37 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:11:37 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:11:37 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:11:37 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:11:37 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:11:37 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:11:37 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:11:37 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:11:37 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:11:37 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:11:37 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:11:37 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:11:58 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:11:58 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:11:58 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:11:58 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:11:58 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:11:58 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:11:58 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:11:58 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:11:58 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:11:58 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:11:58 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:11:58 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:11:58 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:11:58 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:11:58 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:11:58 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:11:58 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:11:58 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:11:58 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:11:58 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:11:58 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:12:01 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:12:02 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:12:02 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:12:02 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:12:02 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:12:02 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:12:02 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:12:02 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:12:02 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:12:02 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:12:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:12:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:12:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:12:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:12:02 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:12:02 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:12:02 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:12:02 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:12:02 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:12:02 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:12:02 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:12:11 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:12:11 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:12:11 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:12:12 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:12:12 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:12:12 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:12:12 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:12:12 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:12:12 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:12:12 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:12:12 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:12:12 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:12:12 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:12:12 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:12:12 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:12:12 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:12:12 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:12:12 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:12:12 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:12:12 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:12:12 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:12:18 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:12:18 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:12:18 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:12:18 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:12:18 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:12:18 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:12:18 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:12:18 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:12:18 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:12:18 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:12:18 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:12:18 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:12:18 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:12:18 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:12:18 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:12:18 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:12:18 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:12:18 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:12:18 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:12:18 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:12:18 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:12:21 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:12:21 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:12:21 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:12:21 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:12:21 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:12:21 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:12:21 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:12:21 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:12:21 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:12:21 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:12:21 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:12:21 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:12:21 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:12:21 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:12:21 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:12:21 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:12:21 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:12:21 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:12:21 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:12:21 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:12:21 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:12:35 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:12:35 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:12:35 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:12:36 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:12:36 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:12:36 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:12:36 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:12:36 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:12:36 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:12:36 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:12:36 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:12:36 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:12:36 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:12:36 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:12:36 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:12:36 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:12:36 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:12:36 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:12:36 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:12:36 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:12:36 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:12:41 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:12:41 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:12:41 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:12:41 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:12:41 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:12:41 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:12:41 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:12:41 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:12:41 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:12:41 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:12:41 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:12:41 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:12:41 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:12:41 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:12:41 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:12:41 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:12:41 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:12:41 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:12:41 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:12:41 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:12:41 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:12:56 | ERROR    | core.alpaca_client:get_trades:102 - Alpaca get trades error: forbidden.
+2025-07-14 11:12:58 | ERROR    | core.alpaca_client:get_orders:57 - Alpaca get orders error: forbidden.
+2025-07-14 11:13:01 | ERROR    | core.alpaca_client:get_account_activities:129 - Alpaca get activities error: REST.get_activities() got an unexpected keyword argument 'limit'
+2025-07-14 11:13:07 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=386 cost_today=$0.0019
+2025-07-14 11:13:21 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:13:21 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:13:21 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:13:21 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:13:21 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:13:21 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:13:21 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:13:21 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:13:21 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:13:21 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:13:21 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:13:21 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:13:21 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:13:21 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:13:21 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:13:21 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:13:21 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:13:21 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:13:21 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:13:21 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:13:21 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:13:25 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:13:25 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:13:25 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:13:25 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:13:25 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:13:25 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:13:25 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:13:25 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:13:25 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:13:25 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:13:25 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:13:25 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:13:25 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:13:25 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:13:25 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:13:25 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:13:25 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:13:25 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:13:25 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:13:25 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:13:25 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:13:42 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=413 cost_today=$0.0021
+2025-07-14 11:13:43 | ERROR    | core.alpaca_client:get_trades:102 - Alpaca get trades error: forbidden.
+2025-07-14 11:13:43 | ERROR    | core.alpaca_client:get_orders:57 - Alpaca get orders error: forbidden.
+2025-07-14 11:13:43 | ERROR    | core.alpaca_client:get_account_activities:129 - Alpaca get activities error: REST.get_activities() got an unexpected keyword argument 'limit'
+2025-07-14 11:18:25 | WARNING  | agents.agent_monitoring_system:_heartbeat_monitor:377 - Agent AutonomousTradingSystem appears offline (no heartbeat for 300s)
+2025-07-14 11:18:25 | WARNING  | agents.agent_monitoring_system:_heartbeat_monitor:377 - Agent AutonomousAlphaHunter appears offline (no heartbeat for 300s)
+2025-07-14 11:18:25 | WARNING  | agents.agent_monitoring_system:_heartbeat_monitor:377 - Agent WebResearcher appears offline (no heartbeat for 300s)
+2025-07-14 11:18:25 | WARNING  | agents.agent_monitoring_system:_heartbeat_monitor:377 - Agent DecisionTree appears offline (no heartbeat for 300s)
+2025-07-14 11:18:25 | WARNING  | agents.agent_monitoring_system:_heartbeat_monitor:377 - Agent AIRiskMonitor appears offline (no heartbeat for 300s)
+2025-07-14 11:20:28 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:20:29 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:20:29 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:20:29 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:20:29 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:20:29 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:20:29 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:20:29 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:20:29 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:20:29 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:20:29 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:20:29 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:20:29 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:20:29 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:20:29 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:20:29 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:20:29 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:20:29 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:20:29 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:20:29 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:20:29 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:20:30 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:20:31 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:20:31 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:20:31 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:20:31 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:20:31 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:20:31 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:20:31 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:20:31 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:20:31 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:20:31 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:20:31 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:20:31 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:20:31 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:20:31 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:20:31 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:20:31 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:20:31 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:20:31 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:20:31 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:20:31 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:21:53 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:21:54 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:21:54 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:21:54 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:21:54 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:21:54 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:21:54 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:21:54 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:21:54 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:21:54 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:21:54 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:21:54 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:21:54 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:21:54 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:21:54 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:21:54 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:21:54 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:21:54 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:21:54 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:21:54 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:21:54 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:21:55 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:21:55 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:21:55 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:21:55 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:21:55 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:21:55 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:21:55 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:21:55 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:21:55 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:21:55 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:21:55 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:21:55 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:21:55 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:21:55 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:21:55 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:21:55 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:21:55 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:21:55 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:21:56 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:21:56 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:21:56 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:22:32 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:22:33 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:22:33 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:22:33 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:22:33 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:22:33 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:22:33 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:22:33 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:22:33 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:22:33 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:22:33 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:22:33 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:22:33 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:22:33 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:22:33 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:22:33 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:22:33 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:22:33 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:22:33 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:22:33 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:22:33 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:22:43 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:22:43 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:22:43 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:22:43 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:22:43 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:22:43 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:22:43 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:22:43 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:22:43 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:22:43 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:22:43 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:22:43 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:22:43 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:22:43 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:22:43 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:22:43 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:22:43 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:22:43 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:22:43 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:22:43 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:22:43 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:22:47 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:22:48 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:22:48 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:22:48 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:22:48 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:22:48 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:22:48 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:22:48 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:22:48 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:22:48 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:22:48 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:22:48 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:22:48 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:22:48 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:22:48 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:22:48 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:22:48 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:22:48 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:22:48 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:22:48 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:22:48 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:22:55 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:22:55 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:22:55 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:22:55 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:22:55 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:22:55 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:22:55 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:22:55 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:22:55 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:22:55 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:22:55 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:22:55 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:22:55 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:22:55 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:22:55 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:22:55 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:22:55 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:22:55 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:22:55 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:22:55 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:22:55 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:25:22 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:25:22 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:25:22 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:25:22 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:25:22 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:25:22 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:25:22 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:25:22 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:25:22 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:25:22 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:25:22 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:25:22 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:25:22 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:25:22 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:25:22 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:25:22 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:25:22 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:25:22 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:25:22 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:25:22 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:25:22 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:25:24 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:25:25 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:25:25 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:25:25 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:25:25 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:25:25 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:25:25 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:25:25 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:25:25 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:25:25 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:25:25 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:25:25 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:25:25 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:25:25 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:25:25 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:25:25 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:25:25 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:25:25 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:25:25 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:25:25 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:25:25 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:28:11 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:28:12 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:28:12 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:28:12 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:28:12 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:28:12 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:28:12 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:28:12 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:28:12 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:28:12 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:28:12 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:28:12 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:28:12 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:28:12 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:28:12 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:28:12 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:28:12 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:28:12 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:28:12 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:28:12 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:28:12 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:28:14 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:28:14 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:28:14 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:28:14 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:28:14 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:28:14 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:28:14 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:28:14 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:28:14 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:28:14 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:28:14 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:28:14 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:28:14 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:28:14 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:28:14 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:28:14 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:28:14 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:28:14 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:28:14 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:28:14 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:28:14 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:28:26 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:28:27 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:28:27 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:28:27 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:28:27 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:28:27 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:28:27 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:28:27 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:28:27 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:28:27 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:28:27 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:28:27 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:28:27 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:28:27 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:28:27 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:28:27 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:28:27 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:28:27 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:28:27 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:28:27 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:28:27 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:28:38 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:28:38 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:28:38 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:28:38 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:28:38 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:28:38 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:28:38 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:28:38 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:28:38 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:28:38 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:28:38 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:28:38 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:28:38 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:28:38 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:28:38 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:28:38 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:28:38 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:28:38 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 11:28:38 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 11:28:38 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 11:28:38 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:587 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 11:28:50 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 11:28:50 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 11:28:50 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 11:28:50 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 11:28:50 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 11:28:50 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 11:28:50 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:28:50 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:28:50 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 11:28:50 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 11:28:50 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 11:28:50 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 11:28:50 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 11:28:50 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 11:28:50 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 11:28:51 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 11:28:51 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 11:28:51 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 13:05:29 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 13:05:30 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 13:05:30 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 13:05:30 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 13:05:30 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 13:05:30 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 13:05:30 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 13:05:30 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 13:05:30 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 13:05:30 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 13:05:30 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 13:05:30 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 13:05:30 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 13:05:30 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 13:05:30 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 13:05:30 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 13:05:30 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 13:05:30 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 13:05:47 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 13:05:48 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 13:05:48 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 13:05:48 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 13:05:48 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 13:05:48 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 13:05:48 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 13:05:48 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 13:05:48 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 13:05:48 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 13:05:48 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 13:05:48 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 13:05:48 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 13:05:48 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 13:05:48 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 13:05:48 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 13:05:48 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 13:05:48 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 13:06:14 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 13:06:15 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 13:06:15 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 13:06:15 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 13:06:15 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 13:06:15 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 13:06:15 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 13:06:15 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 13:06:15 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 13:06:15 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 13:06:15 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 13:06:15 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 13:06:15 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 13:06:15 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 13:06:15 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 13:06:15 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 13:06:15 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 13:06:15 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 13:06:17 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 13:06:18 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 13:06:18 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 13:06:18 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 13:06:18 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 13:06:18 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 13:06:18 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 13:06:18 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 13:06:18 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 13:06:18 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 13:06:18 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 13:06:18 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 13:06:18 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 13:06:18 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 13:06:18 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 13:06:18 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 13:06:18 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 13:06:18 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized

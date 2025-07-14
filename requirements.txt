@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+python-dotenv
+httpx
+pydantic
+sqlalchemy
+websockets
+requests
+jinja2
+scipy
+numpy
+pandas
+matplotlib
+scikit-learn
+chromadb
+openai
+langchain
