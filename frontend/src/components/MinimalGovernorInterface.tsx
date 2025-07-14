@@ -6,6 +6,7 @@ interface Message {
   content: string;
   timestamp: Date;
   visualData?: any;
+  responseData?: any; // Store the full response data for rich rendering
 }
 
 interface VisualElement {
@@ -239,11 +240,23 @@ const MinimalGovernorInterface: React.FC = () => {
       const data = await response.json();
       
       if (data.status === 'success') {
+        // Extract the actual content from the LLM response object
+        let content = '';
+        if (typeof data.response === 'string') {
+          content = data.response;
+        } else if (data.response && typeof data.response === 'object') {
+          // Handle the new LLM-based response format
+          content = data.response.content || data.response.toString();
+        } else {
+          content = 'I received an unexpected response format.';
+        }
+
         const agentMessage: Message = {
           id: (Date.now() + 1).toString(),
           type: 'agent',
-          content: data.response,
+          content: content,
           timestamp: new Date(),
+          responseData: data.response, // Store the full response data
         };
 
         setMessages(prev => [...prev, agentMessage]);
@@ -343,6 +356,17 @@ const MinimalGovernorInterface: React.FC = () => {
                 boxShadow: message.type === 'agent' ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none'
               }}>
                 {message.content}
+                {message.responseData && message.responseData.type === 'markdown' && (
+                  <div style={{ 
+                    marginTop: '0.5rem', 
+                    padding: '0.5rem', 
+                    background: 'rgba(0, 0, 0, 0.05)', 
+                    borderRadius: '0.5rem',
+                    fontSize: '0.9rem'
+                  }}>
+                    <strong>Agent:</strong> {message.responseData.agent || 'Unknown'}
+                  </div>
+                )}
               </div>
             </div>
           ))}
