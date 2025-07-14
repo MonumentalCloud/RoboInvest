@@ -1,12 +1,48 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card } from './ui/card';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
-import { Badge } from './ui/badge';
-import { Alert } from './ui/alert';
-import { Tabs } from './ui/tabs';
-import GovernorChatInterface from './GovernorChatInterface';
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Button,
+  Chip,
+  Avatar,
+  Divider,
+  LinearProgress,
+  IconButton,
+  Tooltip,
+  Alert,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Badge,
+  Tabs,
+  Tab,
+  CircularProgress
+} from '@mui/material';
+import { Grid } from '@mui/material';
+import {
+  Send,
+  Psychology,
+  TrendingUp,
+  Security,
+  Settings,
+  Refresh,
+  PlayArrow,
+  Pause,
+  Stop,
+  Warning,
+  CheckCircle,
+  Error,
+  Info,
+  AutoGraph,
+  Timeline,
+  Assessment
+} from '@mui/icons-material';
+import { customColors } from '../theme';
 
 interface Message {
   id: string;
@@ -61,7 +97,7 @@ const GovernorControlPanel: React.FC = () => {
   const [systemContext, setSystemContext] = useState<SystemContext | null>(null);
   const [agentThoughts, setAgentThoughts] = useState<AgentThought[]>([]);
   const [systemPulse, setSystemPulse] = useState<SystemPulse | null>(null);
-  const [activeTab, setActiveTab] = useState('conversation');
+  const [activeTab, setActiveTab] = useState(0);
   const [wsConnections, setWsConnections] = useState<{ [key: string]: WebSocket }>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -81,34 +117,55 @@ const GovernorControlPanel: React.FC = () => {
     const connections: { [key: string]: WebSocket } = {};
 
     // System context WebSocket
-    const contextWs = new WebSocket(`ws://localhost:8000/api/governor/ws/context`);
-    contextWs.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === 'context_update') {
-        setSystemContext(data.context);
-      }
-    };
-    connections.context = contextWs;
+    try {
+      const contextWs = new WebSocket(`ws://localhost:8081/api/governor/ws/context`);
+      contextWs.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === 'context_update') {
+          setSystemContext(data.context);
+        }
+      };
+      contextWs.onerror = (error) => {
+        console.log('WebSocket context connection error:', error);
+      };
+      connections.context = contextWs;
+    } catch (error) {
+      console.log('Failed to connect to context WebSocket');
+    }
 
     // Agent thoughts WebSocket
-    const thoughtsWs = new WebSocket(`ws://localhost:8000/api/governor/ws/thoughts`);
-    thoughtsWs.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === 'agent_thought') {
-        setAgentThoughts(prev => [...prev.slice(-9), data.thought]);
-      }
-    };
-    connections.thoughts = thoughtsWs;
+    try {
+      const thoughtsWs = new WebSocket(`ws://localhost:8081/api/governor/ws/thoughts`);
+      thoughtsWs.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === 'agent_thought') {
+          setAgentThoughts(prev => [...prev.slice(-9), data.thought]);
+        }
+      };
+      thoughtsWs.onerror = (error) => {
+        console.log('WebSocket thoughts connection error:', error);
+      };
+      connections.thoughts = thoughtsWs;
+    } catch (error) {
+      console.log('Failed to connect to thoughts WebSocket');
+    }
 
     // System pulse WebSocket
-    const pulseWs = new WebSocket(`ws://localhost:8000/api/governor/ws/pulse`);
-    pulseWs.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === 'system_pulse') {
-        setSystemPulse(data.pulse);
-      }
-    };
-    connections.pulse = pulseWs;
+    try {
+      const pulseWs = new WebSocket(`ws://localhost:8081/api/governor/ws/pulse`);
+      pulseWs.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === 'system_pulse') {
+          setSystemPulse(data.pulse);
+        }
+      };
+      pulseWs.onerror = (error) => {
+        console.log('WebSocket pulse connection error:', error);
+      };
+      connections.pulse = pulseWs;
+    } catch (error) {
+      console.log('Failed to connect to pulse WebSocket');
+    }
 
     setWsConnections(connections);
   };
@@ -116,8 +173,8 @@ const GovernorControlPanel: React.FC = () => {
   const fetchInitialData = async () => {
     try {
       const [contextRes, pulseRes] = await Promise.all([
-        fetch('http://localhost:8000/api/governor/context'),
-        fetch('http://localhost:8000/api/governor/pulse')
+        fetch('http://localhost:8081/api/governor/context'),
+        fetch('http://localhost:8081/api/governor/pulse')
       ]);
       
       if (contextRes.ok) {
@@ -153,7 +210,7 @@ const GovernorControlPanel: React.FC = () => {
     setIsTyping(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/governor/conversation', {
+      const response = await fetch('http://localhost:8081/api/governor/conversation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: inputMessage })
@@ -185,7 +242,7 @@ const GovernorControlPanel: React.FC = () => {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
@@ -194,12 +251,21 @@ const GovernorControlPanel: React.FC = () => {
 
   const getSystemHealthColor = (health: string) => {
     switch (health) {
-      case 'excellent': return 'text-green-500';
-      case 'good': return 'text-blue-500';
-      case 'operational': return 'text-yellow-500';
-      case 'warning': return 'text-orange-500';
-      case 'critical': return 'text-red-500';
-      default: return 'text-gray-500';
+      case 'excellent': return customColors.success;
+      case 'good': return customColors.info;
+      case 'operational': return customColors.warning;
+      case 'warning': return customColors.error;
+      default: return customColors.neutral;
+    }
+  };
+
+  const getSystemHealthIcon = (health: string) => {
+    switch (health) {
+      case 'excellent': return <CheckCircle />;
+      case 'good': return <CheckCircle />;
+      case 'operational': return <Warning />;
+      case 'warning': return <Error />;
+      default: return <Info />;
     }
   };
 
@@ -207,241 +273,318 @@ const GovernorControlPanel: React.FC = () => {
     return new Date(timestamp).toLocaleTimeString();
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">
-            👑 Governor Control Panel
-          </h1>
-          <p className="text-purple-200 text-lg">
-            Natural conversation interface with your AI administrative agent
-          </p>
-        </div>
+  const renderMessage = (message: Message) => {
+    const isUser = message.type === 'user';
+    const isSystem = message.type === 'system';
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Main Conversation Area */}
-          <div className="lg:col-span-3">
-            <Card className="h-[600px] flex flex-col bg-black/20 backdrop-blur-sm border-purple-500/30">
-              <div className="p-6 border-b border-purple-500/30">
-                <h2 className="text-xl font-semibold text-white mb-2">
-                  💬 Conversation with Governor Agent
-                </h2>
-                <p className="text-purple-200 text-sm">
-                  Speak naturally with your AI administrator about any system aspect
-                </p>
-              </div>
+    return (
+      <Box
+        key={message.id}
+        sx={{
+          display: 'flex',
+          justifyContent: isUser ? 'flex-end' : 'flex-start',
+          mb: 2,
+        }}
+      >
+        <Paper
+          sx={{
+            maxWidth: '70%',
+            p: 2,
+            backgroundColor: isUser 
+              ? 'rgba(0, 212, 170, 0.1)' 
+              : isSystem 
+                ? 'rgba(239, 68, 68, 0.1)'
+                : 'rgba(255, 255, 255, 0.05)',
+            border: `1px solid ${
+              isUser 
+                ? 'rgba(0, 212, 170, 0.3)' 
+                : isSystem 
+                  ? 'rgba(239, 68, 68, 0.3)'
+                  : 'rgba(255, 255, 255, 0.1)'
+            }`,
+            borderRadius: 2,
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+            <Avatar
+              sx={{
+                width: 24,
+                height: 24,
+                mr: 1,
+                backgroundColor: isUser 
+                  ? customColors.primary 
+                  : isSystem 
+                    ? customColors.error
+                    : customColors.secondary,
+              }}
+            >
+              {isUser ? 'U' : isSystem ? 'S' : 'G'}
+            </Avatar>
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+              {isUser ? 'You' : isSystem ? 'System' : 'Governor'} • {message.timestamp.toLocaleTimeString()}
+            </Typography>
+          </Box>
+          <Typography variant="body2" sx={{ lineHeight: 1.5 }}>
+            {message.content}
+          </Typography>
+        </Paper>
+      </Box>
+    );
+  };
+
+  return (
+    <Box sx={{ height: 'calc(100vh - 140px)' }}>
+      <Grid container spacing={3} sx={{ height: '100%' }}>
+        {/* Main Chat Interface */}
+        <Grid item xs={12} md={8}>
+          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 0 }}>
+              {/* Header */}
+              <Box sx={{ p: 3, borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Avatar sx={{ mr: 2, backgroundColor: customColors.primary }}>
+                      <Psychology />
+                    </Avatar>
+                    <Box>
+                      <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                        AI Governor Interface
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        Autonomous Trading System Control
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Tooltip title="Refresh">
+                      <IconButton size="small" onClick={fetchInitialData}>
+                        <Refresh />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Settings">
+                      <IconButton size="small">
+                        <Settings />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                </Box>
+              </Box>
 
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-6 space-y-4">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div
-                      className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                        message.type === 'user'
-                          ? 'bg-purple-600 text-white'
-                          : message.type === 'governor'
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-red-600 text-white'
-                      }`}
-                    >
-                      <div className="text-sm font-medium mb-1">
-                        {message.type === 'user' ? 'You' : 
-                         message.type === 'governor' ? 'Governor Agent' : 'System'}
-                      </div>
-                      <div className="text-sm leading-relaxed">{message.content}</div>
-                      <div className="text-xs opacity-70 mt-2">
-                        {message.timestamp.toLocaleTimeString()}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                
+              <Box sx={{ flexGrow: 1, overflow: 'auto', p: 3 }}>
+                {messages.map(renderMessage)}
                 {isTyping && (
-                  <div className="flex justify-start">
-                    <div className="bg-blue-600 text-white rounded-2xl px-4 py-3">
-                      <div className="text-sm font-medium mb-1">Governor Agent</div>
-                      <div className="text-sm">Typing...</div>
-                    </div>
-                  </div>
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
+                    <Paper sx={{ p: 2, backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <CircularProgress size={16} sx={{ mr: 1 }} />
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                          Governor is typing...
+                        </Typography>
+                      </Box>
+                    </Paper>
+                  </Box>
                 )}
-                
                 <div ref={messagesEndRef} />
-              </div>
+              </Box>
 
               {/* Input */}
-              <div className="p-6 border-t border-purple-500/30">
-                <div className="flex space-x-3">
-                  <Textarea
+              <Box sx={{ p: 3, borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    placeholder="Ask the Governor anything about the trading system..."
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask me anything about the system, agents, trades, or strategies..."
-                    className="flex-1 bg-black/30 border-purple-500/50 text-white placeholder-purple-300"
-                    rows={2}
+                    disabled={isTyping}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: 2,
+                        backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                        '&:hover': {
+                          backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                        },
+                      },
+                    }}
                   />
                   <Button
+                    variant="contained"
                     onClick={sendMessage}
                     disabled={!inputMessage.trim() || isTyping}
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-6"
+                    sx={{ minWidth: 'auto', px: 2 }}
                   >
-                    Send
+                    <Send />
                   </Button>
-                </div>
-              </div>
-            </Card>
-          </div>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
 
-          {/* Sidebar - System Status */}
-          <div className="space-y-6">
+        {/* System Status Panel */}
+        <Grid item xs={12} md={4}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, height: '100%' }}>
             {/* System Pulse */}
-            <Card className="bg-black/20 backdrop-blur-sm border-purple-500/30">
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-white mb-3">📊 System Pulse</h3>
+            <Card>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Timeline sx={{ mr: 1, color: customColors.primary }} />
+                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                    System Pulse
+                  </Typography>
+                </Box>
                 {systemPulse ? (
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-purple-200">Active Agents:</span>
-                      <span className="text-white font-semibold">{systemPulse.active_agents}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-purple-200">Trades Executed:</span>
-                      <span className="text-white font-semibold">{systemPulse.trades_executed}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-purple-200">Research Activities:</span>
-                      <span className="text-white font-semibold">{systemPulse.research_activities}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-purple-200">Health:</span>
-                      <span className={`font-semibold ${getSystemHealthColor(systemPulse.system_health)}`}>
-                        {systemPulse.system_health}
-                      </span>
-                    </div>
-                    <div className="text-xs text-purple-300 mt-2">
-                      Last updated: {formatTimestamp(systemPulse.timestamp)}
-                    </div>
-                  </div>
+                  <Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                      <Box sx={{ color: getSystemHealthColor(systemPulse.system_health), mr: 1 }}>
+                        {getSystemHealthIcon(systemPulse.system_health)}
+                      </Box>
+                      <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                        {systemPulse.system_health.charAt(0).toUpperCase() + systemPulse.system_health.slice(1)}
+                      </Typography>
+                    </Box>
+                    <Grid container spacing={2}>
+                      <Grid item xs={6}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                          Active Agents
+                        </Typography>
+                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                          {systemPulse.active_agents}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                          Trades Today
+                        </Typography>
+                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                          {systemPulse.trades_executed}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                          Directives
+                        </Typography>
+                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                          {systemPulse.directives_processed}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                          Research
+                        </Typography>
+                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                          {systemPulse.research_activities}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Box>
                 ) : (
-                  <div className="text-purple-300 text-sm">Loading...</div>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', py: 2 }}>
+                    <CircularProgress size={24} />
+                  </Box>
                 )}
-              </div>
+              </CardContent>
             </Card>
 
-            {/* Quick Actions */}
-            <Card className="bg-black/20 backdrop-blur-sm border-purple-500/30">
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-white mb-3">⚡ Quick Actions</h3>
-                <div className="space-y-2">
-                  <Button
-                    onClick={() => setInputMessage("Show me the current system status and what all agents are doing")}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm"
-                  >
-                    📊 System Status
-                  </Button>
-                  <Button
-                    onClick={() => setInputMessage("What trades have been executed recently and how are they performing?")}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white text-sm"
-                  >
-                    💰 Trade Performance
-                  </Button>
-                  <Button
-                    onClick={() => setInputMessage("What research is currently being conducted and what insights have been found?")}
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white text-sm"
-                  >
-                    🔍 Research Insights
-                  </Button>
-                  <Button
-                    onClick={() => setInputMessage("Adjust the risk parameters to be more conservative")}
-                    className="w-full bg-orange-600 hover:bg-orange-700 text-white text-sm"
-                  >
-                    🛡️ Risk Management
-                  </Button>
-                </div>
-              </div>
-            </Card>
+            {/* System Context */}
+            {systemContext && (
+              <Card>
+                <CardContent>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Assessment sx={{ mr: 1, color: customColors.secondary }} />
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      System Context
+                    </Typography>
+                  </Box>
+                  <Box sx={{ mb: 2 }}>
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      Current Strategy
+                    </Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                      {systemContext.current_strategy}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ mb: 2 }}>
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      System Mode
+                    </Typography>
+                    <Chip
+                      label={systemContext.system_mode}
+                      size="small"
+                      sx={{
+                        backgroundColor: 'rgba(0, 212, 170, 0.2)',
+                        color: customColors.primary,
+                        fontWeight: 600,
+                      }}
+                    />
+                  </Box>
+                  <Box>
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      Active Directives
+                    </Typography>
+                    <Box sx={{ mt: 1 }}>
+                      {systemContext.active_directives.map((directive, index) => (
+                        <Chip
+                          key={index}
+                          label={directive}
+                          size="small"
+                          variant="outlined"
+                          sx={{ mr: 0.5, mb: 0.5 }}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Agent Thoughts */}
-            <Card className="bg-black/20 backdrop-blur-sm border-purple-500/30">
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-white mb-3">🧠 Live Agent Thoughts</h3>
-                <div className="space-y-3 max-h-64 overflow-y-auto">
-                  {agentThoughts.length > 0 ? (
-                    agentThoughts.map((thought, index) => (
-                      <div key={index} className="bg-black/30 rounded-lg p-3">
-                        <div className="text-xs text-purple-300 mb-1">
-                          {thought.agent_id} • {formatTimestamp(thought.timestamp)}
-                        </div>
-                        <div className="text-sm text-white mb-1">{thought.thought}</div>
-                        <div className="text-xs text-purple-200">
-                          Confidence: {(thought.confidence * 100).toFixed(0)}%
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-purple-300 text-sm">Waiting for agent thoughts...</div>
-                  )}
-                </div>
-              </div>
+            <Card sx={{ flexGrow: 1 }}>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <AutoGraph sx={{ mr: 1, color: customColors.accent }} />
+                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                    Agent Thoughts
+                  </Typography>
+                </Box>
+                <List sx={{ p: 0 }}>
+                  {agentThoughts.slice(-5).map((thought, index) => (
+                    <ListItem key={index} sx={{ px: 0, py: 1 }}>
+                      <ListItemAvatar>
+                        <Avatar sx={{ width: 32, height: 32, fontSize: '0.75rem' }}>
+                          {thought.agent_id.split('_')[1]}
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={thought.thought}
+                        secondary={`${thought.action_taken} • ${formatTimestamp(thought.timestamp)}`}
+                        primaryTypographyProps={{ variant: 'body2', sx: { fontWeight: 500 } }}
+                        secondaryTypographyProps={{ variant: 'caption' }}
+                      />
+                      <Chip
+                        label={`${Math.round(thought.confidence * 100)}%`}
+                        size="small"
+                        sx={{
+                          backgroundColor: thought.confidence > 0.8 
+                            ? 'rgba(16, 185, 129, 0.2)' 
+                            : 'rgba(245, 158, 11, 0.2)',
+                          color: thought.confidence > 0.8 
+                            ? customColors.success 
+                            : customColors.warning,
+                          fontWeight: 600,
+                        }}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </CardContent>
             </Card>
-          </div>
-        </div>
-
-        {/* System Context Display */}
-        {systemContext && (
-          <Card className="mt-6 bg-black/20 backdrop-blur-sm border-purple-500/30">
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-white mb-4">🎯 Current System Context</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div>
-                  <h4 className="text-purple-300 font-medium mb-2">Mission</h4>
-                  <p className="text-white text-sm">{systemContext.mission}</p>
-                </div>
-                <div>
-                  <h4 className="text-purple-300 font-medium mb-2">Strategy</h4>
-                  <p className="text-white text-sm">{systemContext.current_strategy}</p>
-                </div>
-                <div>
-                  <h4 className="text-purple-300 font-medium mb-2">System Mode</h4>
-                  <Badge className={`${
-                    systemContext.system_mode === 'normal' ? 'bg-green-600' :
-                    systemContext.system_mode === 'conservative' ? 'bg-yellow-600' :
-                    systemContext.system_mode === 'aggressive' ? 'bg-blue-600' :
-                    'bg-red-600'
-                  }`}>
-                    {systemContext.system_mode}
-                  </Badge>
-                </div>
-                <div>
-                  <h4 className="text-purple-300 font-medium mb-2">Research Priorities</h4>
-                  <div className="flex flex-wrap gap-1">
-                    {systemContext.research_priorities.map((priority, index) => (
-                      <Badge key={index} className="bg-purple-600 text-xs">
-                        {priority}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <h4 className="text-purple-300 font-medium mb-2">Active Directives</h4>
-                  <p className="text-white text-sm">{systemContext.active_directives.length} active</p>
-                </div>
-                <div>
-                  <h4 className="text-purple-300 font-medium mb-2">Last Updated</h4>
-                  <p className="text-white text-sm">{formatTimestamp(systemContext.last_updated)}</p>
-                </div>
-              </div>
-            </div>
-          </Card>
-        )}
-      </div>
-      {/* Floating Governor Chatbot */}
-      <GovernorChatInterface />
-    </div>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
