@@ -83,8 +83,10 @@ class SelfEditingAgent:
         
         logger.info("SelfEditingAgent initialized with safety protocols")
     
-    def process_change_request(self, user_request: str, context: Dict[str, Any] = None) -> Dict[str, Any]:
+    def process_change_request(self, user_request: str, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """Process a user request for code changes"""
+        if context is None:
+            context = {}
         try:
             request_id = str(uuid.uuid4())
             timestamp = datetime.utcnow()
@@ -283,12 +285,17 @@ CONTEXT:
 - Existing Endpoints: {context['existing_endpoints']}
 - Existing Agents: {context['existing_agents']}
 
+IMPORTANT: This is a FastAPI application, NOT Flask. Use FastAPI decorators and patterns.
+
 REQUIREMENTS:
 1. Generate production-ready code with proper error handling
 2. Follow existing code patterns and conventions
 3. Include proper imports and dependencies
 4. Add appropriate logging and documentation
 5. Ensure code is safe and follows security best practices
+6. Use FastAPI framework (not Flask)
+7. For new endpoints, add them to backend/api/governor_endpoints.py using the existing router
+8. Use proper FastAPI decorators like @router.get(), @router.post(), etc.
 
 RESPONSE FORMAT:
 Return a JSON object with the following structure:
@@ -303,6 +310,14 @@ Return a JSON object with the following structure:
         }}
     ]
 }}
+
+For new endpoints, add them to backend/api/governor_endpoints.py using the existing router.
+Example:
+```python
+@router.get("/new-endpoint")
+async def new_endpoint():
+    return {{"message": "success"}}
+```
 
 Generate the code changes now:
 """
