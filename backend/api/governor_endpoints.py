@@ -455,6 +455,287 @@ def trading_agent_llm(message: str, context: Dict[str, Any]) -> Dict[str, Any]:
 
 def research_agent_llm(message: str, context: Dict[str, Any]) -> Dict[str, Any]:
     """LLM-based research agent"""
+    
+    # Check if user is asking for charts or visualizations
+    message_lower = message.lower()
+    if any(word in message_lower for word in ['chart', 'graph', 'visual', 'dashboard', 'sentiment']):
+        # Create custom visualization for research data
+        customVisualization = {
+            "title": "Market Research Dashboard",
+            "html": """
+            <div class="research-dashboard">
+                <div class="header">
+                    <h1>📈 Market Research Dashboard</h1>
+                    <div class="metrics-summary">
+                        <div class="metric">
+                            <span class="label">Market Sentiment</span>
+                            <span class="value positive">Bullish</span>
+                        </div>
+                        <div class="metric">
+                            <span class="label">Volatility Index</span>
+                            <span class="value">15.2</span>
+                        </div>
+                        <div class="metric">
+                            <span class="label">Alpha Opportunities</span>
+                            <span class="value">8</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <h2>Market Sentiment Trend</h2>
+                        <div class="chart" id="sentimentChart">
+                            <canvas id="sentimentCanvas" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h2>Sector Performance</h2>
+                        <div class="chart" id="sectorChart">
+                            <canvas id="sectorCanvas" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="insights-section">
+                    <h2>Key Insights</h2>
+                    <div class="insights-grid">
+                        <div class="insight-card">
+                            <h3>📊 Market Trend</h3>
+                            <p>Overall market sentiment is trending bullish with increasing positive sentiment across major sectors.</p>
+                        </div>
+                        <div class="insight-card">
+                            <h3>🎯 Alpha Opportunities</h3>
+                            <p>Technology and healthcare sectors show the highest potential for alpha generation.</p>
+                        </div>
+                        <div class="insight-card">
+                            <h3>⚠️ Risk Factors</h3>
+                            <p>Monitor inflation data and central bank policies for potential market volatility.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            """,
+            "css": """
+            .research-dashboard {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            
+            .header {
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                color: white;
+                padding: 30px;
+                border-radius: 12px;
+                margin-bottom: 30px;
+            }
+            
+            .header h1 {
+                margin: 0 0 20px 0;
+                font-size: 2rem;
+            }
+            
+            .metrics-summary {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+            }
+            
+            .metric {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .metric .label {
+                font-size: 0.9rem;
+                opacity: 0.8;
+            }
+            
+            .metric .value {
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+            
+            .positive { color: #10b981; }
+            
+            .charts-section {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                gap: 30px;
+                margin-bottom: 30px;
+            }
+            
+            .chart-container {
+                background: white;
+                border-radius: 12px;
+                padding: 25px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            
+            .chart-container h2 {
+                margin: 0 0 20px 0;
+                color: #1f2937;
+                font-size: 1.3rem;
+            }
+            
+            .chart {
+                position: relative;
+                height: 200px;
+            }
+            
+            .insights-section {
+                background: white;
+                border-radius: 12px;
+                padding: 25px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            
+            .insights-section h2 {
+                margin: 0 0 20px 0;
+                color: #1f2937;
+                font-size: 1.5rem;
+            }
+            
+            .insights-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 20px;
+            }
+            
+            .insight-card {
+                background: #f8fafc;
+                border-radius: 8px;
+                padding: 20px;
+                border: 1px solid #e2e8f0;
+            }
+            
+            .insight-card h3 {
+                margin: 0 0 10px 0;
+                color: #1f2937;
+                font-size: 1.1rem;
+            }
+            
+            .insight-card p {
+                margin: 0;
+                color: #6b7280;
+                line-height: 1.5;
+            }
+            """,
+            "js": """
+            // Simple chart drawing using Canvas API
+            document.addEventListener('DOMContentLoaded', function() {
+                // Sentiment Chart
+                const sentimentCanvas = document.getElementById('sentimentCanvas');
+                const sentimentCtx = sentimentCanvas.getContext('2d');
+                
+                // Sample sentiment data
+                const sentimentData = [0.25, 0.30, 0.35, 0.20, 0.45, 0.60, 0.55, 0.40, 0.30, 0.65];
+                const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'];
+                
+                // Draw sentiment line chart
+                sentimentCtx.strokeStyle = '#10b981';
+                sentimentCtx.lineWidth = 3;
+                sentimentCtx.beginPath();
+                
+                sentimentData.forEach((value, index) => {
+                    const x = (index / (sentimentData.length - 1)) * 380 + 10;
+                    const y = 190 - (value * 180);
+                    
+                    if (index === 0) {
+                        sentimentCtx.moveTo(x, y);
+                    } else {
+                        sentimentCtx.lineTo(x, y);
+                    }
+                });
+                
+                sentimentCtx.stroke();
+                
+                // Add data points
+                sentimentData.forEach((value, index) => {
+                    const x = (index / (sentimentData.length - 1)) * 380 + 10;
+                    const y = 190 - (value * 180);
+                    
+                    sentimentCtx.fillStyle = '#10b981';
+                    sentimentCtx.beginPath();
+                    sentimentCtx.arc(x, y, 4, 0, 2 * Math.PI);
+                    sentimentCtx.fill();
+                });
+                
+                // Sector Chart
+                const sectorCanvas = document.getElementById('sectorCanvas');
+                const sectorCtx = sectorCanvas.getContext('2d');
+                
+                // Sample sector data
+                const sectors = ['Tech', 'Healthcare', 'Finance', 'Energy', 'Consumer'];
+                const performance = [15, 12, 8, 5, 10];
+                const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+                
+                const barWidth = 60;
+                const barSpacing = 20;
+                const startX = 30;
+                
+                performance.forEach((value, index) => {
+                    const x = startX + index * (barWidth + barSpacing);
+                    const height = value * 8;
+                    const y = 190 - height;
+                    
+                    // Draw bar
+                    sectorCtx.fillStyle = colors[index];
+                    sectorCtx.fillRect(x, y, barWidth, height);
+                    
+                    // Draw label
+                    sectorCtx.fillStyle = '#374151';
+                    sectorCtx.font = '12px Arial';
+                    sectorCtx.textAlign = 'center';
+                    sectorCtx.fillText(sectors[index], x + barWidth/2, 210);
+                    sectorCtx.fillText(value + '%', x + barWidth/2, y - 5);
+                });
+                
+                // Add interactive features
+                const insightCards = document.querySelectorAll('.insight-card');
+                insightCards.forEach(card => {
+                    card.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-2px)';
+                        this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+                    });
+                    
+                    card.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0)';
+                        this.style.boxShadow = 'none';
+                    });
+                });
+            });
+            """
+        }
+        
+        # Get LLM response for text content
+        system_prompt = """You are a market research and alpha discovery agent.
+        The user is asking for charts or visualizations. Provide a comprehensive analysis
+        that complements the visual dashboard being generated.
+        
+        Focus on:
+        - Key market trends and insights
+        - Alpha opportunities and recommendations
+        - Risk factors to monitor
+        - Data-driven conclusions
+        
+        Use markdown formatting for structured information.
+        """
+        
+        response = get_llm_response(message, system_prompt)
+        
+        return {
+            "type": "markdown",
+            "content": response,
+            "agent": "research",
+            "actions_taken": ["generated_visualization"],
+            "customVisualization": customVisualization
+        }
+    
+    # Default LLM response for other research queries
     system_prompt = """You are a market research and alpha discovery agent.
     You can:
     - Analyze market trends and patterns
