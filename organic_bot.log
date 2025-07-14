@@ -1004,3 +1004,53 @@
 2025-07-14 13:06:18 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
 2025-07-14 13:06:18 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
 2025-07-14 13:06:18 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 13:07:18 | INFO     | core.change_manager:__init__:40 - ChangeManager initialized for /Users/jinjae/RoboInvest/RoboInvest on branch main
+2025-07-14 13:07:18 | INFO     | agents.codebase_analyzer:__init__:90 - CodebaseAnalyzer initialized for /Users/jinjae/RoboInvest/RoboInvest
+2025-07-14 13:07:19 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 13:07:19 | INFO     | agents.self_editing_agent:__init__:84 - SelfEditingAgent initialized with safety protocols
+2025-07-14 13:07:19 | INFO     | core.change_logger:log_change:152 - Change logged: test_change_001 - Test endpoint creation
+2025-07-14 13:07:20 | INFO     | agents.codebase_analyzer:analyze_codebase:95 - Starting comprehensive codebase analysis...
+2025-07-14 13:07:20 | INFO     | agents.codebase_analyzer:analyze_codebase:138 - Codebase analysis completed: 1 files analyzed
+2025-07-14 13:07:20 | INFO     | agents.self_editing_agent:process_change_request:103 - Processing change request d8ca1c1e-4bce-439a-be97-4bb74a67b289: Create a simple test endpoint that returns hello world...
+2025-07-14 13:07:20 | INFO     | agents.codebase_analyzer:analyze_codebase:95 - Starting comprehensive codebase analysis...
+2025-07-14 13:07:20 | INFO     | agents.codebase_analyzer:analyze_codebase:138 - Codebase analysis completed: 1 files analyzed
+2025-07-14 13:07:24 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=465 cost_today=$0.0023
+2025-07-14 13:07:24 | INFO     | core.change_logger:log_change:152 - Change logged: c861a5f9-5c08-4ed7-9f80-76cb5f14aef7 - Added a new endpoint that returns a hello world message.
+2025-07-14 13:07:25 | INFO     | core.change_logger:log_change:152 - Change logged: c861a5f9-5c08-4ed7-9f80-76cb5f14aef7 - Added a new endpoint that returns a hello world message.
+2025-07-14 13:07:25 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 13:07:25 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 13:07:25 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 13:07:25 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 13:07:25 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 13:07:32 | WARNING  | core.openai_manager:__init__:69 - OpenAIManager | pricing refresh failed: pricing page fetch failed
+2025-07-14 13:07:32 | INFO     | tools.data_fetcher:__init__:43 - 🚀 DataFetcher | Polygon.io UPGRADED PLAN initialized - full access enabled
+2025-07-14 13:07:32 | INFO     | tools.data_fetcher:__init__:52 - 📊 DataFetcher | Primary data source: Polygon.io UPGRADED PLAN (high rate limits, real-time access)
+2025-07-14 13:07:33 | INFO     | agents.agent_monitoring_system:__init__:98 - 🔍 Agent Monitoring System initialized
+2025-07-14 13:07:33 | INFO     | core.central_event_bus:_init_database:167 - 📊 Event and research database initialized: data/central_events.db
+2025-07-14 13:07:33 | INFO     | core.central_event_bus:__init__:100 - 🚌 Central Event Bus initialized
+2025-07-14 13:07:33 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 13:07:33 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 13:07:33 | INFO     | core.governor_directive_system:_init_database:239 - 📊 Governor directive database initialized: data/governor_directives.db
+2025-07-14 13:07:33 | INFO     | core.governor_directive_system:__init__:187 - 👑 Governor Directive System initialized
+2025-07-14 13:07:33 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousTradingSystem
+2025-07-14 13:07:33 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AutonomousAlphaHunter
+2025-07-14 13:07:33 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: WebResearcher
+2025-07-14 13:07:33 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: DecisionTree
+2025-07-14 13:07:33 | INFO     | agents.agent_monitoring_system:register_agent:166 - 📝 Registered agent for monitoring: AIRiskMonitor
+2025-07-14 13:07:33 | INFO     | agents.experience_learning_system:__init__:58 - ExperienceLearning | Initialized 7 collections
+2025-07-14 13:07:33 | INFO     | core.play_reporting:_init_database:113 - Play reporting database initialized: play_reporting.db
+2025-07-14 13:07:33 | INFO     | agents.notification_system:__init__:44 - 📱 Notification System initialized
+2025-07-14 13:07:33 | INFO     | core.change_manager:__init__:40 - ChangeManager initialized for /Users/jinjae/RoboInvest/RoboInvest on branch main
+2025-07-14 13:07:33 | INFO     | agents.codebase_analyzer:__init__:90 - CodebaseAnalyzer initialized for /Users/jinjae/RoboInvest/RoboInvest
+2025-07-14 13:07:33 | INFO     | agents.self_editing_agent:__init__:84 - SelfEditingAgent initialized with safety protocols
+2025-07-14 13:07:33 | INFO     | core.central_event_bus:start:175 - 🚌 Central Event Bus started
+2025-07-14 13:07:33 | INFO     | core.governor_directive_system:start:247 - 👑 Governor Directive System started
+2025-07-14 13:07:33 | INFO     | backend.api.governor_endpoints:setup_governor_subscriptions:590 - 👑 Governor directive system subscriptions setup complete
+2025-07-14 13:07:56 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=518 cost_today=$0.0026
+2025-07-14 13:07:56 | INFO     | backend.api.governor_endpoints:governor_conversation:766 - Processing self-editing request via conversation: Create a new endpoint that returns the current system status
+2025-07-14 13:07:56 | INFO     | agents.self_editing_agent:process_change_request:103 - Processing change request 71db7165-fa91-4a16-a3d0-25f58d0187ec: Create a new endpoint that returns the current system status...
+2025-07-14 13:07:56 | INFO     | agents.codebase_analyzer:analyze_codebase:95 - Starting comprehensive codebase analysis...
+2025-07-14 13:07:56 | INFO     | agents.codebase_analyzer:analyze_codebase:138 - Codebase analysis completed: 1 files analyzed
+2025-07-14 13:07:59 | INFO     | core.openai_manager:chat_completion:105 - OpenAI | model=gpt-4o-mini tokens=498 cost_today=$0.0051
+2025-07-14 13:07:59 | INFO     | core.change_logger:log_change:152 - Change logged: 151c5c16-b231-4a52-b487-3cac752d36db - Added a new endpoint to return the current system status.
+2025-07-14 13:08:00 | INFO     | core.change_logger:log_change:152 - Change logged: 151c5c16-b231-4a52-b487-3cac752d36db - Added a new endpoint to return the current system status.
